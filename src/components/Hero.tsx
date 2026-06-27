@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import productCan from '../assets/genric_beer_can.png';
+import beerGlass from '../assets/beer_glass.png';
+import heroVideo from '../assets/hero_banner_video.mp4';
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -76,8 +79,40 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-brand-espresso">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-      <div className="absolute inset-0 bg-gradient-to-b from-brand-espresso/40 via-transparent to-brand-espresso/80" />
+      <div className="absolute inset-0 overflow-hidden">
+        <video
+          src={heroVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover video-zoom"
+          style={{ filter: 'contrast(1.15) saturate(1.25) brightness(1.05)' }}
+        />
+        <div className="absolute inset-0 bg-brand-espresso/40 lg:bg-brand-espresso/30 pointer-events-none" />
+      </div>
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full mix-blend-overlay opacity-80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-brand-espresso/65 via-transparent to-brand-espresso/90 pointer-events-none" />
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 1.0, delay: 1.3, ease: 'easeOut' }}
+        className="absolute left-6 top-1/3 hidden lg:block"
+        style={{ perspective: 1500 }}
+      >
+        <motion.div
+          className="relative w-72 h-96 rounded-[2.5rem] border border-brand-gold/10 bg-transparent shadow-[0_30px_80px_rgba(0,0,0,0.22)] overflow-hidden"
+          whileHover={{ rotateY: 8, y: -4 }}
+          transition={{ duration: 0.5 }}
+        >
+          <img
+            src={beerGlass}
+            alt="Fuddlerr beer glass accent"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
+        </motion.div>
+      </motion.div>
 
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
         <motion.p
