@@ -41,7 +41,7 @@ export default function Testimonials() {
   const prev = () => setCurrent((current - 1 + testimonials.length) % testimonials.length);
 
   return (
-    <section className="relative bg-gradient-to-b from-brand-cream to-brand-sand py-28 md:py-36 overflow-hidden">
+    <section className="relative bg-gradient-to-b from-brand-cream to-brand-warmBg py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold rounded-full blur-3xl" />
       </div>
@@ -65,7 +65,7 @@ export default function Testimonials() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-2xl p-8 md:p-12 shadow-2xl border border-brand-sand/50 max-w-3xl mx-auto"
+            className="bg-brand-cream rounded-2xl p-8 md:p-12 shadow-2xl border border-brand-warmGray/40 max-w-3xl mx-auto"
           >
             <div className="flex items-start gap-2 mb-6">
               {[...Array(5)].map((_, i) => (

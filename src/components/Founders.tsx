@@ -37,7 +37,7 @@ const founders = [
 
 export default function Founders() {
   return (
-    <section className="relative bg-brand-charcoal py-28 md:py-36 overflow-hidden">
+    <section className="relative bg-brand-warmBg py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: 'radial-gradient(circle at 1px 1px, #F5F1EB 1px, transparent 0)',
         backgroundSize: '40px 40px',
@@ -49,8 +49,8 @@ export default function Founders() {
             <p className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium">
               The Founders
             </p>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-cream leading-tight">
-              Two Minds. One Obsession.
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight">
+              Three Minds. One Obsession.
             </h2>
           </div>
         </FadeIn>
@@ -58,10 +58,10 @@ export default function Founders() {
         <div className="grid md:grid-cols-2 gap-10 md:gap-16">
           {founders.map((founder, idx) => (
             <FadeIn key={founder.role} delay={0.2 + idx * 0.2}>
-              <div className="group relative bg-brand-espresso/50 border border-brand-stone/20 rounded-lg p-8 md:p-10 hover:border-brand-stone/40 transition-all duration-500">
+              <div className="group relative bg-brand-cream border border-brand-warmGray rounded-lg p-8 md:p-10 hover:border-brand-warmGray/80 transition-all duration-500">
                 <div className={`w-12 h-1 rounded-full mb-8 ${founder.accent === 'gold' ? 'bg-brand-gold' : 'bg-brand-copper'}`} />
 
-                <h3 className="font-serif text-3xl md:text-4xl text-brand-cream mb-2">
+                <h3 className="font-serif text-3xl md:text-4xl text-brand-charcoal mb-2">
                   {founder.role}
                 </h3>
                 <p className="text-brand-stone text-sm tracking-wider uppercase mb-6">
@@ -78,7 +78,7 @@ export default function Founders() {
                     {founder.responsibilities.map((r) => (
                       <span
                         key={r}
-                        className="text-xs px-3 py-1 rounded-full border border-brand-stone/20 text-brand-taupe"
+                        className="text-xs px-3 py-1 rounded-full border border-brand-warmGray/60 text-brand-taupe"
                       >
                         {r}
                       </span>
@@ -86,7 +86,7 @@ export default function Founders() {
                   </div>
                 </div>
 
-                <blockquote className="font-serif text-xl md:text-2xl italic text-brand-cream/90 leading-relaxed border-l-2 border-brand-stone/30 pl-6">
+                <blockquote className="font-serif text-xl md:text-2xl italic text-brand-charcoal/90 leading-relaxed border-l-2 border-brand-warmGray/50 pl-6">
                   {founder.quote}
                 </blockquote>
               </div>

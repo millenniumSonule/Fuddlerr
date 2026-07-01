@@ -49,7 +49,7 @@ export default function CTASection() {
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 rounded-full bg-brand-espresso text-brand-gold font-semibold flex items-center gap-3 group hover:gap-4 transition-all"
+                className="px-8 py-4 rounded-full bg-white text-brand-gold font-semibold flex items-center gap-3 group hover:gap-4 transition-all"
               >
                 <span>Shop Now</span>
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />

@@ -2,16 +2,16 @@ import FadeIn from './FadeIn';
 
 export default function Footer() {
   return (
-    <footer className="relative bg-brand-espresso py-20 md:py-24 overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: 'radial-gradient(circle at 1px 1px, #F5F1EB 1px, transparent 0)',
+    <footer className="relative bg-brand-warmBg py-20 md:py-24 overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.02]" style={{
+        backgroundImage: 'radial-gradient(circle at 1px 1px, #D0D0D0 1px, transparent 0)',
         backgroundSize: '40px 40px',
       }} />
 
       <div className="relative max-w-6xl mx-auto px-6 md:px-8">
         <FadeIn>
           <div className="text-center mb-16">
-            <h3 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-cream mb-4">
+            <h3 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal mb-4">
               FUDD<span className="text-brand-gold">L</span>ER
             </h3>
             <p className="text-brand-taupe text-sm tracking-[0.35em] uppercase">
@@ -33,8 +33,8 @@ export default function Footer() {
         </FadeIn>
 
         <FadeIn delay={0.4}>
-          <div className="border-t border-brand-stone/20 pt-8 text-center">
-            <p className="text-brand-stone/60 text-xs tracking-wider">
+          <div className="border-t border-brand-warmGray/50 pt-8 text-center">
+            <p className="text-brand-stone/70 text-xs tracking-wider">
               FUDDLER. All rights reserved. Brewing the future of craft beer in India.
             </p>
           </div>

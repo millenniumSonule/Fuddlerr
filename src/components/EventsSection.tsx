@@ -31,7 +31,7 @@ const events = [
 
 export default function EventsSection() {
   return (
-    <section className="relative bg-brand-cream py-28 md:py-36 overflow-hidden">
+    <section className="relative bg-brand-warmBg py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-0 right-0 w-96 h-96 bg-brand-copper rounded-full blur-3xl" />
       </div>
@@ -53,7 +53,7 @@ export default function EventsSection() {
             <FadeIn key={event.id} delay={idx * 0.2}>
               <motion.div
                 whileHover={{ y: -12 }}
-                className="group bg-white rounded-2xl overflow-hidden shadow-lg border border-brand-sand/50 hover:border-brand-copper/30 transition-all"
+                className="group bg-brand-cream rounded-2xl overflow-hidden shadow-lg border border-brand-warmGray/40 hover:border-brand-copper/40 transition-all"
               >
                 <div className="h-40 bg-gradient-to-br from-brand-copper to-brand-forest relative overflow-hidden">
                   <motion.div

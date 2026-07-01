@@ -22,7 +22,7 @@ const colorMap: Record<string, string> = {
 
 export default function BrandValues() {
   return (
-    <section className="relative bg-brand-espresso py-28 md:py-36 overflow-hidden">
+    <section className="relative bg-brand-warmBg py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0 opacity-[0.02]" style={{
         backgroundImage: 'radial-gradient(circle at 1px 1px, #F5F1EB 1px, transparent 0)',
         backgroundSize: '32px 32px',
@@ -34,7 +34,7 @@ export default function BrandValues() {
             <p className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium">
               What We Stand For
             </p>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-cream leading-tight">
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight">
               Brand Values
             </h2>
           </div>

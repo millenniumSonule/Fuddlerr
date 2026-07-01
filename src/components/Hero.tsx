@@ -87,12 +87,12 @@ export default function Hero() {
           loop
           playsInline
           className="absolute inset-0 w-full h-full object-cover video-zoom"
-          style={{ filter: 'contrast(1.15) saturate(1.25) brightness(1.05)' }}
+          style={{ filter: 'brightness(0.85) contrast(1.1)' }}
         />
-        <div className="absolute inset-0 bg-brand-espresso/40 lg:bg-brand-espresso/30 pointer-events-none" />
+        <div className="absolute inset-0 bg-brand-charcoal/50 lg:bg-brand-charcoal/45 pointer-events-none" />
       </div>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full mix-blend-overlay opacity-80" />
-      <div className="absolute inset-0 bg-gradient-to-b from-brand-espresso/65 via-transparent to-brand-espresso/90 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-brand-charcoal/70 via-brand-charcoal/30 to-brand-charcoal/80 pointer-events-none" />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -102,7 +102,7 @@ export default function Hero() {
         style={{ perspective: 1500 }}
       >
         <motion.div
-          className="relative w-72 h-96 rounded-[2.5rem] border border-brand-gold/10 bg-transparent shadow-[0_30px_80px_rgba(0,0,0,0.22)] overflow-hidden"
+          className="relative w-72 h-96 overflow-hidden"
           whileHover={{ rotateY: 8, y: -4 }}
           transition={{ duration: 0.5 }}
         >
@@ -119,7 +119,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-brand-gold text-sm md:text-base tracking-[0.35em] uppercase mb-6 font-medium"
+          className="text-white text-sm md:text-base tracking-[0.35em] uppercase mb-6 font-medium"
         >
           India's Most Distinctive Craft Beer
         </motion.p>
@@ -130,9 +130,9 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.4 }}
           className="font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium tracking-tight mb-8"
         >
-          <span className="text-brand-cream">FUDD</span>
+          <span className="text-white">FUDD</span>
           <span className="gradient-text">L</span>
-          <span className="text-brand-cream">ER</span>
+          <span className="text-white">ER</span>
         </motion.h1>
 
         <motion.div
@@ -146,7 +146,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.0 }}
-          className="font-serif text-2xl sm:text-3xl md:text-4xl text-brand-taupe italic tracking-wide"
+          className="font-serif text-2xl sm:text-3xl md:text-4xl text-white italic tracking-wide"
         >
           Crafted Between Two Worlds
         </motion.p>
@@ -155,7 +155,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.5 }}
-          className="mt-16 flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center text-xs text-brand-stone tracking-wider uppercase"
+          className="mt-16 flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center text-xs text-white tracking-wider uppercase"
         >
           <span>Mumbai Soul</span>
           <span className="hidden sm:block w-1 h-1 rounded-full bg-brand-stone" />

@@ -30,8 +30,8 @@ export default function Philosophy() {
             { text: 'Every customer should feel part of the FUDDLER community.', icon: 'people' },
           ].map((item, idx) => (
             <FadeIn key={idx} delay={0.3 + idx * 0.15}>
-              <div className="bg-brand-sand/40 border border-brand-sand/60 rounded-lg p-6 md:p-8 h-full flex flex-col items-center text-center hover:bg-brand-sand/60 transition-colors duration-300">
-                <div className="w-10 h-10 rounded-full border border-brand-stone/30 flex items-center justify-center mb-4">
+              <div className="bg-brand-warmBg border border-brand-warmGray/80 rounded-lg p-6 md:p-8 h-full flex flex-col items-center text-center hover:bg-brand-warmGray/30 transition-colors duration-300">
+                <div className="w-10 h-10 rounded-full border border-brand-warmGray flex items-center justify-center mb-4">
                   <div className={`w-2 h-2 rounded-full ${idx === 0 ? 'bg-brand-gold' : idx === 1 ? 'bg-brand-copper' : idx === 2 ? 'bg-brand-forest' : 'bg-brand-charcoal'}`} />
                 </div>
                 <p className="text-brand-earth text-sm md:text-base leading-relaxed">

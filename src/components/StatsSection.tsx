@@ -60,7 +60,7 @@ const Counter = ({ from, to, suffix, delay }: { from: number; to: number; suffix
 
 export default function StatsSection() {
   return (
-    <section className="relative bg-brand-espresso py-28 md:py-36 overflow-hidden">
+    <section className="relative bg-brand-warmBg py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-copper/5 rounded-full blur-3xl" />
@@ -72,7 +72,7 @@ export default function StatsSection() {
             <p className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium">
               By The Numbers
             </p>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-cream leading-tight">
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight">
               Our Impact
             </h2>
           </div>
@@ -90,7 +90,7 @@ export default function StatsSection() {
             >
               <div className="relative inline-block mb-6">
                 <div className="absolute inset-0 w-24 h-24 bg-brand-gold/10 rounded-full blur-xl group-hover:bg-brand-gold/20 transition-colors" />
-                <div className="relative w-24 h-24 bg-gradient-to-br from-brand-gold/20 to-brand-copper/10 rounded-full flex items-center justify-center border border-brand-stone/20" />
+                <div className="relative w-24 h-24 bg-gradient-to-br from-brand-gold/8 to-brand-copper/3 rounded-full flex items-center justify-center border border-brand-warmGray/60" />
               </div>
               
               <Counter from={0} to={stat.number} suffix={stat.suffix} delay={stat.delay} />

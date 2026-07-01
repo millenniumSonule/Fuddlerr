@@ -15,7 +15,7 @@ export default function GallerySection() {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
   return (
-    <section className="relative bg-brand-espresso py-28 md:py-36 overflow-hidden">
+    <section className="relative bg-brand-warmBg py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0 opacity-[0.02]" style={{
         backgroundImage: 'linear-gradient(45deg, #B8914A 1px, transparent 1px)',
         backgroundSize: '40px 40px',
@@ -27,7 +27,7 @@ export default function GallerySection() {
             <p className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium">
               Gallery
             </p>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-cream leading-tight mb-6">
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight mb-6">
               Moments & Memories
             </h2>
             <p className="text-brand-taupe text-lg max-w-2xl mx-auto">

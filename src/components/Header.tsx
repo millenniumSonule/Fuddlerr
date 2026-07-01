@@ -12,7 +12,7 @@ export default function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6 }}
-      className="fixed top-0 w-full z-50 bg-brand-espresso/80 backdrop-blur-md border-b border-brand-gold/10"
+      className="fixed top-0 w-full z-50 bg-brand-cream/95 backdrop-blur-md border-b border-brand-warmGray/30"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-8 py-6 flex items-center justify-between">
         <motion.div
@@ -30,7 +30,7 @@ export default function Header() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
-              className="text-brand-cream text-sm uppercase tracking-wider hover:text-brand-gold transition-colors relative group"
+              className="text-brand-charcoal text-sm uppercase tracking-wider hover:text-brand-gold transition-colors relative group"
             >
               {item}
               <motion.span
@@ -46,7 +46,7 @@ export default function Header() {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="hidden md:block px-6 py-2 rounded-full bg-brand-gold text-brand-espresso font-semibold hover:bg-brand-goldLight transition-colors"
+          className="hidden md:block px-6 py-2 rounded-full bg-brand-gold text-white font-semibold hover:bg-brand-goldLight transition-colors"
         >
           Order Now
         </motion.button>
@@ -64,19 +64,19 @@ export default function Header() {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-brand-charcoal border-t border-brand-gold/10 px-6 py-6"
+          className="md:hidden bg-brand-cream border-t border-brand-warmGray px-6 py-6"
         >
           <nav className="flex flex-col gap-4">
             {navItems.map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="text-brand-cream text-sm uppercase tracking-wider hover:text-brand-gold transition-colors"
+                className="text-brand-charcoal text-sm uppercase tracking-wider hover:text-brand-gold transition-colors"
               >
                 {item}
               </a>
             ))}
-            <button className="mt-4 px-6 py-2 rounded-full bg-brand-gold text-brand-espresso font-semibold w-full">
+            <button className="mt-4 px-6 py-2 rounded-full bg-brand-gold text-white font-semibold w-full">
               Order Now
             </button>
           </nav>

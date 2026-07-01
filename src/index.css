@@ -8,15 +8,15 @@
   }
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    background-color: #0F0F0F;
-    color: #F6F2EC;
+    background-color: #FBF8F3;
+    color: #2A2420;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
   ::selection {
     background-color: #C6972F;
-    color: #0F0F0F;
+    color: #FFFFFF;
   }
   
   /* Custom scrollbar */
@@ -25,7 +25,7 @@
   }
   
   ::-webkit-scrollbar-track {
-    background: #0F0F0F;
+    background: #FBF8F3;
   }
   
   ::-webkit-scrollbar-thumb {
@@ -70,13 +70,13 @@
   
   /* Glassmorphism effect */
   .glass {
-    background: rgba(23, 23, 23, 0.8);
+    background: rgba(245, 239, 231, 0.8);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
   
   .glass-mint {
-    background: rgba(198, 151, 47, 0.1);
+    background: rgba(198, 151, 47, 0.06);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
@@ -135,21 +135,21 @@
     @apply animate-spring-bounce;
   }
   
-  /* Card base - Premium dark aesthetic */
+  /* Card base - Premium warm aesthetic */
   .card {
-    @apply rounded-2xl border border-brand-charcoal/60 transition-all hover:shadow-[0_12px_48px_rgba(198,151,47,0.12)] hover:border-brand-gold/40;
+    @apply rounded-2xl border border-brand-warmGray/60 transition-all hover:shadow-[0_12px_48px_rgba(198,151,47,0.08)] hover:border-brand-gold/40;
   }
   
   .card {
-    @apply bg-brand-stone/60 glass;
+    @apply bg-white/60 glass;
   }
   
   .card-dark {
-    @apply bg-brand-charcoal text-brand-primary border-brand-charcoal/80;
+    @apply bg-brand-warmBg text-brand-warmText border-brand-warmGray/80;
   }
   
   .card-light {
-    @apply glass border-brand-charcoal/40;
+    @apply glass border-brand-warmGray/40;
   }
   
   .card-energetic {

@@ -28,7 +28,7 @@ export default function BrandPersonality() {
             {brands.map((b) => (
               <span
                 key={b}
-                className="px-5 py-2 bg-brand-sand/50 border border-brand-sand rounded-full text-brand-charcoal text-sm font-medium tracking-wide"
+                className="px-5 py-2 bg-brand-warmBg border border-brand-warmGray/70 rounded-full text-brand-warmText text-sm font-medium tracking-wide"
               >
                 {b}
               </span>
@@ -38,7 +38,7 @@ export default function BrandPersonality() {
 
         <FadeIn delay={0.6}>
           <div className="bg-brand-charcoal rounded-2xl p-8 md:p-12 max-w-4xl mx-auto">
-            <p className="font-serif text-xl md:text-2xl text-brand-cream leading-relaxed italic">
+            <p className="font-serif text-xl md:text-2xl text-white leading-relaxed italic">
               Every touchpoint — from the logo and packaging to the taproom, website, investor deck, merchandise, and social media — should reflect
             </p>
             <div className="flex flex-wrap justify-center gap-4 mt-6">
