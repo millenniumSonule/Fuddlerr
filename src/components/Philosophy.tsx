@@ -1,4 +1,5 @@
 import FadeIn from './FadeIn';
+import contentData from '../data/content.json';
 
 export default function Philosophy() {
   return (
@@ -9,26 +10,21 @@ export default function Philosophy() {
       <div className="relative max-w-5xl mx-auto px-6 md:px-8 text-center">
         <FadeIn>
           <p className="text-brand-copper text-sm tracking-[0.3em] uppercase mb-4 font-medium">
-            Philosophy
+            {contentData.philosophy.label}
           </p>
           <h2 className="font-serif text-4xl md:text-5xl lg:text-7xl text-brand-charcoal mb-16 leading-tight">
-            FUDDLER is not selling beer.
+            {contentData.philosophy.mainTitle}
           </h2>
         </FadeIn>
 
         <FadeIn delay={0.2}>
           <p className="font-serif text-3xl md:text-4xl text-brand-copper italic mb-20 leading-relaxed">
-            It is creating moments.
+            {contentData.philosophy.subtitle}
           </p>
         </FadeIn>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
-          {[
-            { text: 'Every bottle should remind people of a conversation, a friendship, a celebration, or the beginning of a new story.', icon: 'bottle' },
-            { text: 'Every taproom should feel like a second home.', icon: 'home' },
-            { text: 'Every product should reflect exceptional craftsmanship.', icon: 'craft' },
-            { text: 'Every customer should feel part of the FUDDLER community.', icon: 'people' },
-          ].map((item, idx) => (
+          {contentData.philosophy.beliefs.map((item, idx) => (
             <FadeIn key={idx} delay={0.3 + idx * 0.15}>
               <div className="bg-brand-warmBg border border-brand-warmGray/80 rounded-lg p-6 md:p-8 h-full flex flex-col items-center text-center hover:bg-brand-warmGray/30 transition-colors duration-300">
                 <div className="w-10 h-10 rounded-full border border-brand-warmGray flex items-center justify-center mb-4">

@@ -1,17 +1,7 @@
 import FadeIn from './FadeIn';
+import contentData from '../data/content.json';
 
-const values = [
-  { name: 'Craftsmanship', color: 'gold' },
-  { name: 'Curiosity', color: 'copper' },
-  { name: 'Authenticity', color: 'forest' },
-  { name: 'Sustainability', color: 'charcoal' },
-  { name: 'Community', color: 'gold' },
-  { name: 'Design Excellence', color: 'copper' },
-  { name: 'Innovation', color: 'forest' },
-  { name: 'Inclusivity', color: 'charcoal' },
-  { name: 'Premium Quality', color: 'gold' },
-  { name: 'Memorable Experiences', color: 'copper' },
-];
+const values = contentData.brandValues.values;
 
 const colorMap: Record<string, string> = {
   gold: 'border-brand-gold/40 text-brand-gold hover:bg-brand-gold/10',
@@ -32,10 +22,10 @@ export default function BrandValues() {
         <FadeIn>
           <div className="text-center mb-20">
             <p className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium">
-              What We Stand For
+              {contentData.brandValues.label}
             </p>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight">
-              Brand Values
+              {contentData.brandValues.title}
             </h2>
           </div>
         </FadeIn>

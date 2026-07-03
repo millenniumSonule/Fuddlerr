@@ -1,33 +1,9 @@
 import { motion } from 'framer-motion';
 import { Calendar, MapPin } from 'lucide-react';
 import FadeIn from './FadeIn';
+import contentData from '../data/content.json';
 
-const events = [
-  {
-    id: 1,
-    title: 'Grand Launch Event',
-    date: 'July 15, 2024',
-    location: 'Mumbai, India',
-    description: 'Join us for an unforgettable evening celebrating FUDDLER with exclusive tastings and stories.',
-    image: '🎉',
-  },
-  {
-    id: 2,
-    title: 'Nordic Craft Workshop',
-    date: 'August 2, 2024',
-    location: 'Bangalore, India',
-    description: 'Learn the art of craft beer making from experts who bridge Nordic and Indian traditions.',
-    image: '🍺',
-  },
-  {
-    id: 3,
-    title: 'Community Gathering',
-    date: 'August 20, 2024',
-    location: 'Delhi, India',
-    description: 'Connect with fellow FUDDLER enthusiasts and celebrate the spirit of our community.',
-    image: '🤝',
-  },
-];
+const events = contentData.events.events;
 
 export default function EventsSection() {
   return (
@@ -40,10 +16,10 @@ export default function EventsSection() {
         <FadeIn>
           <div className="text-center mb-20">
             <p className="text-brand-copper text-sm tracking-[0.3em] uppercase mb-4 font-medium">
-              Coming Soon
+              {contentData.events.label}
             </p>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight">
-              Live Events & Experiences
+              {contentData.events.title}
             </h2>
           </div>
         </FadeIn>
@@ -53,7 +29,8 @@ export default function EventsSection() {
             <FadeIn key={event.id} delay={idx * 0.2}>
               <motion.div
                 whileHover={{ y: -12 }}
-                className="group bg-brand-cream rounded-2xl overflow-hidden shadow-lg border border-brand-warmGray/40 hover:border-brand-copper/40 transition-all"
+                className="premium-card group bg-brand-cream rounded-2xl overflow-hidden shadow-lg border border-brand-warmGray/40 hover:border-brand-copper/40 transition-all"
+                data-magnetic
               >
                 <div className="h-40 bg-gradient-to-br from-brand-copper to-brand-forest relative overflow-hidden">
                   <motion.div
@@ -86,6 +63,7 @@ export default function EventsSection() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="w-full py-3 rounded-full bg-gradient-to-r from-brand-copper to-brand-forest text-white font-medium text-sm uppercase tracking-wide hover:shadow-lg transition-all"
+                    data-magnetic
                   >
                     Learn More
                   </motion.button>

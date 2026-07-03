@@ -1,39 +1,7 @@
 import FadeIn from './FadeIn';
+import contentData from '../data/content.json';
 
-const founders = [
-  {
-    role: 'The Visionary',
-    title: 'Brand Vision, Marketing & Community',
-    description:
-      'The dreamer behind the brand. Creative, ambitious, people-first, energetic, entrepreneurial.',
-    quote: 'People rarely remember what they drank. They remember who they shared it with.',
-    accent: 'gold',
-    responsibilities: [
-      'Brand Vision',
-      'Marketing',
-      'Community Building',
-      'Investor Relations',
-      'Business Strategy',
-      'Customer Experience',
-    ],
-  },
-  {
-    role: 'The Craftsman',
-    title: 'Brewing Innovation & Quality',
-    description:
-      'The perfectionist behind every brew. Calm, analytical, detail-oriented, disciplined, quietly obsessed with quality.',
-    quote: 'Great beer is not rushed. It is crafted with patience, precision, and purpose.',
-    accent: 'copper',
-    responsibilities: [
-      'Brewing Innovation',
-      'Product Development',
-      'Quality Control',
-      'Sustainability',
-      'Operations',
-      'Brewery Experience',
-    ],
-  },
-];
+const founders = contentData.founders.founders;
 
 export default function Founders() {
   return (
@@ -47,10 +15,10 @@ export default function Founders() {
         <FadeIn>
           <div className="text-center mb-20">
             <p className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium">
-              The Founders
+              {contentData.founders.label}
             </p>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight">
-              Three Minds. One Obsession.
+              {contentData.founders.title}
             </h2>
           </div>
         </FadeIn>

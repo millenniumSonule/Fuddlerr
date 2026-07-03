@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import contentData from '../data/content.json';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-
+contentData.header.navItems
   const navItems = ['Home', 'About', 'Products', 'Community', 'Contact'];
 
   return (
@@ -18,8 +19,9 @@ export default function Header() {
         <motion.div
           whileHover={{ scale: 1.05 }}
           className="font-serif text-2xl font-bold bg-gradient-to-r from-brand-gold to-brand-copper bg-clip-text text-transparent cursor-pointer"
+          data-magnetic
         >
-          FUDDLER
+          {contentData.header.brand}
         </motion.div>
 
         <nav className="hidden md:flex items-center gap-8">
@@ -31,6 +33,7 @@ export default function Header() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
               className="text-brand-charcoal text-sm uppercase tracking-wider hover:text-brand-gold transition-colors relative group"
+              data-magnetic
             >
               {item}
               <motion.span
@@ -47,13 +50,15 @@ export default function Header() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="hidden md:block px-6 py-2 rounded-full bg-brand-gold text-white font-semibold hover:bg-brand-goldLight transition-colors"
+          data-magnetic
         >
-          Order Now
+          {contentData.header.cta}
         </motion.button>
 
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden text-brand-gold"
+          aria-label="Toggle navigation"
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

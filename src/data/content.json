@@ -1,0 +1,273 @@
+{
+  "hero": {
+    "subtitle": "India's Most Distinctive Craft Beer",
+    "mainTitle": "FUDDLER",
+    "tagline": "Crafted Between Two Worlds",
+    "features": [
+      "Mumbai Soul",
+      "Nordic Craft",
+      "Premium Brewing"
+    ]
+  },
+  "productShowcase": {
+    "label": "Our Collection",
+    "title": "Crafted Excellence",
+    "description": "Each bottle is a celebration of our dual heritage and commitment to quality",
+    "products": [
+      {
+        "id": 1,
+        "name": "Original Blend",
+        "description": "Our flagship craft beer crafted with precision",
+        "icon": "🍺",
+        "alt": "Original Blend beer can"
+      },
+      {
+        "id": 2,
+        "name": "Nordic Reserve",
+        "description": "Limited edition, inspired by Nordic traditions",
+        "icon": "✨",
+        "alt": "Nordic Reserve premium design"
+      },
+      {
+        "id": 3,
+        "name": "Mumbai Monsoon",
+        "description": "Bold flavors celebrating the spirit of the city",
+        "icon": "⚡",
+        "alt": "Mumbai Monsoon beer can"
+      }
+    ],
+    "ctaText": "Discover More →"
+  },
+  "arabianSeaSection": {
+    "label": "Our Story",
+    "title": "Born on the Arabian Sea",
+    "description": "Mumbai is our home. The sea is our constant inspiration.\nFuddlerr is our tribute to this city, its people and its unbreakable spirit.",
+    "buttonText": "Our Story",
+    "imageAlt": "Born on the Arabian Sea"
+  },
+  "brandStory": {
+    "label": "Our Story",
+    "title": "Born from the meeting of two completely different minds",
+    "mumbaiFounder": "One founder grew up inspired by the relentless energy, diversity, and street culture of Mumbai. To them, beer was never just a drink — it was about bringing people together, celebrating stories, and creating unforgettable nights.",
+    "nordicFounder": "The other founder was deeply inspired by Nordic values: simplicity, precision, sustainability, craftsmanship, and thoughtful design. They believed that every product should be intentional, beautifully designed, and built to last.",
+    "conclusion": "Together, they realized that India's craft beer market lacked a brand that combined premium brewing with meaningful storytelling and world-class design.",
+    "bridgeText": "FUDDLER was created to bridge these two worlds"
+  },
+  "philosophy": {
+    "label": "Philosophy",
+    "mainTitle": "FUDDLER is not selling beer.",
+    "subtitle": "It is creating moments.",
+    "beliefs": [
+      {
+        "text": "Every bottle should remind people of a conversation, a friendship, a celebration, or the beginning of a new story.",
+        "icon": "bottle"
+      },
+      {
+        "text": "Every taproom should feel like a second home.",
+        "icon": "home"
+      },
+      {
+        "text": "Every product should reflect exceptional craftsmanship.",
+        "icon": "craft"
+      },
+      {
+        "text": "Every customer should feel part of the FUDDLER community.",
+        "icon": "people"
+      }
+    ]
+  },
+  "stats": {
+    "label": "By The Numbers",
+    "title": "Our Impact",
+    "data": [
+      {
+        "number": 50,
+        "suffix": "K+",
+        "label": "Happy Customers"
+      },
+      {
+        "number": 15,
+        "suffix": "+",
+        "label": "Awards Won"
+      },
+      {
+        "number": 100,
+        "suffix": "%",
+        "label": "Sustainable"
+      },
+      {
+        "number": 8,
+        "suffix": "yr",
+        "label": "Crafting Excellence"
+      }
+    ]
+  },
+  "brandValues": {
+    "label": "What We Stand For",
+    "title": "Brand Values",
+    "values": [
+      { "name": "Craftsmanship", "color": "gold" },
+      { "name": "Curiosity", "color": "copper" },
+      { "name": "Authenticity", "color": "forest" },
+      { "name": "Sustainability", "color": "charcoal" },
+      { "name": "Community", "color": "gold" },
+      { "name": "Design Excellence", "color": "copper" },
+      { "name": "Innovation", "color": "forest" },
+      { "name": "Inclusivity", "color": "charcoal" },
+      { "name": "Premium Quality", "color": "gold" },
+      { "name": "Memorable Experiences", "color": "copper" }
+    ]
+  },
+  "events": {
+    "label": "Coming Soon",
+    "title": "Live Events & Experiences",
+    "events": [
+      {
+        "id": 1,
+        "title": "Grand Launch Event",
+        "date": "July 15, 2024",
+        "location": "Mumbai, India",
+        "description": "Join us for an unforgettable evening celebrating FUDDLER with exclusive tastings and stories.",
+        "image": "🎉",
+        "cta": "asdasd More"
+      },
+      {
+        "id": 2,
+        "title": "Nordic Craft Workshop",
+        "date": "August 2, 2024",
+        "location": "Bangalore, India",
+        "description": "Learn the art of craft beer making from experts who bridge Nordic and Indian traditions.",
+        "image": "🍺",
+        "cta": "Learn Moreasda"
+      },
+      {
+        "id": 3,
+        "title": "Community Gathering",
+        "date": "August 20, 2024",
+        "location": "Delhi, India",
+        "description": "Connect with fellow FUDDLER enthusiasts and celebrate the spirit of our community.",
+        "image": "🤝",
+        "cta": "Learn More"
+      }
+    ]
+  },
+  "testimonials": {
+    "label": "Love Stories",
+    "title": "What Our Community Says",
+    "testimonials": [
+      {
+        "id": 1,
+        "text": "FUDDLER isn't just beer; it's a statement of identity. The craftsmanship is unparalleled.",
+        "author": "Rohan Sharma",
+        "role": "Craft Beer Enthusiast",
+        "image": "👨‍💼",
+        "rating": 5
+      },
+      {
+        "id": 2,
+        "text": "The design, the story, the taste — everything resonates with who I am. Truly exceptional.",
+        "author": "Priya Desai",
+        "role": "Brand Curator",
+        "image": "👩‍💼",
+        "rating": 5
+      },
+      {
+        "id": 3,
+        "text": "Every bottle tells a story of two worlds coming together beautifully. Remarkable experience.",
+        "author": "Aditya Singh",
+        "role": "Lifestyle Influencer",
+        "image": "👨‍🎨",
+        "rating": 5
+      },
+      {
+        "id": 4,
+        "text": "The commitment to sustainability combined with premium quality is truly inspiring.",
+        "author": "Neha Kapoor",
+        "role": "Sustainability Advocate",
+        "image": "👩‍🔬",
+        "rating": 5
+      }
+    ]
+  },
+  "founders": {
+    "label": "The Founders",
+    "title": "Three Minds. One Obsession.",
+    "founders": [
+      {
+        "role": "The Visionary",
+        "title": "Brand Vision, Marketing & Community",
+        "description": "The dreamer behind the brand. Creative, ambitious, people-first, energetic, entrepreneurial.",
+        "quote": "People rarely remember what they drank. They remember who they shared it with.",
+        "accent": "gold",
+        "responsibilities": [
+          "Brand Vision",
+          "Marketing",
+          "Community Building",
+          "Investor Relations",
+          "Business Strategy",
+          "Customer Experience"
+        ]
+      },
+      {
+        "role": "The Craftsman",
+        "title": "Brewing Innovation & Quality",
+        "description": "The perfectionist behind every brew. Calm, analytical, detail-oriented, disciplined, quietly obsessed with quality.",
+        "quote": "Great beer is not rushed. It is crafted with patience, precision, and purpose.",
+        "accent": "copper",
+        "responsibilities": [
+          "Brewing Innovation",
+          "Product Development",
+          "Quality Control",
+          "Sustainability",
+          "Operations",
+          "Brewery Experience"
+        ]
+      }
+    ]
+  },
+  "header": {
+    "brand": "FUDDLER",
+    "navItems": ["Home", "About", "Products", "Community", "Contact"],
+    "cta": "Order Now"
+  },
+  "footer": {
+    "brand": "FUDDLER",
+    "tagline": "Crafted Between Two Worlds",
+    "features": ["Mumbai Soul", "Nordic Craft", "Premium Brewing", "Community First"],
+    "copyright": "FUDDLER. All rights reserved. Brewing the future of craft beer in India."
+  },
+  "gallery": {
+    "label": "Gallery",
+    "title": "Moments & Memories",
+    "description": "Celebrating the journey, the people, and the passion behind every bottle",
+    "items": [
+      { "id": 1, "title": "Heritage Blend", "icon": "🌾" },
+      { "id": 2, "title": "Urban Essence", "icon": "🏙️" },
+      { "id": 3, "title": "Nordic Crafted", "icon": "❄️" },
+      { "id": 4, "title": "Monsoon Spirit", "icon": "🌧️" },
+      { "id": 5, "title": "Premium Reserve", "icon": "👑" },
+      { "id": 6, "title": "Community Love", "icon": "❤️" }
+    ]
+  },
+  "brandPersonality": {
+    "label": "Brand Personality",
+    "title": "A Craft Beer Company Rooted in Mumbai",
+    "description": "Imagine if these brands came together to create a craft beer company. That is the standard for FUDDLER.",
+    "brands": ["Apple", "Aesop", "BrewDog", "Bang & Olufsen", "Soho House", "Muji"],
+    "personalityTraits": [
+      { "text": "Understated Luxury", "color": "gold" },
+      { "text": "Modern Craftsmanship", "color": "copper" },
+      { "text": "World-Class Lifestyle", "color": "sage" }
+    ],
+    "personalityDesc": "Every touchpoint — from the logo and packaging to the taproom, website, investor deck, merchandise, and social media — should reflect"
+  },
+  "cta": {
+    "badge": "Join the Movement",
+    "title": "Ready to Experience",
+    "highlight": "Something Different?",
+    "description": "Discover the craft, celebrate the culture, and join a community that values excellence in every sip.",
+    "primaryCta": "Shop Now",
+    "secondaryCta": "Learn More",
+    "newsletter": "📧 Sign up for exclusive updates and early access to new launches"
+  }
+}

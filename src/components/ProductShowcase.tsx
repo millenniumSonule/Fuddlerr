@@ -4,34 +4,35 @@ import FadeIn from './FadeIn';
 import productCan from '../assets/genric_beer_can.png';
 import productArt from '../assets/Gemini_Generated_Image_tduvgytduvgytduv.png';
 import taxiAsset from '../assets/mumbai_taxi.png';
+import contentData from '../data/content.json';
 
 const products = [
   {
     id: 1,
-    name: 'Original Blend',
-    description: 'Our flagship craft beer crafted with precision',
+    name: contentData.productShowcase.products[0].name,
+    description: contentData.productShowcase.products[0].description,
     color: 'from-brand-gold to-brand-goldLight',
-    icon: '🍺',
+    icon: contentData.productShowcase.products[0].icon,
     image: productCan,
-    alt: 'Original Blend beer can',
+    alt: contentData.productShowcase.products[0].alt,
   },
   {
     id: 2,
-    name: 'Nordic Reserve',
-    description: 'Limited edition, inspired by Nordic traditions',
+    name: contentData.productShowcase.products[1].name,
+    description: contentData.productShowcase.products[1].description,
     color: 'from-brand-copper to-brand-forest',
-    icon: '✨',
+    icon: contentData.productShowcase.products[1].icon,
     image: productArt,
-    alt: 'Nordic Reserve premium design',
+    alt: contentData.productShowcase.products[1].alt,
   },
   {
     id: 3,
-    name: 'Mumbai Monsoon',
-    description: 'Bold flavors celebrating the spirit of the city',
+    name: contentData.productShowcase.products[2].name,
+    description: contentData.productShowcase.products[2].description,
     color: 'from-brand-forest to-brand-sage',
-    icon: '⚡',
+    icon: contentData.productShowcase.products[2].icon,
     image: productCan,
-    alt: 'Mumbai Monsoon beer can',
+    alt: contentData.productShowcase.products[2].alt,
   },
 ];
 
@@ -78,13 +79,13 @@ export default function ProductShowcase() {
         <FadeIn>
           <div className="text-center mb-20">
             <p className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium">
-              Our Collection
+              {contentData.productShowcase.label}
             </p>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight mb-6">
-              Crafted Excellence
+              {contentData.productShowcase.title}
             </h2>
             <p className="text-brand-taupe text-lg max-w-2xl mx-auto">
-              Each bottle is a celebration of our dual heritage and commitment to quality
+              {contentData.productShowcase.description}
             </p>
           </div>
         </FadeIn>
@@ -111,13 +112,6 @@ export default function ProductShowcase() {
               <div className="relative bg-brand-cream border border-brand-warmGray/60 rounded-2xl p-8 overflow-hidden transition-all duration-500 hover:border-brand-warmGray">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-brand-gold/5 rounded-full -mr-20 -mt-20 group-hover:scale-125 transition-transform duration-500" />
                 
-                <motion.div 
-                  className="text-5xl mb-6 relative z-10"
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                  transition={{ type: 'spring', stiffness: 400 }}
-                >
-                  {product.icon}
-                </motion.div>
 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -145,7 +139,7 @@ export default function ProductShowcase() {
                   whileHover={{ x: 5 }}
                   className="text-brand-gold text-sm uppercase tracking-widest font-medium flex items-center gap-2 relative z-10"
                 >
-                  Discover More →
+                  {contentData.productShowcase.ctaText}
                 </motion.button>
 
                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-gold to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />

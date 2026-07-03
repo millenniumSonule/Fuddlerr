@@ -1,13 +1,9 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import FadeIn from './FadeIn';
+import contentData from '../data/content.json';
 
-const stats = [
-  { number: 50, suffix: 'K+', label: 'Happy Customers', delay: 0 },
-  { number: 15, suffix: '+', label: 'Awards Won', delay: 0.2 },
-  { number: 100, suffix: '%', label: 'Sustainable', delay: 0.4 },
-  { number: 8, suffix: 'yr', label: 'Crafting Excellence', delay: 0.6 },
-];
+const stats = contentData.stats.data;
 
 const Counter = ({ from, to, suffix, delay }: { from: number; to: number; suffix: string; delay: number }) => {
   const [count, setCount] = useState(from);
@@ -70,10 +66,10 @@ export default function StatsSection() {
         <FadeIn>
           <div className="text-center mb-20">
             <p className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium">
-              By The Numbers
+              {contentData.stats.label}
             </p>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight">
-              Our Impact
+              {contentData.stats.title}
             </h2>
           </div>
         </FadeIn>

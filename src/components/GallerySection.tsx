@@ -1,15 +1,12 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import FadeIn from './FadeIn';
+import contentData from '../data/content.json';
 
-const gallery = [
-  { id: 1, title: 'Heritage Blend', color: 'from-brand-gold to-brand-copper', icon: '🌾' },
-  { id: 2, title: 'Urban Essence', color: 'from-brand-forest to-brand-sage', icon: '🏙️' },
-  { id: 3, title: 'Nordic Crafted', color: 'from-brand-charcoal to-brand-stone', icon: '❄️' },
-  { id: 4, title: 'Monsoon Spirit', color: 'from-brand-copper to-brand-forest', icon: '🌧️' },
-  { id: 5, title: 'Premium Reserve', color: 'from-brand-goldLight to-brand-gold', icon: '👑' },
-  { id: 6, title: 'Community Love', color: 'from-brand-sage to-brand-forest', icon: '❤️' },
-];
+const gallery = contentData.gallery.items.map((item) => ({
+  ...item,
+  color: ['from-brand-gold to-brand-copper', 'from-brand-forest to-brand-sage', 'from-brand-charcoal to-brand-stone', 'from-brand-copper to-brand-forest', 'from-brand-goldLight to-brand-gold', 'from-brand-sage to-brand-forest'][item.id - 1]
+}));
 
 export default function GallerySection() {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
@@ -25,18 +22,26 @@ export default function GallerySection() {
         <FadeIn>
           <div className="text-center mb-20">
             <p className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium">
-              Gallery
+              {contentData.gallery.label}
             </p>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight mb-6">
-              Moments & Memories
+              {contentData.gallery.title}
             </h2>
             <p className="text-brand-taupe text-lg max-w-2xl mx-auto">
-              Celebrating the journey, the people, and the passion behind every bottle
+              {contentData.gallery.description}
             </p>
           </div>
         </FadeIn>
 
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="gallery-marquee mb-10" aria-hidden="true">
+          <div className="gallery-marquee__track">
+            {[...gallery, ...gallery].map((item, index) => (
+              <span key={`${item.id}-${index}`}>{item.title}</span>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8 [perspective:1200px]">
           {gallery.map((item, idx) => (
             <motion.div
               key={item.id}
@@ -46,14 +51,21 @@ export default function GallerySection() {
               viewport={{ once: true }}
               onMouseEnter={() => setHoveredId(item.id)}
               onMouseLeave={() => setHoveredId(null)}
-              className="group cursor-pointer"
+              className="premium-card group cursor-pointer"
+              data-magnetic
             >
               <motion.div
-                className={`relative h-64 md:h-72 bg-gradient-to-br ${item.color} rounded-2xl overflow-hidden shadow-2xl`}
-                whileHover={{ y: -8 }}
+                className={`gallery-card relative h-64 md:h-72 bg-gradient-to-br ${item.color} rounded-2xl overflow-hidden shadow-2xl`}
+                whileHover={{ y: -8, rotateX: 3, rotateY: -4 }}
                 transition={{ duration: 0.3 }}
               >
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
+                <div 
+                  className="absolute inset-0 opacity-70"
+                  style={{
+                    backgroundImage: 'radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.24), transparent 34%)'
+                  }}
+                />
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
                   <motion.div
                     className="text-6xl"

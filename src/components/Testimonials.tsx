@@ -2,37 +2,9 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import FadeIn from './FadeIn';
+import contentData from '../data/content.json';
 
-const testimonials = [
-  {
-    id: 1,
-    text: "FUDDLER isn't just beer; it's a statement of identity. The craftsmanship is unparalleled.",
-    author: 'Rohan Sharma',
-    role: 'Craft Beer Enthusiast',
-    image: '👨‍💼',
-  },
-  {
-    id: 2,
-    text: 'The design, the story, the taste — everything resonates with who I am. Truly exceptional.',
-    author: 'Priya Desai',
-    role: 'Brand Curator',
-    image: '👩‍💼',
-  },
-  {
-    id: 3,
-    text: 'Every bottle tells a story of two worlds coming together beautifully. Remarkable experience.',
-    author: 'Aditya Singh',
-    role: 'Lifestyle Influencer',
-    image: '👨‍🎨',
-  },
-  {
-    id: 4,
-    text: 'The commitment to sustainability combined with premium quality is truly inspiring.',
-    author: 'Neha Kapoor',
-    role: 'Sustainability Advocate',
-    image: '👩‍🔬',
-  },
-];
+const testimonials = contentData.testimonials.testimonials;
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
@@ -50,10 +22,10 @@ export default function Testimonials() {
         <FadeIn>
           <div className="text-center mb-20">
             <p className="text-brand-copper text-sm tracking-[0.3em] uppercase mb-4 font-medium">
-              Love Stories
+              {contentData.testimonials.label}
             </p>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight">
-              What Our Community Says
+              {contentData.testimonials.title}
             </h2>
           </div>
         </FadeIn>

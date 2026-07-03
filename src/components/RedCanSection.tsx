@@ -1,7 +1,3 @@
-import { motion } from 'framer-motion';
-import redCan from '../assets/red_beer_can.png';
-import taxi from '../assets/mumbai_taxi.png';
-
 export default function RedCanSection() {
   return (
     <section className="relative overflow-hidden bg-brand-warmBg py-00">
