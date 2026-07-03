@@ -124,18 +124,48 @@ export function getValueAtPath(content, editPath) {
 export function setValueAtPath(content, editPath, value) {
   const lastSegment = editPath.at(-1);
   const parent = getValueAtPath(content, editPath.slice(0, -1));
+  const currentValue = getValueAtPath(content, editPath);
 
   if (
     lastSegment === undefined ||
     parent === undefined ||
     parent === null ||
     typeof parent !== 'object' ||
-    typeof parent[lastSegment] !== 'string'
+    currentValue === undefined
   ) {
     throw new Error('Editable content path was not found');
   }
 
-  parent[lastSegment] = value;
+  if (typeof currentValue === 'number') {
+    const nextValue = Number(value.trim());
+    if (!Number.isFinite(nextValue)) {
+      throw new Error('Numeric content must be a valid number');
+    }
+
+    parent[lastSegment] = nextValue;
+    return;
+  }
+
+  if (typeof currentValue === 'boolean') {
+    if (value.trim() === 'true') {
+      parent[lastSegment] = true;
+      return;
+    }
+
+    if (value.trim() === 'false') {
+      parent[lastSegment] = false;
+      return;
+    }
+
+    throw new Error('Boolean content must be true or false');
+  }
+
+  if (typeof currentValue === 'string') {
+    parent[lastSegment] = value;
+    return;
+  }
+
+  throw new Error('Editable content path was not found');
 }
 
 export function safeFileName(fileName) {

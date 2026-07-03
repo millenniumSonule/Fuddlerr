@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useContent, useContentActions } from '../content/useContent';
 
 const EDITABLE_SELECTOR = '[data-cms-editable="true"]';
-const EDITABLE_IMAGE_SELECTOR = 'img[data-cms-image-path]';
+const EDITABLE_IMAGE_SELECTOR = '[data-cms-image-path]';
 const CMS_TEXT_WRAPPER = 'cmsTextWrapper';
 const SKIP_TAGS = new Set([
   'AREA',
@@ -114,6 +114,27 @@ async function saveImageEdit(path: ContentPath, file: File) {
   return (await response.json()) as { src: string };
 }
 
+function applyImageSource(target: HTMLElement, src: string) {
+  if (target instanceof HTMLImageElement) {
+    target.src = src;
+    return;
+  }
+
+  target.style.backgroundImage = `url("${src}")`;
+}
+
+function resolveImageTarget(element: HTMLElement) {
+  if (element instanceof HTMLImageElement) return element;
+
+  const nestedImage = element.querySelector<HTMLImageElement>('img[data-cms-image-path]');
+  if (nestedImage) return nestedImage;
+
+  const firstImage = element.querySelector<HTMLImageElement>('img');
+  if (firstImage) return firstImage;
+
+  return element;
+}
+
 function applyEditableDataset(element: HTMLElement, path: ContentPath, originalText: string) {
   element.dataset.cmsEditable = 'true';
   element.dataset.cmsPath = JSON.stringify(path);
@@ -139,7 +160,11 @@ function markEditableText(pathIndex: ContentPathIndex) {
   elements.forEach((element) => {
     const explicitPath = getExplicitPath(element);
     if (explicitPath) {
-      applyEditableDataset(element, explicitPath, element.innerText);
+      applyEditableDataset(
+        element,
+        explicitPath,
+        element.dataset.cmsOriginalValue || element.innerText
+      );
       return;
     }
 
@@ -259,9 +284,10 @@ export default function EditModeCMS() {
       setActiveText('');
     };
 
-    const chooseImage = (image: HTMLImageElement) => {
+    const chooseImage = (image: HTMLElement) => {
       const pathValue = image.dataset.cmsImagePath;
       if (!pathValue) return;
+      const targetImage = resolveImageTarget(image);
 
       imageInput.onchange = async () => {
         const file = imageInput.files?.[0];
@@ -272,7 +298,7 @@ export default function EditModeCMS() {
           const path = JSON.parse(pathValue) as ContentPath;
           setStatus(`Uploading ${file.name}`);
           const result = await saveImageEdit(path, file);
-          image.src = result.src;
+          applyImageSource(targetImage, result.src);
           setStatus(`Saved image ${formatPath(path)}`);
           await reloadContent();
         } catch (error) {
@@ -284,7 +310,7 @@ export default function EditModeCMS() {
     };
 
     const onClick = (event: MouseEvent) => {
-      const imageTarget = (event.target as Element | null)?.closest<HTMLImageElement>(EDITABLE_IMAGE_SELECTOR);
+      const imageTarget = (event.target as Element | null)?.closest<HTMLElement>(EDITABLE_IMAGE_SELECTOR);
       if (imageTarget) {
         event.preventDefault();
         event.stopPropagation();

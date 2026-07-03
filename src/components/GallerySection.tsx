@@ -71,10 +71,11 @@ export default function GallerySection() {
               className="premium-card group"
               data-magnetic
             >
-              <motion.div
+            <motion.div
                 className={`gallery-card relative h-64 md:h-72 bg-gradient-to-br ${item.color} rounded-2xl overflow-hidden shadow-2xl`}
                 whileHover={{ y: -8, rotateX: 3, rotateY: -4 }}
                 transition={{ duration: 0.3 }}
+                data-cms-image-path={JSON.stringify(item.imagePath)}
               >
                 {item.image && (
                   <img 

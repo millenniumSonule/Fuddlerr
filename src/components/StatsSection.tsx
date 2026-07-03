@@ -2,8 +2,24 @@ import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import FadeIn from './FadeIn';
 import { useContent } from '../content/useContent';
+import { resolveCmsImage } from '../utils/cmsImages';
 
-const Counter = ({ from, to, suffix, delay }: { from: number; to: number; suffix: string; delay: number }) => {
+const transparentPixel =
+  'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
+
+const Counter = ({
+  from,
+  to,
+  suffix,
+  delay,
+  cmsPath,
+}: {
+  from: number;
+  to: number;
+  suffix: string;
+  delay: number;
+  cmsPath: Array<string | number>;
+}) => {
   const [count, setCount] = useState(from);
   const ref = useRef<HTMLDivElement>(null);
   const hasStarted = useRef(false);
@@ -46,7 +62,10 @@ const Counter = ({ from, to, suffix, delay }: { from: number; to: number; suffix
       viewport={{ once: true }}
     >
       <p className="text-5xl md:text-6xl font-bold text-brand-gold mb-2">
-        {count}{suffix}
+        <span data-cms-path={JSON.stringify(cmsPath)} data-cms-original-value={String(to)}>
+          {count}
+        </span>
+        {suffix}
       </p>
     </motion.div>
   );
@@ -76,7 +95,7 @@ export default function StatsSection() {
         </FadeIn>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8">
-          {stats.map((stat) => (
+          {stats.map((stat, idx) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, scale: 0.8 }}
@@ -87,10 +106,23 @@ export default function StatsSection() {
             >
               <div className="relative inline-block mb-6">
                 <div className="absolute inset-0 w-24 h-24 bg-brand-gold/10 rounded-full blur-xl group-hover:bg-brand-gold/20 transition-colors" />
-                <div className="relative w-24 h-24 bg-gradient-to-br from-brand-gold/8 to-brand-copper/3 rounded-full flex items-center justify-center border border-brand-warmGray/60" />
+                <div className="relative w-24 h-24 rounded-full flex items-center justify-center border border-brand-warmGray/60 overflow-hidden bg-gradient-to-br from-brand-gold/8 to-brand-copper/3">
+                  <img
+                    data-cms-image-path={JSON.stringify(['stats', 'data', idx, 'image'])}
+                    src={resolveCmsImage(stat.image, transparentPixel)}
+                    alt={stat.label}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
               </div>
               
-              <Counter from={0} to={stat.number} suffix={stat.suffix} delay={stat.delay} />
+              <Counter
+                from={0}
+                to={stat.number}
+                suffix={stat.suffix}
+                delay={stat.delay}
+                cmsPath={['stats', 'data', idx, 'number']}
+              />
               
               <p className="text-brand-taupe text-lg font-medium">{stat.label}</p>
             </motion.div>

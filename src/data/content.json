@@ -89,22 +89,26 @@
       {
         "number": 50,
         "suffix": "K+",
-        "label": "Happy Customersasd"
+        "label": "Happy Customersasd",
+        "image": ""
       },
       {
         "number": 15,
         "suffix": "+",
-        "label": "Awards Won"
+        "label": "Awards Won",
+        "image": ""
       },
       {
         "number": 100,
         "suffix": "%",
-        "label": "Sustainableqwd"
+        "label": "Sustainableqwd",
+        "image": ""
       },
       {
         "number": 8,
         "suffix": "yr",
-        "label": "Crafting Excellence"
+        "label": "Crafting Excellence",
+        "image": ""
       }
     ]
   },
