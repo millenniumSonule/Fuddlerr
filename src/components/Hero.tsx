@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import beerGlass from '../assets/beer_glass.png';
 import heroVideo from '../assets/hero_banner_video.mp4';
 import contentData from '../data/content.json';
+import { resolveCmsImage } from '../utils/cmsImages';
 
 export default function Hero() {
   const titleParts = contentData.hero.mainTitle.split('L');
@@ -32,7 +33,8 @@ export default function Hero() {
           transition={{ duration: 0.5 }}
         >
           <img
-            src={beerGlass}
+            data-cms-image-path='["hero","accentImage"]'
+            src={resolveCmsImage(contentData.hero.accentImage, beerGlass)}
             alt="Fuddlerr beer glass accent"
             className="absolute inset-0 h-full w-full object-cover object-center"
           />

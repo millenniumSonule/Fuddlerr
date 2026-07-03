@@ -280,10 +280,23 @@
     transition: outline-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
   }
 
+  .cms-edit-mode img[data-cms-image-path] {
+    cursor: pointer;
+    outline: 2px dashed transparent;
+    outline-offset: 4px;
+    transition: filter 160ms ease, outline-color 160ms ease, box-shadow 160ms ease;
+  }
+
   .cms-edit-mode [data-cms-editable='true']:hover {
     background-color: rgba(198, 151, 47, 0.14);
     box-shadow: 0 0 0 4px rgba(198, 151, 47, 0.1);
     outline-color: rgba(198, 151, 47, 0.6);
+  }
+
+  .cms-edit-mode img[data-cms-image-path]:hover {
+    filter: brightness(1.06) saturate(1.08);
+    box-shadow: 0 0 0 5px rgba(198, 151, 47, 0.2);
+    outline-color: rgba(198, 151, 47, 0.8);
   }
 
   .cms-edit-mode .cms-editing {

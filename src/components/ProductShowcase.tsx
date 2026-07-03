@@ -6,6 +6,7 @@ import productArt from '../assets/Gemini_Generated_Image_tduvgytduvgytduv.png';
 import taxiAsset from '../assets/mumbai_taxi.png';
 import monsoonBeerCan from '../assets/monsoonBeerCan.png';
 import contentData from '../data/content.json';
+import { resolveCmsImage } from '../utils/cmsImages';
 
 const products = [
   {
@@ -14,7 +15,8 @@ const products = [
     description: contentData.productShowcase.products[0].description,
     color: 'from-brand-gold to-brand-goldLight',
     icon: contentData.productShowcase.products[0].icon,
-    image: productCan,
+    image: resolveCmsImage(contentData.productShowcase.products[0].image, productCan),
+    imagePath: ['productShowcase', 'products', 0, 'image'],
     alt: contentData.productShowcase.products[0].alt,
   },
   {
@@ -23,7 +25,8 @@ const products = [
     description: contentData.productShowcase.products[1].description,
     color: 'from-brand-copper to-brand-forest',
     icon: contentData.productShowcase.products[1].icon,
-    image: productArt,
+    image: resolveCmsImage(contentData.productShowcase.products[1].image, productArt),
+    imagePath: ['productShowcase', 'products', 1, 'image'],
     alt: contentData.productShowcase.products[1].alt,
   },
   {
@@ -32,7 +35,8 @@ const products = [
     description: contentData.productShowcase.products[2].description,
     color: 'from-brand-forest to-brand-sage',
     icon: contentData.productShowcase.products[2].icon,
-    image: monsoonBeerCan,
+    image: resolveCmsImage(contentData.productShowcase.products[2].image, monsoonBeerCan),
+    imagePath: ['productShowcase', 'products', 2, 'image'],
     alt: contentData.productShowcase.products[2].alt,
   },
 ];
@@ -94,7 +98,8 @@ export default function ProductShowcase() {
         <div className="relative">
           <motion.img
             ref={taxiRef}
-            src={taxiAsset}
+            data-cms-image-path='["productShowcase","taxiImage"]'
+            src={resolveCmsImage(contentData.productShowcase.taxiImage, taxiAsset)}
             alt="Mumbai taxi accent"
             className="hidden lg:block absolute left-0 top-1/2 h-24 w-24 rounded-full border-2 border-brand-warmGray/70 bg-brand-warmBg/80 object-contain shadow-[0_25px_55px_rgba(0,0,0,0.08)] transition-transform duration-200"
           />
@@ -123,6 +128,7 @@ export default function ProductShowcase() {
                   className="relative z-10 mx-auto mb-6 overflow-hidden rounded-[2rem] border border-brand-gold/10 bg-brand-warmBg/80 shadow-[0_30px_60px_rgba(0,0,0,0.06)] backdrop-blur-xl w-full max-w-sm"
                 >
                   <img
+                    data-cms-image-path={JSON.stringify(product.imagePath)}
                     src={product.image}
                     alt={product.alt}
                     className="product-card-image w-full object-cover object-center aspect-[4/5]"

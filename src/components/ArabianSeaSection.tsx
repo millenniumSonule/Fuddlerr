@@ -1,6 +1,7 @@
 import FadeIn from './FadeIn';
 import lightThemeImage from '../assets/light_theme_middle_section.png';
 import contentData from '../data/content.json';
+import { resolveCmsImage } from '../utils/cmsImages';
 
 export default function ArabianSeaSection() {
   return (
@@ -26,8 +27,9 @@ export default function ArabianSeaSection() {
 
             <div className="relative overflow-hidden bg-brand-warmBg min-h-[420px] lg:min-h-[520px] h-full">
               <img
-                src={lightThemeImage}
-                alt="Born on the Arabian Sea"
+                data-cms-image-path='["arabianSeaSection","image"]'
+                src={resolveCmsImage(contentData.arabianSeaSection.image, lightThemeImage)}
+                alt={contentData.arabianSeaSection.imageAlt}
                 className="w-full h-full object-cover"
               />
             </div>

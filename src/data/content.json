@@ -3,6 +3,7 @@
     "subtitle": "India's Most Distinctive Craft Beer",
     "mainTitle": "FUDDLER",
     "tagline": "Crafted Between Two Worldsasdasdasda",
+    "accentImage": "beer_glass.png",
     "features": [
       "Mumbai Soul",
       "Nordic Craft",
@@ -19,6 +20,7 @@
         "name": "Original Blend",
         "description": "Our flagship craft beer crafted with precisionasd",
         "icon": "🍺",
+        "image": "genric_beer_can.png",
         "alt": "Original Blend beer can"
       },
       {
@@ -26,6 +28,7 @@
         "name": "Nordic Reserve",
         "description": "Limited edition, inspired by Nordic traditions",
         "icon": "✨",
+        "image": "/cms/gemini-generated-image-tduvgytduvgytduv-1783113961084.png",
         "alt": "Nordic Reserve premium design"
       },
       {
@@ -33,9 +36,11 @@
         "name": "Mumbai Monsoon",
         "description": "Bold flavors celebrating the spirit of the city",
         "icon": "⚡",
+        "image": "monsoonBeerCan.png",
         "alt": "Mumbai Monsoon beer can"
       }
     ],
+    "taxiImage": "mumbai_taxi.png",
     "ctaText": "Discover More →"
   },
   "arabianSeaSection": {
@@ -43,6 +48,7 @@
     "title": "Born on the Arabian Seaasdasdasdasdasd",
     "description": "Mumbai is our home. The sea is our constant inspiration. Fuddlerr is our tribute to this city, its people and its unbreakable spirit.asdasdasd",
     "buttonText": "Our Story",
+    "image": "light_theme_middle_section.png",
     "imageAlt": "Born on the Arabian Sea"
   },
   "brandStory": {
@@ -88,7 +94,7 @@
       {
         "number": 15,
         "suffix": "+",
-        "label": "Awards Won asda"
+        "label": "Awards Won"
       },
       {
         "number": 100,
@@ -243,11 +249,11 @@
     "description": "Celebrating the journey, the people, and the passion behind every bottle",
     "items": [
       { "id": 1, "title": "Heritage Blend", "icon": "", "image": "heritageBlend.png" },
-      { "id": 2, "title": "Urban Essenceee", "icon": "🏙️" },
-      { "id": 3, "title": "Nordic Crafted", "icon": "❄️" },
-      { "id": 4, "title": "Monsoon Spirit", "icon": "🌧️" },
-      { "id": 5, "title": "Premium Reserve", "icon": "👑" },
-      { "id": 6, "title": "Community Love", "icon": "❤️" }
+      { "id": 2, "title": "Urban Essenceee", "icon": "🏙️", "image": "urbanEssance.png" },
+      { "id": 3, "title": "Nordic Crafted", "icon": "❄️", "image": "nordicCrafted.png" },
+      { "id": 4, "title": "Monsoon Spirit", "icon": "🌧️", "image": "monsoonSpirit.png" },
+      { "id": 5, "title": "Premium Reserve", "icon": "👑", "image": "premiumReserve.png" },
+      { "id": 6, "title": "Community Love", "icon": "❤️", "image": "communityLove.png" }
     ]
   },
   "brandPersonality": {

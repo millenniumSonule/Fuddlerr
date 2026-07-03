@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import contentData from '../data/content.json';
 
 const EDITABLE_SELECTOR = '[data-cms-editable="true"]';
+const EDITABLE_IMAGE_SELECTOR = 'img[data-cms-image-path]';
 const CMS_TEXT_WRAPPER = 'cmsTextWrapper';
 const SKIP_TAGS = new Set([
   'AREA',
@@ -83,6 +84,35 @@ async function saveContentEdit(path: ContentPath, value: string) {
   }
 }
 
+function readFileAsDataUrl(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function saveImageEdit(path: ContentPath, file: File) {
+  const response = await fetch('/api/cms/image', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      path,
+      fileName: file.name,
+      dataUrl: await readFileAsDataUrl(file),
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  return (await response.json()) as { src: string };
+}
+
 function applyEditableDataset(element: HTMLElement, path: ContentPath, originalText: string) {
   element.dataset.cmsEditable = 'true';
   element.dataset.cmsPath = JSON.stringify(path);
@@ -142,6 +172,11 @@ export default function EditModeCMS() {
 
   useEffect(() => {
     const pathIndex = buildContentPathIndex(contentData as JsonValue);
+    const imageInput = document.createElement('input');
+    imageInput.type = 'file';
+    imageInput.accept = 'image/png,image/jpeg,image/webp,image/gif,image/svg+xml';
+    imageInput.hidden = true;
+    document.body.appendChild(imageInput);
 
     document.documentElement.classList.add('cms-edit-mode');
     markEditableText(pathIndex);
@@ -190,7 +225,38 @@ export default function EditModeCMS() {
       setActiveText('');
     };
 
+    const chooseImage = (image: HTMLImageElement) => {
+      const pathValue = image.dataset.cmsImagePath;
+      if (!pathValue) return;
+
+      imageInput.onchange = async () => {
+        const file = imageInput.files?.[0];
+        imageInput.value = '';
+        if (!file) return;
+
+        try {
+          const path = JSON.parse(pathValue) as ContentPath;
+          setStatus(`Uploading ${file.name}`);
+          const result = await saveImageEdit(path, file);
+          image.src = result.src;
+          setStatus(`Saved image ${formatPath(path)}`);
+        } catch (error) {
+          setStatus(error instanceof Error ? error.message : 'Could not save image');
+        }
+      };
+
+      imageInput.click();
+    };
+
     const onClick = (event: MouseEvent) => {
+      const imageTarget = (event.target as Element | null)?.closest<HTMLImageElement>(EDITABLE_IMAGE_SELECTOR);
+      if (imageTarget) {
+        event.preventDefault();
+        event.stopPropagation();
+        chooseImage(imageTarget);
+        return;
+      }
+
       const target = (event.target as Element | null)?.closest<HTMLElement>(EDITABLE_SELECTOR);
       if (!target) return;
 
@@ -247,6 +313,7 @@ export default function EditModeCMS() {
     return () => {
       window.clearTimeout(refreshTimer);
       observer.disconnect();
+      imageInput.remove();
       document.documentElement.classList.remove('cms-edit-mode');
       document.removeEventListener('click', onClick, true);
       document.removeEventListener('focusout', onFocusOut, true);

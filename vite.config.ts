@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const contentFilePath = path.resolve(__dirname, 'src/data/content.json');
+const cmsImageDir = path.resolve(__dirname, 'public/cms');
 
 type ContentValue = string | number | boolean | null | ContentValue[] | { [key: string]: ContentValue };
 
@@ -153,6 +154,29 @@ function replaceStringAtPath(source: string, editPath: Array<string | number>, v
   return `${source.slice(0, range.start)}${JSON.stringify(value)}${source.slice(range.end)}`;
 }
 
+function safeFileName(fileName: string) {
+  const extension = path.extname(fileName).toLowerCase();
+  const baseName = path
+    .basename(fileName, extension)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 48);
+
+  return `${baseName || 'image'}-${Date.now()}${extension}`;
+}
+
+async function updateContentString(editPath: Array<string | number>, value: string) {
+  const source = await fs.readFile(contentFilePath, 'utf8');
+  const content = JSON.parse(source) as ContentValue;
+
+  if (typeof getValueAtPath(content, editPath) !== 'string') {
+    throw new Error('Editable content path was not found');
+  }
+
+  await fs.writeFile(contentFilePath, replaceStringAtPath(source, editPath, value));
+}
+
 function cmsContentPlugin() {
   return {
     name: 'fuddlerr-cms-content-writer',
@@ -176,16 +200,7 @@ function cmsContentPlugin() {
             return;
           }
 
-          const source = await fs.readFile(contentFilePath, 'utf8');
-          const content = JSON.parse(source) as ContentValue;
-
-          if (typeof getValueAtPath(content, body.path) !== 'string') {
-            response.statusCode = 400;
-            response.end('Editable content path was not found');
-            return;
-          }
-
-          await fs.writeFile(contentFilePath, replaceStringAtPath(source, body.path, body.value));
+          await updateContentString(body.path, body.value);
 
           server.ws.send({
             type: 'full-reload',
@@ -197,6 +212,52 @@ function cmsContentPlugin() {
         } catch (error) {
           response.statusCode = 500;
           response.end(error instanceof Error ? error.message : 'Unable to save content edit');
+        }
+      });
+
+      server.middlewares.use('/api/cms/image', async (request, response) => {
+        if (request.method !== 'POST') {
+          response.statusCode = 405;
+          response.end('Method Not Allowed');
+          return;
+        }
+
+        try {
+          const body = JSON.parse(await readRequestBody(request)) as {
+            path?: Array<string | number>;
+            fileName?: string;
+            dataUrl?: string;
+          };
+
+          if (!Array.isArray(body.path) || !body.fileName || !body.dataUrl) {
+            response.statusCode = 400;
+            response.end('Invalid image payload');
+            return;
+          }
+
+          const match = body.dataUrl.match(/^data:(image\/(?:png|jpeg|jpg|webp|gif|svg\+xml));base64,(.+)$/);
+          if (!match) {
+            response.statusCode = 400;
+            response.end('Only PNG, JPG, WEBP, GIF, and SVG images are supported');
+            return;
+          }
+
+          await fs.mkdir(cmsImageDir, { recursive: true });
+          const fileName = safeFileName(body.fileName);
+          const publicPath = `/cms/${fileName}`;
+          await fs.writeFile(path.join(cmsImageDir, fileName), Buffer.from(match[2], 'base64'));
+          await updateContentString(body.path, publicPath);
+
+          server.ws.send({
+            type: 'full-reload',
+            path: '*',
+          });
+
+          response.setHeader('Content-Type', 'application/json');
+          response.end(JSON.stringify({ ok: true, src: publicPath }));
+        } catch (error) {
+          response.statusCode = 500;
+          response.end(error instanceof Error ? error.message : 'Unable to save image edit');
         }
       });
     },
