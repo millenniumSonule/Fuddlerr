@@ -16,12 +16,16 @@ import RedCanSection from './components/RedCanSection';
 import ArabianSeaSection from './components/ArabianSeaSection';
 import MagneticCursor from './components/MagneticCursor';
 import SmoothScroll from './components/SmoothScroll';
+import EditModeCMS from './components/EditModeCMS';
 
 function App() {
+  const isEditMode = window.location.pathname === '/edit';
+
   return (
     <SmoothScroll>
       <div className="min-h-screen bg-brand-espresso">
         <MagneticCursor />
+        {isEditMode && <EditModeCMS />}
         <Header />
         <main className="pt-20">
           <section id="hero">

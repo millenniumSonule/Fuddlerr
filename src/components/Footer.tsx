@@ -20,7 +20,10 @@ export default function Footer() {
       <div className="relative max-w-6xl mx-auto px-6 md:px-8">
         <FadeIn>
           <div className="text-center mb-16">
-            <h3 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4">
+            <h3
+              data-cms-path='["footer","brand"]'
+              className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4"
+            >
               {contentData.footer.brand.substring(0, 4)}<span className="text-brand-gold">{contentData.footer.brand.substring(4)}</span>
             </h3>
             <p className="text-brand-cream/72 text-sm tracking-[0.35em] uppercase">
@@ -44,7 +47,6 @@ export default function Footer() {
           <div className="border-t border-white/10 pt-8 text-center">
             <p className="text-brand-cream/55 text-xs tracking-wider">
               {contentData.footer.copyright}
-              FUDDLER. All rights reserved. Brewing the future of craft beer in India.
             </p>
           </div>
         </FadeIn>

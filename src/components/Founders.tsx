@@ -41,7 +41,9 @@ export default function Founders() {
                 </p>
 
                 <div className="mb-8">
-                  <p className="text-brand-stone text-xs tracking-wider uppercase mb-3">Responsibilities</p>
+                  <p className="text-brand-stone text-xs tracking-wider uppercase mb-3">
+                    {contentData.founders.responsibilitiesLabel}
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     {founder.responsibilities.map((r) => (
                       <span

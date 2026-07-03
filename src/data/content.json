@@ -2,7 +2,7 @@
   "hero": {
     "subtitle": "India's Most Distinctive Craft Beer",
     "mainTitle": "FUDDLER",
-    "tagline": "Crafted Between Two Worlds",
+    "tagline": "Crafted Between Two Worldsasdasdasda",
     "features": [
       "Mumbai Soul",
       "Nordic Craft",
@@ -11,13 +11,13 @@
   },
   "productShowcase": {
     "label": "Our Collection",
-    "title": "Crafted Excellence",
-    "description": "Each bottle is a celebration of our dual heritage and commitment to quality",
+    "title": "Crafted Excellenceasdads asd asd",
+    "description": "Each bottle is a celebration of our dual heritage and commitment to qualityasdasd",
     "products": [
       {
         "id": 1,
         "name": "Original Blend",
-        "description": "Our flagship craft beer crafted with precision",
+        "description": "Our flagship craft beer crafted with precisionasd",
         "icon": "🍺",
         "alt": "Original Blend beer can"
       },
@@ -40,16 +40,16 @@
   },
   "arabianSeaSection": {
     "label": "Our Story",
-    "title": "Born on the Arabian Sea",
-    "description": "Mumbai is our home. The sea is our constant inspiration.\nFuddlerr is our tribute to this city, its people and its unbreakable spirit.",
+    "title": "Born on the Arabian Seaasdasdasdasdasd",
+    "description": "Mumbai is our home. The sea is our constant inspiration. Fuddlerr is our tribute to this city, its people and its unbreakable spirit.asdasdasd",
     "buttonText": "Our Story",
     "imageAlt": "Born on the Arabian Sea"
   },
   "brandStory": {
     "label": "Our Story",
-    "title": "Born from the meeting of two completely different minds",
-    "mumbaiFounder": "One founder grew up inspired by the relentless energy, diversity, and street culture of Mumbai. To them, beer was never just a drink — it was about bringing people together, celebrating stories, and creating unforgettable nights.",
-    "nordicFounder": "The other founder was deeply inspired by Nordic values: simplicity, precision, sustainability, craftsmanship, and thoughtful design. They believed that every product should be intentional, beautifully designed, and built to last.",
+    "title": "Born from the meeting of two completely different mindsasdasd",
+    "mumbaiFounder": "One founder grew up inspired by the relentless energy, diversity, and street culture of Mumbai. To them, beer was never just a drink — it was about bringing people together, celebrating stories, and creating unforgettable nights.asdasdasda asdasdasd",
+    "nordicFounder": "The other founder was deeply inspired by Nordic values: simplicity, precision, sustainability, craftsmanship, and thoughtful design. They believed that every product should be intentional, beautifully designed, and built to last.aaasdasda asdqwd",
     "conclusion": "Together, they realized that India's craft beer market lacked a brand that combined premium brewing with meaningful storytelling and world-class design.",
     "bridgeText": "FUDDLER was created to bridge these two worlds"
   },
@@ -83,17 +83,17 @@
       {
         "number": 50,
         "suffix": "K+",
-        "label": "Happy Customers"
+        "label": "Happy Customersasd"
       },
       {
         "number": 15,
         "suffix": "+",
-        "label": "Awards Won"
+        "label": "Awards Won asda"
       },
       {
         "number": 100,
         "suffix": "%",
-        "label": "Sustainable"
+        "label": "Sustainableqwd"
       },
       {
         "number": 8,
@@ -159,7 +159,7 @@
         "id": 1,
         "text": "FUDDLER isn't just beer; it's a statement of identity. The craftsmanship is unparalleled.",
         "author": "Rohan Sharma",
-        "role": "Craft Beer Enthusiast",
+        "role": "Craft Beer Enthusiast :)",
         "image": "👨‍💼",
         "rating": 5
       },
@@ -192,9 +192,10 @@
   "founders": {
     "label": "The Founders",
     "title": "Three Minds. One Obsession.",
+    "responsibilitiesLabel": "Responsibilities",
     "founders": [
       {
-        "role": "The Visionary",
+        "role": "The Visionaryads",
         "title": "Brand Vision, Marketing & Community",
         "description": "The dreamer behind the brand. Creative, ambitious, people-first, energetic, entrepreneurial.",
         "quote": "People rarely remember what they drank. They remember who they shared it with.",
@@ -242,7 +243,7 @@
     "description": "Celebrating the journey, the people, and the passion behind every bottle",
     "items": [
       { "id": 1, "title": "Heritage Blend", "icon": "", "image": "heritageBlend.png" },
-      { "id": 2, "title": "Urban Essence", "icon": "🏙️" },
+      { "id": 2, "title": "Urban Essenceee", "icon": "🏙️" },
       { "id": 3, "title": "Nordic Crafted", "icon": "❄️" },
       { "id": 4, "title": "Monsoon Spirit", "icon": "🌧️" },
       { "id": 5, "title": "Premium Reserve", "icon": "👑" },

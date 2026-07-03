@@ -33,6 +33,15 @@
   a:focus-visible {
     outline: 2px solid #C6972F;
   }
+  .cms-edit-mode body {
+    cursor: auto;
+  }
+  .cms-edit-mode a,
+  .cms-edit-mode button,
+  .cms-edit-mode [data-cursor],
+  .cms-edit-mode [data-magnetic] {
+    cursor: pointer;
+  }
   ::selection {
     background-color: #C6972F;
     color: #FFFFFF;
@@ -218,6 +227,71 @@
 
   .premium-link {
     isolation: isolate;
+  }
+
+  .cms-toolbar {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: calc(100vw - 2rem);
+    padding: 0.75rem 0.85rem;
+    border: 1px solid rgba(198, 151, 47, 0.4);
+    border-radius: 0.5rem;
+    background: rgba(42, 36, 32, 0.94);
+    color: #FFFFFF;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  }
+
+  .cms-toolbar div {
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .cms-toolbar strong {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .cms-toolbar span {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .cms-toolbar button {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    background: #C6972F;
+    color: #FFFFFF;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.45rem 0.75rem;
+  }
+
+  .cms-edit-mode [data-cms-editable='true'] {
+    outline: 1px dashed transparent;
+    outline-offset: 4px;
+    transition: outline-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .cms-edit-mode [data-cms-editable='true']:hover {
+    background-color: rgba(198, 151, 47, 0.14);
+    box-shadow: 0 0 0 4px rgba(198, 151, 47, 0.1);
+    outline-color: rgba(198, 151, 47, 0.6);
+  }
+
+  .cms-edit-mode .cms-editing {
+    background-color: rgba(255, 255, 255, 0.96) !important;
+    color: #2A2420 !important;
+    outline: 2px solid #C6972F !important;
+    outline-offset: 4px;
+    -webkit-text-fill-color: currentColor;
   }
 
   .premium-link::after {

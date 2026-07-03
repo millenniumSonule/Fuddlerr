@@ -4,6 +4,8 @@ import heroVideo from '../assets/hero_banner_video.mp4';
 import contentData from '../data/content.json';
 
 export default function Hero() {
+  const titleParts = contentData.hero.mainTitle.split('L');
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-brand-espresso">
       <div className="absolute inset-0 overflow-hidden">
@@ -48,14 +50,19 @@ export default function Hero() {
         </motion.p>
 
         <motion.h1
+          data-cms-path='["hero","mainTitle"]'
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
           className="font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium tracking-tight mb-8"
         >
-          <span className="text-white">FUDD</span>
-          <span className="gradient-text">L</span>
-          <span className="text-white">ER</span>
+          <span className="text-white">{titleParts[0] || contentData.hero.mainTitle}</span>
+          {titleParts.length > 1 && (
+            <>
+              <span className="gradient-text">L</span>
+              <span className="text-white">{titleParts.slice(1).join('L')}</span>
+            </>
+          )}
         </motion.h1>
 
         <motion.div
