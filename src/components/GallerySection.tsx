@@ -38,13 +38,22 @@ export default function GallerySection() {
       <div className="relative max-w-7xl mx-auto px-6 md:px-8">
         <FadeIn>
           <div className="text-center mb-20">
-            <p className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium">
+            <p
+              className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium"
+              data-cms-path={JSON.stringify(['gallery', 'label'])}
+            >
               {contentData.gallery.label}
             </p>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight mb-6">
+            <h2
+              className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight mb-6"
+              data-cms-path={JSON.stringify(['gallery', 'title'])}
+            >
               {contentData.gallery.title}
             </h2>
-            <p className="text-brand-taupe text-lg max-w-2xl mx-auto">
+            <p
+              className="text-brand-taupe text-lg max-w-2xl mx-auto"
+              data-cms-path={JSON.stringify(['gallery', 'description'])}
+            >
               {contentData.gallery.description}
             </p>
           </div>
