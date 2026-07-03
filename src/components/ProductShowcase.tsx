@@ -115,14 +115,21 @@ export default function ProductShowcase() {
                   />
                 </motion.div>
 
-                <h3 className="font-serif text-2xl md:text-3xl text-brand-charcoal mb-3 relative z-10">
+                <h3
+                  data-cms-path={JSON.stringify(['productShowcase', 'products', idx, 'name'])}
+                  className="font-serif text-2xl md:text-3xl text-brand-charcoal mb-3 relative z-10"
+                >
                   {product.name}
                 </h3>
-                <p className="text-brand-taupe leading-relaxed relative z-10 mb-6">
+                <p
+                  data-cms-path={JSON.stringify(['productShowcase', 'products', idx, 'description'])}
+                  className="text-brand-taupe leading-relaxed relative z-10 mb-6"
+                >
                   {product.description}
                 </p>
 
                 <motion.button
+                  data-cms-path='["productShowcase","ctaText"]'
                   whileHover={{ x: 5 }}
                   className="text-brand-gold text-sm uppercase tracking-widest font-medium flex items-center gap-2 relative z-10"
                 >
