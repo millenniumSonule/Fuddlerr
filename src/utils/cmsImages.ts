@@ -26,6 +26,6 @@ const bundledImages: Record<string, string> = {
 
 export function resolveCmsImage(imageName: string | undefined, fallback: string) {
   if (!imageName) return fallback;
-  if (imageName.startsWith('/')) return imageName;
+  if (imageName.startsWith('/') || /^https?:\/\//.test(imageName)) return imageName;
   return bundledImages[imageName] || fallback;
 }

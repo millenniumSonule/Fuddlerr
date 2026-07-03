@@ -1,9 +1,10 @@
 import FadeIn from './FadeIn';
-import contentData from '../data/content.json';
-
-const brands = contentData.brandPersonality.brands;
+import { useContent } from '../content/useContent';
 
 export default function BrandPersonality() {
+  const contentData = useContent();
+  const brands = contentData.brandPersonality.brands;
+
   return (
     <section className="relative bg-brand-cream py-28 md:py-36 overflow-hidden">
       <div className="relative max-w-5xl mx-auto px-6 md:px-8 text-center">

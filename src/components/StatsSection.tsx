@@ -1,9 +1,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import FadeIn from './FadeIn';
-import contentData from '../data/content.json';
-
-const stats = contentData.stats.data;
+import { useContent } from '../content/useContent';
 
 const Counter = ({ from, to, suffix, delay }: { from: number; to: number; suffix: string; delay: number }) => {
   const [count, setCount] = useState(from);
@@ -55,6 +53,9 @@ const Counter = ({ from, to, suffix, delay }: { from: number; to: number; suffix
 };
 
 export default function StatsSection() {
+  const contentData = useContent();
+  const stats = contentData.stats.data;
+
   return (
     <section className="relative bg-brand-warmBg py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0">

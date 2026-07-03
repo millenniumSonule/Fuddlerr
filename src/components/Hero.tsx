@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import beerGlass from '../assets/beer_glass.png';
 import heroVideo from '../assets/hero_banner_video.mp4';
-import contentData from '../data/content.json';
+import { useContent } from '../content/useContent';
 import { resolveCmsImage } from '../utils/cmsImages';
 
 export default function Hero() {
+  const contentData = useContent();
   const titleParts = contentData.hero.mainTitle.split('L');
 
   return (

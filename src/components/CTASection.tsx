@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import FadeIn from './FadeIn';
-import contentData from '../data/content.json';
+import { useContent } from '../content/useContent';
 
 export default function CTASection() {
+  const contentData = useContent();
+
   return (
     <section className="relative bg-gradient-to-r from-brand-gold via-brand-copper to-brand-forest py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0 opacity-10">

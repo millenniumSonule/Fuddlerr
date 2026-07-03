@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import contentData from '../data/content.json';
+import { FormEvent, useEffect, useState } from 'react';
+import { useContent } from '../content/useContent';
 
 const EDITABLE_SELECTOR = '[data-cms-editable="true"]';
 const EDITABLE_IMAGE_SELECTOR = 'img[data-cms-image-path]';
@@ -21,6 +21,7 @@ const SKIP_TAGS = new Set([
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 type ContentPath = Array<string | number>;
 type ContentPathIndex = Map<string, ContentPath[]>;
+type AuthState = 'checking' | 'authenticated' | 'login';
 
 function normalizeText(value: string) {
   return value.replace(/\s+/g, ' ').trim();
@@ -167,10 +168,41 @@ function markEditableText(pathIndex: ContentPathIndex) {
 }
 
 export default function EditModeCMS() {
+  const contentData = useContent();
   const [activeText, setActiveText] = useState('');
+  const [authState, setAuthState] = useState<AuthState>('checking');
+  const [password, setPassword] = useState('');
   const [status, setStatus] = useState('Click any text to edit');
+  const [authMessage, setAuthMessage] = useState('');
 
   useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await fetch('/api/cms/session');
+        const session = (await response.json()) as {
+          authenticated?: boolean;
+          configured?: boolean;
+        };
+
+        if (!session.configured) {
+          setAuthMessage('Set FUDDLERR_CMS_PASSWORD in your terminal before opening /edit.');
+          setAuthState('login');
+          return;
+        }
+
+        setAuthState(session.authenticated ? 'authenticated' : 'login');
+      } catch {
+        setAuthMessage('CMS auth server is not available.');
+        setAuthState('login');
+      }
+    };
+
+    void checkSession();
+  }, []);
+
+  useEffect(() => {
+    if (authState !== 'authenticated') return;
+
     const pathIndex = buildContentPathIndex(contentData as JsonValue);
     const imageInput = document.createElement('input');
     imageInput.type = 'file';
@@ -319,7 +351,64 @@ export default function EditModeCMS() {
       document.removeEventListener('focusout', onFocusOut, true);
       document.removeEventListener('keydown', onKeyDown, true);
     };
-  }, []);
+  }, [authState, contentData]);
+
+  const login = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setAuthMessage('Checking password');
+
+    try {
+      const response = await fetch('/api/cms/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
+      });
+      const result = (await response.json()) as { ok?: boolean; message?: string };
+
+      if (!response.ok || !result.ok) {
+        setAuthMessage(result.message || 'Login failed');
+        return;
+      }
+
+      setPassword('');
+      setAuthMessage('');
+      setAuthState('authenticated');
+    } catch {
+      setAuthMessage('Could not reach CMS auth server');
+    }
+  };
+
+  const logout = async () => {
+    await fetch('/api/cms/logout', { method: 'POST' });
+    window.location.reload();
+  };
+
+  if (authState !== 'authenticated') {
+    return (
+      <div className="cms-auth-screen">
+        <form className="cms-auth-card" onSubmit={login}>
+          <div>
+            <strong>CMS Login</strong>
+            <span>{authState === 'checking' ? 'Checking session' : 'Enter the edit password'}</span>
+          </div>
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder="Password"
+            disabled={authState === 'checking'}
+            autoFocus
+          />
+          <button type="submit" disabled={authState === 'checking' || !password}>
+            Unlock Editor
+          </button>
+          {authMessage && <p>{authMessage}</p>}
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="cms-toolbar" role="status" aria-live="polite">
@@ -327,6 +416,9 @@ export default function EditModeCMS() {
         <strong>Edit mode</strong>
         <span>{activeText ? 'Typing changes here' : status}</span>
       </div>
+      <button type="button" onClick={logout}>
+        Logout
+      </button>
     </div>
   );
 }

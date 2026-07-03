@@ -5,45 +5,25 @@ import productCan from '../assets/genric_beer_can.png';
 import productArt from '../assets/Gemini_Generated_Image_tduvgytduvgytduv.png';
 import taxiAsset from '../assets/mumbai_taxi.png';
 import monsoonBeerCan from '../assets/monsoonBeerCan.png';
-import contentData from '../data/content.json';
+import { useContent } from '../content/useContent';
 import { resolveCmsImage } from '../utils/cmsImages';
 
-const products = [
-  {
-    id: 1,
-    name: contentData.productShowcase.products[0].name,
-    description: contentData.productShowcase.products[0].description,
-    color: 'from-brand-gold to-brand-goldLight',
-    icon: contentData.productShowcase.products[0].icon,
-    image: resolveCmsImage(contentData.productShowcase.products[0].image, productCan),
-    imagePath: ['productShowcase', 'products', 0, 'image'],
-    alt: contentData.productShowcase.products[0].alt,
-  },
-  {
-    id: 2,
-    name: contentData.productShowcase.products[1].name,
-    description: contentData.productShowcase.products[1].description,
-    color: 'from-brand-copper to-brand-forest',
-    icon: contentData.productShowcase.products[1].icon,
-    image: resolveCmsImage(contentData.productShowcase.products[1].image, productArt),
-    imagePath: ['productShowcase', 'products', 1, 'image'],
-    alt: contentData.productShowcase.products[1].alt,
-  },
-  {
-    id: 3,
-    name: contentData.productShowcase.products[2].name,
-    description: contentData.productShowcase.products[2].description,
-    color: 'from-brand-forest to-brand-sage',
-    icon: contentData.productShowcase.products[2].icon,
-    image: resolveCmsImage(contentData.productShowcase.products[2].image, monsoonBeerCan),
-    imagePath: ['productShowcase', 'products', 2, 'image'],
-    alt: contentData.productShowcase.products[2].alt,
-  },
-];
-
 export default function ProductShowcase() {
+  const contentData = useContent();
   const sectionRef = useRef<HTMLElement>(null);
   const taxiRef = useRef<HTMLImageElement>(null);
+  const productFallbacks = [productCan, productArt, monsoonBeerCan];
+  const productColors = [
+    'from-brand-gold to-brand-goldLight',
+    'from-brand-copper to-brand-forest',
+    'from-brand-forest to-brand-sage',
+  ];
+  const products = contentData.productShowcase.products.map((product, index) => ({
+    ...product,
+    color: productColors[index],
+    image: resolveCmsImage(product.image, productFallbacks[index]),
+    imagePath: ['productShowcase', 'products', index, 'image'],
+  }));
 
   useEffect(() => {
     const section = sectionRef.current;

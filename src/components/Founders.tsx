@@ -1,9 +1,10 @@
 import FadeIn from './FadeIn';
-import contentData from '../data/content.json';
-
-const founders = contentData.founders.founders;
+import { useContent } from '../content/useContent';
 
 export default function Founders() {
+  const contentData = useContent();
+  const founders = contentData.founders.founders;
+
   return (
     <section className="relative bg-brand-warmBg py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{

@@ -1,12 +1,14 @@
 import { lazy, Suspense } from 'react';
 import FadeIn from './FadeIn';
-import contentData from '../data/content.json';
+import { useContent } from '../content/useContent';
 
 const FooterExperience = lazy(() =>
   import('./three/ExperienceScenes').then((module) => ({ default: module.FooterExperience })),
 );
 
 export default function Footer() {
+  const contentData = useContent();
+
   return (
     <footer className="relative bg-brand-charcoal py-20 md:py-24 overflow-hidden">
       <Suspense fallback={null}>

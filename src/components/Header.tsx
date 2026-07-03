@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import contentData from '../data/content.json';
+import { useContent } from '../content/useContent';
 
 export default function Header() {
+  const contentData = useContent();
   const [isOpen, setIsOpen] = useState(false);
   const navItems = contentData.header.navItems;
 

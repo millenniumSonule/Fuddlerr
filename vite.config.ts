@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const contentFilePath = path.resolve(__dirname, 'src/data/content.json');
 const cmsImageDir = path.resolve(__dirname, 'public/cms');
+const cmsSessionCookie = 'fuddlerr_cms_session';
 
 type ContentValue = string | number | boolean | null | ContentValue[] | { [key: string]: ContentValue };
 
@@ -19,6 +21,19 @@ function readRequestBody(request: import('node:http').IncomingMessage) {
     request.on('end', () => resolve(body));
     request.on('error', reject);
   });
+}
+
+function getCookie(request: import('node:http').IncomingMessage, name: string) {
+  const cookieHeader = request.headers.cookie || '';
+  const cookies = cookieHeader.split(';').map((cookie) => cookie.trim());
+  const cookie = cookies.find((item) => item.startsWith(`${name}=`));
+  return cookie ? decodeURIComponent(cookie.slice(name.length + 1)) : '';
+}
+
+function sendJson(response: import('node:http').ServerResponse, statusCode: number, payload: Record<string, unknown>) {
+  response.statusCode = statusCode;
+  response.setHeader('Content-Type', 'application/json');
+  response.end(JSON.stringify(payload));
 }
 
 function getValueAtPath(content: ContentValue, editPath: Array<string | number>) {
@@ -181,12 +196,107 @@ function cmsContentPlugin() {
   return {
     name: 'fuddlerr-cms-content-writer',
     configureServer(server: import('vite').ViteDevServer) {
-      server.middlewares.use('/api/cms/content', async (request, response) => {
+      const sessions = new Set<string>();
+      const getCmsPassword = () => process.env.FUDDLERR_CMS_PASSWORD || '';
+      const isAuthenticated = (request: import('node:http').IncomingMessage) => {
+        const token = getCookie(request, cmsSessionCookie);
+        return Boolean(token && sessions.has(token));
+      };
+
+      const requireAuthenticated = (
+        request: import('node:http').IncomingMessage,
+        response: import('node:http').ServerResponse
+      ) => {
+        if (isAuthenticated(request)) return true;
+        sendJson(response, 401, { ok: false, message: 'CMS login required' });
+        return false;
+      };
+
+      server.middlewares.use('/api/cms/session', async (request, response) => {
+        if (request.method !== 'GET') {
+          response.statusCode = 405;
+          response.end('Method Not Allowed');
+          return;
+        }
+
+        sendJson(response, 200, {
+          ok: true,
+          authenticated: isAuthenticated(request),
+          configured: Boolean(getCmsPassword()),
+        });
+      });
+
+      server.middlewares.use('/api/cms/login', async (request, response) => {
         if (request.method !== 'POST') {
           response.statusCode = 405;
           response.end('Method Not Allowed');
           return;
         }
+
+        const configuredPassword = getCmsPassword();
+        if (!configuredPassword) {
+          sendJson(response, 503, {
+            ok: false,
+            message: 'Set FUDDLERR_CMS_PASSWORD before using /edit',
+          });
+          return;
+        }
+
+        try {
+          const body = JSON.parse(await readRequestBody(request)) as { password?: string };
+
+          if (body.password !== configuredPassword) {
+            sendJson(response, 401, { ok: false, message: 'Invalid password' });
+            return;
+          }
+
+          const token = crypto.randomBytes(32).toString('hex');
+          sessions.add(token);
+          response.setHeader(
+            'Set-Cookie',
+            `${cmsSessionCookie}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800`
+          );
+          sendJson(response, 200, { ok: true });
+        } catch {
+          sendJson(response, 400, { ok: false, message: 'Invalid login payload' });
+        }
+      });
+
+      server.middlewares.use('/api/cms/logout', async (request, response) => {
+        if (request.method !== 'POST') {
+          response.statusCode = 405;
+          response.end('Method Not Allowed');
+          return;
+        }
+
+        const token = getCookie(request, cmsSessionCookie);
+        if (token) sessions.delete(token);
+        response.setHeader(
+          'Set-Cookie',
+          `${cmsSessionCookie}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`
+        );
+        sendJson(response, 200, { ok: true });
+      });
+
+      server.middlewares.use('/api/cms/content', async (request, response) => {
+        if (request.method === 'GET') {
+          try {
+            response.setHeader('Content-Type', 'application/json');
+            response.end(await fs.readFile(contentFilePath, 'utf8'));
+          } catch (error) {
+            response.statusCode = 500;
+            response.end(error instanceof Error ? error.message : 'Unable to read content');
+          }
+          return;
+        }
+
+        if (request.method !== 'POST') {
+          response.statusCode = 405;
+          response.end('Method Not Allowed');
+          return;
+        }
+
+        if (!requireAuthenticated(request, response)) return;
 
         try {
           const body = JSON.parse(await readRequestBody(request)) as {
@@ -221,6 +331,8 @@ function cmsContentPlugin() {
           response.end('Method Not Allowed');
           return;
         }
+
+        if (!requireAuthenticated(request, response)) return;
 
         try {
           const body = JSON.parse(await readRequestBody(request)) as {

@@ -1,7 +1,5 @@
 import FadeIn from './FadeIn';
-import contentData from '../data/content.json';
-
-const values = contentData.brandValues.values;
+import { useContent } from '../content/useContent';
 
 const colorMap: Record<string, string> = {
   gold: 'border-brand-gold/40 text-brand-gold hover:bg-brand-gold/10',
@@ -11,6 +9,9 @@ const colorMap: Record<string, string> = {
 };
 
 export default function BrandValues() {
+  const contentData = useContent();
+  const values = contentData.brandValues.values;
+
   return (
     <section className="relative bg-brand-warmBg py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0 opacity-[0.02]" style={{

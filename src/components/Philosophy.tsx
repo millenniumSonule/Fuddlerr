@@ -1,7 +1,9 @@
 import FadeIn from './FadeIn';
-import contentData from '../data/content.json';
+import { useContent } from '../content/useContent';
 
 export default function Philosophy() {
+  const contentData = useContent();
+
   return (
     <section className="relative bg-brand-cream py-28 md:py-36 overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-brand-sand/30 opacity-50" />

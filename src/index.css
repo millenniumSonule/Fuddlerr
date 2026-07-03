@@ -246,6 +246,80 @@
     box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
   }
 
+  .cms-auth-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    background: rgba(42, 36, 32, 0.78);
+    backdrop-filter: blur(14px);
+  }
+
+  .cms-auth-card {
+    display: grid;
+    gap: 1rem;
+    width: min(100%, 24rem);
+    padding: 1.25rem;
+    border: 1px solid rgba(198, 151, 47, 0.35);
+    border-radius: 0.5rem;
+    background: #FBF8F3;
+    color: #2A2420;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  }
+
+  .cms-auth-card div {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .cms-auth-card strong {
+    color: #2A2420;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cms-auth-card span,
+  .cms-auth-card p {
+    color: #7A6B5D;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .cms-auth-card input {
+    width: 100%;
+    border: 1px solid rgba(122, 107, 93, 0.35);
+    border-radius: 0.45rem;
+    background: #FFFFFF;
+    color: #2A2420;
+    font-size: 1rem;
+    padding: 0.8rem 0.9rem;
+  }
+
+  .cms-auth-card input:focus {
+    border-color: #C6972F;
+    outline: 2px solid rgba(198, 151, 47, 0.22);
+  }
+
+  .cms-auth-card button {
+    border: 0;
+    border-radius: 999px;
+    background: #C6972F;
+    color: #FFFFFF;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.85rem 1rem;
+    text-transform: uppercase;
+  }
+
+  .cms-auth-card button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
   .cms-toolbar div {
     display: grid;
     gap: 0.1rem;

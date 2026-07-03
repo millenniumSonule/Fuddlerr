@@ -1,9 +1,11 @@
 import FadeIn from './FadeIn';
 import lightThemeImage from '../assets/light_theme_middle_section.png';
-import contentData from '../data/content.json';
+import { useContent } from '../content/useContent';
 import { resolveCmsImage } from '../utils/cmsImages';
 
 export default function ArabianSeaSection() {
+  const contentData = useContent();
+
   return (
     <section className="py-20 bg-brand-cream">
       <div className="max-w-6xl mx-auto px-6">

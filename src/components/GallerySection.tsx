@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import FadeIn from './FadeIn';
-import contentData from '../data/content.json';
+import { useContent } from '../content/useContent';
 import heritageBlendImage from '../assets/heritageBlend.png';
 import urbanEssance from '../assets/urbanEssance.png';
 import monsoonSpirit from '../assets/monsoonSpirit.png';
@@ -9,22 +9,24 @@ import premiumReserve from '../assets/premiumReserve.png';
 import communityLove from '../assets/communityLove.png';
 import nordicCrafted from '../assets/nordicCrafted.png';
 import { resolveCmsImage } from '../utils/cmsImages';
-
-
-
-
-const gallery = contentData.gallery.items.map((item) => ({
-  ...item,
-  color: ['from-brand-gold to-brand-copper', 'from-brand-forest to-brand-sage', 'from-brand-charcoal to-brand-stone', 'from-brand-copper to-brand-forest', 'from-brand-goldLight to-brand-gold', 'from-brand-sage to-brand-forest'][item.id - 1],
-  image: resolveCmsImage(
-    item.image,
-    item.id === 1 ? heritageBlendImage : item.id === 2 ? urbanEssance : item.id === 3 ? nordicCrafted : item.id === 4 ? monsoonSpirit : item.id === 5 ? premiumReserve : item.id === 6 ? communityLove : ''
-  ),
-  imagePath: ['gallery', 'items', item.id - 1, 'image'],
-}));
-
 export default function GallerySection() {
+  const contentData = useContent();
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const fallbackImages = [heritageBlendImage, urbanEssance, nordicCrafted, monsoonSpirit, premiumReserve, communityLove];
+  const colors = [
+    'from-brand-gold to-brand-copper',
+    'from-brand-forest to-brand-sage',
+    'from-brand-charcoal to-brand-stone',
+    'from-brand-copper to-brand-forest',
+    'from-brand-goldLight to-brand-gold',
+    'from-brand-sage to-brand-forest',
+  ];
+  const gallery = contentData.gallery.items.map((item, index) => ({
+    ...item,
+    color: colors[index],
+    image: resolveCmsImage(item.image, fallbackImages[index]),
+    imagePath: ['gallery', 'items', index, 'image'],
+  }));
 
   return (
     <section className="relative bg-brand-warmBg py-28 md:py-36 overflow-hidden">

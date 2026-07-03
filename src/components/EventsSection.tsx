@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
 import { Calendar, MapPin } from 'lucide-react';
 import FadeIn from './FadeIn';
-import contentData from '../data/content.json';
-
-const events = contentData.events.events;
+import { useContent } from '../content/useContent';
 
 export default function EventsSection() {
+  const contentData = useContent();
+  const events = contentData.events.events;
+
   return (
     <section className="relative bg-brand-warmBg py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0 opacity-20">

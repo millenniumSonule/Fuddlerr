@@ -1,7 +1,9 @@
 import FadeIn from './FadeIn';
-import contentData from '../data/content.json';
+import { useContent } from '../content/useContent';
 
 export default function BrandStory() {
+  const contentData = useContent();
+
   return (
     <section className="relative bg-brand-cream py-28 md:py-36 overflow-hidden">
       <div className="absolute top-0 left-0 w-72 h-72 bg-brand-gold/5 rounded-full blur-3xl" />

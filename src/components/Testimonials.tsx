@@ -2,11 +2,11 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import FadeIn from './FadeIn';
-import contentData from '../data/content.json';
-
-const testimonials = contentData.testimonials.testimonials;
+import { useContent } from '../content/useContent';
 
 export default function Testimonials() {
+  const contentData = useContent();
+  const testimonials = contentData.testimonials.testimonials;
   const [current, setCurrent] = useState(0);
 
   const next = () => setCurrent((current + 1) % testimonials.length);
