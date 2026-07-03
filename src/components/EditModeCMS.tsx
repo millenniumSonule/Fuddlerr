@@ -124,6 +124,15 @@ function applyImageSource(target: HTMLElement, src: string) {
   target.style.backgroundImage = `url("${src}")`;
 }
 
+function clearImageSource(target: HTMLElement) {
+  if (target instanceof HTMLImageElement) {
+    target.src = '';
+    return;
+  }
+
+  target.style.backgroundImage = 'none';
+}
+
 function resolveImageTarget(element: HTMLElement) {
   if (element instanceof HTMLImageElement) return element;
 
@@ -271,6 +280,21 @@ export default function EditModeCMS() {
       await reloadContent();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'Could not save image');
+    }
+  };
+
+  const removeSelectedCmsImage = async () => {
+    if (!selectedImagePathRef.current || !selectedImageTargetRef.current) return;
+
+    try {
+      setStatus('Removing image');
+      await saveContentEdit(selectedImagePathRef.current, '');
+      clearImageSource(selectedImageTargetRef.current);
+      setStatus(`Removed image ${formatPath(selectedImagePathRef.current)}`);
+      setImagePickerOpen(false);
+      await reloadContent();
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : 'Could not remove image');
     }
   };
 
@@ -543,6 +567,9 @@ export default function EditModeCMS() {
             <div className="cms-image-picker__actions">
               <button type="button" onClick={triggerLocalUpload}>
                 Upload new image
+              </button>
+              <button type="button" onClick={() => void removeSelectedCmsImage()}>
+                Remove image
               </button>
             </div>
 

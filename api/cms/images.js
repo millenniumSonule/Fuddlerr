@@ -24,7 +24,7 @@ export default async function handler(request, response) {
     if (error) throw error;
 
     const images = (data || [])
-      .filter((item) => !item.id && item.name)
+      .filter((item) => item.name)
       .map((item) => {
         const filePath = `uploads/${item.name}`;
         const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(filePath);
