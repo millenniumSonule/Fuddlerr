@@ -241,7 +241,7 @@
     "title": "Moments & Memories",
     "description": "Celebrating the journey, the people, and the passion behind every bottle",
     "items": [
-      { "id": 1, "title": "Heritage Blend", "icon": "🌾" },
+      { "id": 1, "title": "Heritage Blend", "icon": "", "image": "heritageBlend.png" },
       { "id": 2, "title": "Urban Essence", "icon": "🏙️" },
       { "id": 3, "title": "Nordic Crafted", "icon": "❄️" },
       { "id": 4, "title": "Monsoon Spirit", "icon": "🌧️" },

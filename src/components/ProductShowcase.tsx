@@ -4,6 +4,7 @@ import FadeIn from './FadeIn';
 import productCan from '../assets/genric_beer_can.png';
 import productArt from '../assets/Gemini_Generated_Image_tduvgytduvgytduv.png';
 import taxiAsset from '../assets/mumbai_taxi.png';
+import monsoonBeerCan from '../assets/monsoonBeerCan.png';
 import contentData from '../data/content.json';
 
 const products = [
@@ -31,7 +32,7 @@ const products = [
     description: contentData.productShowcase.products[2].description,
     color: 'from-brand-forest to-brand-sage',
     icon: contentData.productShowcase.products[2].icon,
-    image: productCan,
+    image: monsoonBeerCan,
     alt: contentData.productShowcase.products[2].alt,
   },
 ];

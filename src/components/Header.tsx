@@ -5,8 +5,25 @@ import contentData from '../data/content.json';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-contentData.header.navItems
-  const navItems = ['Home', 'About', 'Products', 'Community', 'Contact'];
+  const navItems = contentData.header.navItems;
+
+  const sectionMap: Record<string, string> = {
+    'Home': 'hero',
+    'About': 'about',
+    'Products': 'products',
+    'Community': 'community',
+    'Contact': 'contact',
+  };
+
+  const scrollToSection = (sectionName: string) => {
+    const sectionId = sectionMap[sectionName] || sectionName.toLowerCase();
+    const element = document.getElementById(sectionId);
+    
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setIsOpen(false);
+    }
+  };
 
   return (
     <motion.header
@@ -26,13 +43,13 @@ contentData.header.navItems
 
         <nav className="hidden md:flex items-center gap-8">
           {navItems.map((item, idx) => (
-            <motion.a
+            <motion.button
               key={item}
-              href={`#${item.toLowerCase()}`}
+              onClick={() => scrollToSection(item)}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
-              className="text-brand-charcoal text-sm uppercase tracking-wider hover:text-brand-gold transition-colors relative group"
+              className="text-brand-charcoal text-sm uppercase tracking-wider hover:text-brand-gold transition-colors relative group cursor-pointer bg-transparent border-none p-0"
               data-magnetic
             >
               {item}
@@ -42,7 +59,7 @@ contentData.header.navItems
                 whileHover={{ width: '100%' }}
                 transition={{ duration: 0.3 }}
               />
-            </motion.a>
+            </motion.button>
           ))}
         </nav>
 
@@ -64,7 +81,6 @@ contentData.header.navItems
         </button>
       </div>
 
-      {isOpen && (
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
@@ -73,20 +89,19 @@ contentData.header.navItems
         >
           <nav className="flex flex-col gap-4">
             {navItems.map((item) => (
-              <a
+              <button
                 key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-brand-charcoal text-sm uppercase tracking-wider hover:text-brand-gold transition-colors"
+                onClick={() => scrollToSection(item)}
+                className="text-brand-charcoal text-sm uppercase tracking-wider hover:text-brand-gold transition-colors cursor-pointer bg-transparent border-none text-left p-0"
               >
                 {item}
-              </a>
+              </button>
             ))}
             <button className="mt-4 px-6 py-2 rounded-full bg-brand-gold text-white font-semibold w-full">
-              Order Now
+              {contentData.header.cta}
             </button>
           </nav>
         </motion.div>
-      )}
     </motion.header>
   );
 }

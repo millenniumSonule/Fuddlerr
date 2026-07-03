@@ -24,21 +24,31 @@ function App() {
         <MagneticCursor />
         <Header />
         <main className="pt-20">
-          <Hero />
+          <section id="hero">
+            <Hero />
+          </section>
           <RedCanSection />
-          <ArabianSeaSection />
+          <section id="about">
+            <ArabianSeaSection />
+          </section>
           <BrandStory />
-          <ProductShowcase />
+          <section id="products">
+            <ProductShowcase />
+          </section>
           <Founders />
           <Philosophy />
           <StatsSection />
           <BrandValues />
           <GallerySection />
           <Testimonials />
-          <EventsSection />
+          <section id="community">
+            <EventsSection />
+          </section>
           <BrandPersonality />
           <CTASection />
-          <Footer />
+          <section id="contact">
+            <Footer />
+          </section>
         </main>
       </div>
     </SmoothScroll>

@@ -2,10 +2,20 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import FadeIn from './FadeIn';
 import contentData from '../data/content.json';
+import heritageBlendImage from '../assets/heritageBlend.png';
+import urbanEssance from '../assets/urbanEssance.png';
+import monsoonSpirit from '../assets/monsoonSpirit.png';
+import premiumReserve from '../assets/premiumReserve.png';
+import communityLove from '../assets/communityLove.png';
+import nordicCrafted from '../assets/nordicCrafted.png';
+
+
+
 
 const gallery = contentData.gallery.items.map((item) => ({
   ...item,
-  color: ['from-brand-gold to-brand-copper', 'from-brand-forest to-brand-sage', 'from-brand-charcoal to-brand-stone', 'from-brand-copper to-brand-forest', 'from-brand-goldLight to-brand-gold', 'from-brand-sage to-brand-forest'][item.id - 1]
+  color: ['from-brand-gold to-brand-copper', 'from-brand-forest to-brand-sage', 'from-brand-charcoal to-brand-stone', 'from-brand-copper to-brand-forest', 'from-brand-goldLight to-brand-gold', 'from-brand-sage to-brand-forest'][item.id - 1],
+  image: item.id === 1 ? heritageBlendImage : item.id === 2 ? urbanEssance : item.id === 3 ? nordicCrafted : item.id === 4 ? monsoonSpirit : item.id === 5 ? premiumReserve : item.id === 6 ? communityLove : null,
 }));
 
 export default function GallerySection() {
@@ -51,7 +61,7 @@ export default function GallerySection() {
               viewport={{ once: true }}
               onMouseEnter={() => setHoveredId(item.id)}
               onMouseLeave={() => setHoveredId(null)}
-              className="premium-card group cursor-pointer"
+              className="premium-card group"
               data-magnetic
             >
               <motion.div
@@ -59,24 +69,24 @@ export default function GallerySection() {
                 whileHover={{ y: -8, rotateX: 3, rotateY: -4 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
+                {item.image && (
+                  <img 
+                    src={item.image} 
+                    alt={item.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                )}
+                <div className={`absolute inset-0 ${item.image ? 'bg-black/20' : 'bg-black/40'} group-hover:bg-black/20 transition-colors duration-300`} />
                 <div 
                   className="absolute inset-0 opacity-70"
                   style={{
                     backgroundImage: 'radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.24), transparent 34%)'
                   }}
                 />
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-                  <motion.div
-                    className="text-6xl"
-                    animate={hoveredId === item.id ? { scale: 1.2, rotate: 10 } : { scale: 1, rotate: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {item.icon}
-                  </motion.div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10">
                   <motion.h3
-                    className="font-serif text-2xl text-white text-center px-4"
-                    animate={hoveredId === item.id ? { y: 0, opacity: 1 } : { y: 10, opacity: 0.7 }}
+                    className="font-serif text-2xl md:text-3xl text-white text-center px-6 py-4 bg-black/30 backdrop-blur-sm rounded-lg"
+                    animate={hoveredId === item.id ? { y: 0, opacity: 1 } : { y: 10, opacity: 0.8 }}
                     transition={{ duration: 0.3 }}
                   >
                     {item.title}
