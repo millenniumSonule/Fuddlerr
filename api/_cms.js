@@ -130,8 +130,7 @@ export function setValueAtPath(content, editPath, value) {
     lastSegment === undefined ||
     parent === undefined ||
     parent === null ||
-    typeof parent !== 'object' ||
-    currentValue === undefined
+    typeof parent !== 'object'
   ) {
     throw new Error('Editable content path was not found');
   }
@@ -161,6 +160,11 @@ export function setValueAtPath(content, editPath, value) {
   }
 
   if (typeof currentValue === 'string') {
+    parent[lastSegment] = value;
+    return;
+  }
+
+  if (currentValue === undefined) {
     parent[lastSegment] = value;
     return;
   }

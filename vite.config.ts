@@ -184,8 +184,45 @@ function safeFileName(fileName: string) {
 async function updateContentString(editPath: Array<string | number>, value: string) {
   const source = await fs.readFile(contentFilePath, 'utf8');
   const content = JSON.parse(source) as ContentValue;
+  const currentValue = getValueAtPath(content, editPath);
 
-  if (typeof getValueAtPath(content, editPath) !== 'string') {
+  if (currentValue === undefined) {
+    let target = content as Record<string, ContentValue> | ContentValue[];
+    for (let index = 0; index < editPath.length - 1; index += 1) {
+      const segment = editPath[index];
+      const nextSegment = editPath[index + 1];
+
+      if (Array.isArray(target)) {
+        const item = target[segment as number];
+        if (item === undefined || item === null || typeof item !== 'object') {
+          throw new Error('Editable content path was not found');
+        }
+        target = item as Record<string, ContentValue> | ContentValue[];
+        continue;
+      }
+
+      const item = target[segment as string];
+      if (item === undefined || item === null || typeof item !== 'object') {
+        throw new Error('Editable content path was not found');
+      }
+      target = item as Record<string, ContentValue> | ContentValue[];
+
+      if (Array.isArray(target) && typeof nextSegment === 'number') {
+        continue;
+      }
+    }
+
+    const lastSegment = editPath[editPath.length - 1];
+    if (Array.isArray(target)) {
+      target[lastSegment as number] = value as unknown as ContentValue;
+    } else {
+      target[lastSegment as string] = value as unknown as ContentValue;
+    }
+    await fs.writeFile(contentFilePath, `${JSON.stringify(content, null, 2)}\n`);
+    return;
+  }
+
+  if (typeof currentValue !== 'string') {
     throw new Error('Editable content path was not found');
   }
 
