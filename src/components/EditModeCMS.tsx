@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { useContent } from '../content/useContent';
+import { useContent, useContentActions } from '../content/useContent';
 
 const EDITABLE_SELECTOR = '[data-cms-editable="true"]';
 const EDITABLE_IMAGE_SELECTOR = 'img[data-cms-image-path]';
@@ -169,6 +169,7 @@ function markEditableText(pathIndex: ContentPathIndex) {
 
 export default function EditModeCMS() {
   const contentData = useContent();
+  const { reloadContent } = useContentActions();
   const [activeText, setActiveText] = useState('');
   const [authState, setAuthState] = useState<AuthState>('checking');
   const [password, setPassword] = useState('');
@@ -249,6 +250,7 @@ export default function EditModeCMS() {
         await saveContentEdit(JSON.parse(pathValue) as ContentPath, element.innerText);
         element.dataset.cmsOriginal = element.innerText;
         setStatus(`Saved ${formatPath(JSON.parse(pathValue) as ContentPath)}`);
+        await reloadContent();
       } catch (error) {
         element.innerText = element.dataset.cmsOriginal || '';
         setStatus(error instanceof Error ? error.message : 'Could not save edit');
@@ -272,6 +274,7 @@ export default function EditModeCMS() {
           const result = await saveImageEdit(path, file);
           image.src = result.src;
           setStatus(`Saved image ${formatPath(path)}`);
+          await reloadContent();
         } catch (error) {
           setStatus(error instanceof Error ? error.message : 'Could not save image');
         }

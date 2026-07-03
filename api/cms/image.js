@@ -1,4 +1,5 @@
 import {
+  getErrorMessage,
   getSupabase,
   readContent,
   requireAuthenticated,
@@ -54,6 +55,9 @@ export default async function handler(request, response) {
 
     sendJson(response, 200, { ok: true, src: data.publicUrl, content });
   } catch (error) {
-    sendJson(response, 500, { ok: false, message: error instanceof Error ? error.message : 'Unable to save image edit' });
+    sendJson(response, 500, {
+      ok: false,
+      message: getErrorMessage(error, 'Unable to save image edit'),
+    });
   }
 }

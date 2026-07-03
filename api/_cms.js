@@ -10,6 +10,17 @@ export function sendJson(response, statusCode, payload) {
   response.status(statusCode).json(payload);
 }
 
+export function getErrorMessage(error, fallback = 'Unknown error') {
+  if (error instanceof Error && error.message) return error.message;
+  if (error && typeof error === 'object') {
+    if (typeof error.message === 'string' && error.message) return error.message;
+    if (typeof error.error_description === 'string' && error.error_description) return error.error_description;
+    if (typeof error.error === 'string' && error.error) return error.error;
+  }
+
+  return fallback;
+}
+
 export function getCmsPassword() {
   return process.env.FUDDLERR_CMS_PASSWORD || '';
 }

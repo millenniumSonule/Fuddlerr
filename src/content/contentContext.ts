@@ -3,5 +3,13 @@ import defaultContent from '../data/content.json';
 
 export type SiteContent = typeof defaultContent;
 
-export const ContentContext = createContext<SiteContent>(defaultContent);
+export type ContentContextValue = {
+  content: SiteContent;
+  reloadContent: () => Promise<void>;
+};
+
+export const ContentContext = createContext<ContentContextValue>({
+  content: defaultContent,
+  reloadContent: async () => {},
+});
 export { defaultContent };

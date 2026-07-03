@@ -1,4 +1,4 @@
-import { readContent, requireAuthenticated, sendJson, setValueAtPath, writeContent } from '../_cms.js';
+import { getErrorMessage, readContent, requireAuthenticated, sendJson, setValueAtPath, writeContent } from '../_cms.js';
 
 export default async function handler(request, response) {
   if (request.method === 'GET') {
@@ -29,6 +29,9 @@ export default async function handler(request, response) {
     await writeContent(content);
     sendJson(response, 200, { ok: true, content });
   } catch (error) {
-    sendJson(response, 500, { ok: false, message: error instanceof Error ? error.message : 'Unable to save content edit' });
+    sendJson(response, 500, {
+      ok: false,
+      message: getErrorMessage(error, 'Unable to save content edit'),
+    });
   }
 }
