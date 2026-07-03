@@ -24,7 +24,7 @@ function App() {
   return (
     <SmoothScroll>
       <div className="min-h-screen bg-brand-espresso">
-        <MagneticCursor />
+        {!isEditMode && <MagneticCursor />}
         {isEditMode && <EditModeCMS />}
         <Header />
         <main className="pt-20">

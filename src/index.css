@@ -40,6 +40,10 @@
   .cms-edit-mode button,
   .cms-edit-mode [data-cursor],
   .cms-edit-mode [data-magnetic] {
+    cursor: auto;
+  }
+  .cms-edit-mode button,
+  .cms-edit-mode a {
     cursor: pointer;
   }
   ::selection {
