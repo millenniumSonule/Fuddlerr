@@ -372,6 +372,34 @@ function cmsContentPlugin() {
           response.end(error instanceof Error ? error.message : 'Unable to save image edit');
         }
       });
+
+      server.middlewares.use('/api/cms/images', async (request, response) => {
+        if (request.method !== 'GET') {
+          response.statusCode = 405;
+          response.end('Method Not Allowed');
+          return;
+        }
+
+        if (!requireAuthenticated(request, response)) return;
+
+        try {
+          await fs.mkdir(cmsImageDir, { recursive: true });
+          const entries = await fs.readdir(cmsImageDir, { withFileTypes: true });
+          const images = entries
+            .filter((entry) => entry.isFile())
+            .map((entry) => ({
+              name: entry.name,
+              path: `/cms/${entry.name}`,
+              url: `/cms/${entry.name}`,
+            }));
+
+          response.setHeader('Content-Type', 'application/json');
+          response.end(JSON.stringify({ ok: true, images }));
+        } catch (error) {
+          response.statusCode = 500;
+          response.end(error instanceof Error ? error.message : 'Unable to load CMS images');
+        }
+      });
     },
   };
 }

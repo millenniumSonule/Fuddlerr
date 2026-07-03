@@ -126,10 +126,19 @@ function StatCard({ stat, idx }: { stat: StatItem; idx: number }) {
       <div className="relative inline-block mb-6">
         <div className="absolute inset-0 w-24 h-24 bg-brand-gold/10 rounded-full blur-xl group-hover:bg-brand-gold/20 transition-colors" />
         <div
-          className="relative w-24 h-24 rounded-full flex items-center justify-center border border-brand-warmGray/60 overflow-hidden bg-gradient-to-br from-brand-gold/8 to-brand-copper/3 bg-center bg-cover"
+          className="cms-image-target relative w-24 h-24 rounded-full flex items-center justify-center border border-brand-warmGray/60 overflow-hidden bg-gradient-to-br from-brand-gold/8 to-brand-copper/3 bg-center bg-cover"
           data-cms-image-path={JSON.stringify(['stats', 'data', idx, 'image'])}
           style={{ backgroundImage: `url("${statImage}")` }}
-        />
+        >
+          <button
+            type="button"
+            className="cms-stat-upload absolute inset-0 z-10 flex items-center justify-center rounded-full bg-black/15 text-[0.7rem] font-semibold tracking-[0.2em] uppercase text-white backdrop-blur-[1px]"
+            data-cms-image-path={JSON.stringify(['stats', 'data', idx, 'image'])}
+            aria-label={`Change image for ${stat.label}`}
+          >
+            {stat.image ? 'Change image' : 'Add image'}
+          </button>
+        </div>
       </div>
 
       <Counter

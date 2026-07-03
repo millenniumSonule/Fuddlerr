@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useContent, useContentActions } from '../content/useContent';
 
 const EDITABLE_SELECTOR = '[data-cms-editable="true"]';
@@ -21,6 +21,7 @@ const SKIP_TAGS = new Set([
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 type ContentPath = Array<string | number>;
 type ContentPathIndex = Map<string, ContentPath[]>;
+type CmsImage = { name: string; path: string; url: string };
 type AuthState = 'checking' | 'authenticated' | 'login';
 
 function normalizeText(value: string) {
@@ -126,6 +127,19 @@ function applyImageSource(target: HTMLElement, src: string) {
 function resolveImageTarget(element: HTMLElement) {
   if (element instanceof HTMLImageElement) return element;
 
+  const imageTarget = element.closest<HTMLElement>('.cms-image-target');
+  if (imageTarget) {
+    const cardImage = imageTarget.querySelector<HTMLImageElement>('img[data-cms-image-path]');
+    if (cardImage) return cardImage;
+    return imageTarget;
+  }
+
+  const galleryCard = element.closest<HTMLElement>('.gallery-card');
+  if (galleryCard) {
+    const cardImage = galleryCard.querySelector<HTMLImageElement>('img[data-cms-image-path]');
+    if (cardImage) return cardImage;
+  }
+
   const nestedImage = element.querySelector<HTMLImageElement>('img[data-cms-image-path]');
   if (nestedImage) return nestedImage;
 
@@ -200,6 +214,69 @@ export default function EditModeCMS() {
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState('Click any text to edit');
   const [authMessage, setAuthMessage] = useState('');
+  const [imageLibrary, setImageLibrary] = useState<CmsImage[]>([]);
+  const [imagePickerOpen, setImagePickerOpen] = useState(false);
+  const [imagePickerLoading, setImagePickerLoading] = useState(false);
+  const [imagePickerMessage, setImagePickerMessage] = useState('');
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const selectedImagePathRef = useRef<ContentPath | null>(null);
+  const selectedImageTargetRef = useRef<HTMLElement | null>(null);
+
+  const loadImageLibrary = async () => {
+    try {
+      setImagePickerLoading(true);
+      const response = await fetch('/api/cms/images');
+      const result = (await response.json()) as { ok?: boolean; images?: CmsImage[]; message?: string };
+
+      if (!response.ok || !result.ok) {
+        setImagePickerMessage(result.message || 'Could not load CMS images');
+        setImageLibrary([]);
+        return;
+      }
+
+      setImageLibrary(result.images || []);
+      setImagePickerMessage((result.images || []).length ? '' : 'No CMS images found yet');
+    } catch {
+      setImagePickerMessage('Could not load CMS images');
+      setImageLibrary([]);
+    } finally {
+      setImagePickerLoading(false);
+    }
+  };
+
+  const openStoredImagePicker = (image: HTMLElement) => {
+    const pathValue = image.dataset.cmsImagePath;
+    if (!pathValue) return;
+
+    try {
+      selectedImagePathRef.current = JSON.parse(pathValue) as ContentPath;
+      selectedImageTargetRef.current = resolveImageTarget(image);
+      setImagePickerMessage('');
+      setImagePickerOpen(true);
+      void loadImageLibrary();
+    } catch {
+      setStatus('Could not open image picker');
+    }
+  };
+
+  const saveSelectedCmsImage = async (imageUrl: string) => {
+    if (!selectedImagePathRef.current || !selectedImageTargetRef.current) return;
+
+    try {
+      setStatus('Saving selected CMS image');
+      await saveContentEdit(selectedImagePathRef.current, imageUrl);
+      applyImageSource(selectedImageTargetRef.current, imageUrl);
+      setStatus(`Saved image ${formatPath(selectedImagePathRef.current)}`);
+      setImagePickerOpen(false);
+      await reloadContent();
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : 'Could not save image');
+    }
+  };
+
+  const triggerLocalUpload = () => {
+    imageInputRef.current?.click();
+  };
 
   useEffect(() => {
     const checkSession = async () => {
@@ -230,11 +307,6 @@ export default function EditModeCMS() {
     if (authState !== 'authenticated') return;
 
     const pathIndex = buildContentPathIndex(contentData as JsonValue);
-    const imageInput = document.createElement('input');
-    imageInput.type = 'file';
-    imageInput.accept = 'image/png,image/jpeg,image/webp,image/gif,image/svg+xml';
-    imageInput.hidden = true;
-    document.body.appendChild(imageInput);
 
     document.documentElement.classList.add('cms-edit-mode');
     markEditableText(pathIndex);
@@ -285,29 +357,29 @@ export default function EditModeCMS() {
     };
 
     const chooseImage = (image: HTMLElement) => {
-      const pathValue = image.dataset.cmsImagePath;
-      if (!pathValue) return;
-      const targetImage = resolveImageTarget(image);
+      openStoredImagePicker(image);
+    };
 
+    const imageInput = imageInputRef.current;
+    if (imageInput) {
       imageInput.onchange = async () => {
         const file = imageInput.files?.[0];
         imageInput.value = '';
-        if (!file) return;
+        if (!file || !selectedImagePathRef.current || !selectedImageTargetRef.current) return;
 
         try {
-          const path = JSON.parse(pathValue) as ContentPath;
           setStatus(`Uploading ${file.name}`);
-          const result = await saveImageEdit(path, file);
-          applyImageSource(targetImage, result.src);
-          setStatus(`Saved image ${formatPath(path)}`);
+          const result = await saveImageEdit(selectedImagePathRef.current, file);
+          applyImageSource(selectedImageTargetRef.current, result.src);
+          setStatus(`Saved image ${formatPath(selectedImagePathRef.current)}`);
+          setImagePickerOpen(false);
           await reloadContent();
+          await loadImageLibrary();
         } catch (error) {
           setStatus(error instanceof Error ? error.message : 'Could not save image');
         }
       };
-
-      imageInput.click();
-    };
+    }
 
     const onClick = (event: MouseEvent) => {
       const target = (event.target as Element | null)?.closest<HTMLElement>(EDITABLE_SELECTOR);
@@ -375,7 +447,6 @@ export default function EditModeCMS() {
     return () => {
       window.clearTimeout(refreshTimer);
       observer.disconnect();
-      imageInput.remove();
       document.documentElement.classList.remove('cms-edit-mode');
       document.removeEventListener('click', onClick, true);
       document.removeEventListener('focusout', onFocusOut, true);
@@ -442,6 +513,12 @@ export default function EditModeCMS() {
 
   return (
     <div className="cms-toolbar" role="status" aria-live="polite">
+      <input
+        ref={imageInputRef}
+        type="file"
+        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+        hidden
+      />
       <div>
         <strong>Edit mode</strong>
         <span>{activeText ? 'Typing changes here' : status}</span>
@@ -449,6 +526,47 @@ export default function EditModeCMS() {
       <button type="button" onClick={logout}>
         Logout
       </button>
+      {imagePickerOpen && (
+        <div className="cms-image-picker" role="dialog" aria-modal="true" aria-label="CMS image library">
+          <div className="cms-image-picker__backdrop" onClick={() => setImagePickerOpen(false)} />
+          <div className="cms-image-picker__panel">
+            <div className="cms-image-picker__header">
+              <div>
+                <strong>Choose an image</strong>
+                <span>{imagePickerMessage || 'Pick from CMS uploads or add a new one'}</span>
+              </div>
+              <button type="button" onClick={() => setImagePickerOpen(false)}>
+                Close
+              </button>
+            </div>
+
+            <div className="cms-image-picker__actions">
+              <button type="button" onClick={triggerLocalUpload}>
+                Upload new image
+              </button>
+            </div>
+
+            <div className="cms-image-picker__grid">
+              {imagePickerLoading ? (
+                <p>Loading images…</p>
+              ) : (
+                imageLibrary.map((image) => (
+                  <button
+                    key={image.path}
+                    type="button"
+                    className="cms-image-picker__item"
+                    onClick={() => void saveSelectedCmsImage(image.url)}
+                    title={image.name}
+                  >
+                    <img src={image.url} alt={image.name} />
+                    <span>{image.name}</span>
+                  </button>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
