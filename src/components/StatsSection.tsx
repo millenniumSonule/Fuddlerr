@@ -7,6 +7,14 @@ import { resolveCmsImage } from '../utils/cmsImages';
 const transparentPixel =
   'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
 
+type StatItem = {
+  number: number;
+  suffix: string;
+  label: string;
+  image: string;
+  delay: number;
+};
+
 const Counter = ({
   from,
   to,
@@ -96,39 +104,43 @@ export default function StatsSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8">
           {stats.map((stat, idx) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: stat.delay, duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-center group"
-            >
-              <div className="relative inline-block mb-6">
-                <div className="absolute inset-0 w-24 h-24 bg-brand-gold/10 rounded-full blur-xl group-hover:bg-brand-gold/20 transition-colors" />
-                <div className="relative w-24 h-24 rounded-full flex items-center justify-center border border-brand-warmGray/60 overflow-hidden bg-gradient-to-br from-brand-gold/8 to-brand-copper/3">
-                  <img
-                    data-cms-image-path={JSON.stringify(['stats', 'data', idx, 'image'])}
-                    src={resolveCmsImage(stat.image, transparentPixel)}
-                    alt={stat.label}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-              
-              <Counter
-                from={0}
-                to={stat.number}
-                suffix={stat.suffix}
-                delay={stat.delay}
-                cmsPath={['stats', 'data', idx, 'number']}
-              />
-              
-              <p className="text-brand-taupe text-lg font-medium">{stat.label}</p>
-            </motion.div>
+            <StatCard stat={stat} idx={idx} key={stat.label} />
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function StatCard({ stat, idx }: { stat: StatItem; idx: number }) {
+  const statImage = resolveCmsImage(stat.image, transparentPixel);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ delay: stat.delay, duration: 0.5 }}
+      viewport={{ once: true }}
+      className="text-center group"
+    >
+      <div className="relative inline-block mb-6">
+        <div className="absolute inset-0 w-24 h-24 bg-brand-gold/10 rounded-full blur-xl group-hover:bg-brand-gold/20 transition-colors" />
+        <div
+          className="relative w-24 h-24 rounded-full flex items-center justify-center border border-brand-warmGray/60 overflow-hidden bg-gradient-to-br from-brand-gold/8 to-brand-copper/3 bg-center bg-cover"
+          data-cms-image-path={JSON.stringify(['stats', 'data', idx, 'image'])}
+          style={{ backgroundImage: `url("${statImage}")` }}
+        />
+      </div>
+
+      <Counter
+        from={0}
+        to={stat.number}
+        suffix={stat.suffix}
+        delay={stat.delay}
+        cmsPath={['stats', 'data', idx, 'number']}
+      />
+
+      <p className="text-brand-taupe text-lg font-medium">{stat.label}</p>
+    </motion.div>
   );
 }

@@ -310,6 +310,32 @@ export default function EditModeCMS() {
     };
 
     const onClick = (event: MouseEvent) => {
+      const target = (event.target as Element | null)?.closest<HTMLElement>(EDITABLE_SELECTOR);
+      if (target) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        document.querySelectorAll<HTMLElement>('.cms-editing').forEach((element) => {
+          if (element !== target) {
+            void finishEditing(element);
+          }
+        });
+
+        target.contentEditable = 'plaintext-only';
+        target.classList.add('cms-editing');
+        target.focus();
+        setActiveText(target.innerText);
+        setStatus(`Editing ${formatPath(JSON.parse(target.dataset.cmsPath || '[]') as ContentPath)}`);
+
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(target);
+        range.collapse(false);
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+        return;
+      }
+
       const imageTarget = (event.target as Element | null)?.closest<HTMLElement>(EDITABLE_IMAGE_SELECTOR);
       if (imageTarget) {
         event.preventDefault();
@@ -317,31 +343,6 @@ export default function EditModeCMS() {
         chooseImage(imageTarget);
         return;
       }
-
-      const target = (event.target as Element | null)?.closest<HTMLElement>(EDITABLE_SELECTOR);
-      if (!target) return;
-
-      event.preventDefault();
-      event.stopPropagation();
-
-      document.querySelectorAll<HTMLElement>('.cms-editing').forEach((element) => {
-        if (element !== target) {
-          void finishEditing(element);
-        }
-      });
-
-      target.contentEditable = 'plaintext-only';
-      target.classList.add('cms-editing');
-      target.focus();
-      setActiveText(target.innerText);
-      setStatus(`Editing ${formatPath(JSON.parse(target.dataset.cmsPath || '[]') as ContentPath)}`);
-
-      const selection = window.getSelection();
-      const range = document.createRange();
-      range.selectNodeContents(target);
-      range.collapse(false);
-      selection?.removeAllRanges();
-      selection?.addRange(range);
     };
 
     const onFocusOut = (event: FocusEvent) => {
