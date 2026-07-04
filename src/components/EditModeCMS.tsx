@@ -267,6 +267,7 @@ export default function EditModeCMS() {
   const cmsVisibility = (contentData.cms?.sections || {}) as Partial<Record<CmsSectionKey, boolean>>;
   const cmsTheme = (contentData.cms?.theme || {}) as Partial<Record<CmsThemeKey, string>>;
   const overlayOpen = settingsOpen || imagePickerOpen;
+  const visibleSectionCount = cmsSections.filter((section) => cmsVisibility[section.key] !== false).length;
 
   const loadImageLibrary = async () => {
     try {
@@ -676,6 +677,30 @@ export default function EditModeCMS() {
               </button>
             </div>
             <div className="cms-settings__body">
+              <div className="cms-settings__summary">
+                <div className="cms-settings__summary-copy">
+                  <span className="cms-settings__summary-kicker">Workspace overview</span>
+                  <strong>Manage site visibility and theme in one place.</strong>
+                  <p>
+                    {visibleSectionCount} of {cmsSections.length} sections are currently visible.
+                  </p>
+                </div>
+                <div className="cms-settings__summary-metrics">
+                  <div className="cms-settings__metric">
+                    <span>Visible</span>
+                    <strong>{visibleSectionCount}</strong>
+                  </div>
+                  <div className="cms-settings__metric">
+                    <span>Hidden</span>
+                    <strong>{cmsSections.length - visibleSectionCount}</strong>
+                  </div>
+                  <div className="cms-settings__metric">
+                    <span>Theme tokens</span>
+                    <strong>{Object.keys(themeSwatches).length}</strong>
+                  </div>
+                </div>
+              </div>
+
               <div className="cms-settings__group">
                 <div className="cms-settings__group-label">
                   <Eye size={16} />
