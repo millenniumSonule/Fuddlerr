@@ -493,6 +493,7 @@ export default function EditModeCMS() {
         if (!file || !selectedImagePathRef.current || !selectedImageTargetRef.current) return;
 
         try {
+          setIsBusy(true);
           setStatus(`Uploading ${file.name}`);
           const result = await saveImageEdit(selectedImagePathRef.current, file);
           applyImageSource(selectedImageTargetRef.current, result.src);
@@ -502,6 +503,8 @@ export default function EditModeCMS() {
           await loadImageLibrary();
         } catch (error) {
           setStatus(error instanceof Error ? error.message : 'Could not save image');
+        } finally {
+          setIsBusy(false);
         }
       };
     }
@@ -667,6 +670,12 @@ export default function EditModeCMS() {
         <div className="cms-settings" role="dialog" aria-modal="true" aria-label="CMS section settings">
           <div className="cms-settings__backdrop" onClick={() => setSettingsOpen(false)} />
           <div className="cms-settings__panel">
+            {isBusy && (
+              <div className="cms-modal-loader" role="status" aria-live="polite">
+                <Loader2 size={18} />
+                <span>Saving changes</span>
+              </div>
+            )}
             <div className="cms-settings__header">
               <div>
                 <strong>Section controls</strong>
@@ -714,6 +723,7 @@ export default function EditModeCMS() {
                         key={section.key}
                         type="button"
                         className={`cms-settings__section-item ${visible ? 'is-visible' : 'is-hidden'}`}
+                        disabled={isBusy}
                         onClick={() => void toggleSection(section.key)}
                       >
                         <span>{section.label}</span>
@@ -749,6 +759,7 @@ export default function EditModeCMS() {
                               className={`cms-settings__swatch ${cmsTheme[key] === swatch ? 'is-active' : ''}`}
                               style={{ backgroundColor: swatch }}
                               aria-label={`Set ${key} color to ${swatch}`}
+                              disabled={isBusy}
                               onClick={() => void applyTheme(key, swatch)}
                             >
                               {cmsTheme[key] === swatch ? <span className="cms-settings__swatch-check">✓</span> : null}
@@ -759,7 +770,7 @@ export default function EditModeCMS() {
                     );
                   })}
                 </div>
-                <button type="button" className="cms-settings__ghost-button" onClick={() => void resetTheme()}>
+                <button type="button" className="cms-settings__ghost-button" disabled={isBusy} onClick={() => void resetTheme()}>
                   Reset theme
                 </button>
               </div>
@@ -771,6 +782,12 @@ export default function EditModeCMS() {
         <div className="cms-image-picker" role="dialog" aria-modal="true" aria-label="CMS image library">
           <div className="cms-image-picker__backdrop" onClick={() => setImagePickerOpen(false)} />
           <div className="cms-image-picker__panel">
+            {isBusy && (
+              <div className="cms-modal-loader" role="status" aria-live="polite">
+                <Loader2 size={18} />
+                <span>{imagePickerLoading ? 'Loading images' : 'Saving image'}</span>
+              </div>
+            )}
             <div className="cms-image-picker__header">
               <div>
                 <strong>Choose an image</strong>
@@ -782,10 +799,10 @@ export default function EditModeCMS() {
             </div>
 
             <div className="cms-image-picker__actions">
-              <button type="button" onClick={triggerLocalUpload}>
+              <button type="button" disabled={isBusy} onClick={triggerLocalUpload}>
                 Upload new image
               </button>
-              <button type="button" onClick={() => void removeSelectedCmsImage()}>
+              <button type="button" disabled={isBusy} onClick={() => void removeSelectedCmsImage()}>
                 Remove image
               </button>
             </div>
@@ -804,12 +821,13 @@ export default function EditModeCMS() {
                 <div className="cms-image-picker__grid">
                   {imageLibrary.map((image) => (
                     <button
-                      key={image.path}
-                      type="button"
-                      className="cms-image-picker__item"
-                      onClick={() => void saveSelectedCmsImage(image.url)}
-                      title={image.name}
-                    >
+                    key={image.path}
+                    type="button"
+                    className="cms-image-picker__item"
+                    disabled={isBusy}
+                    onClick={() => void saveSelectedCmsImage(image.url)}
+                    title={image.name}
+                  >
                       <img src={image.url} alt={image.name} />
                       <span>{image.name}</span>
                     </button>

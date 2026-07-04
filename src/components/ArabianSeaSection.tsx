@@ -3,8 +3,13 @@ import lightThemeImage from '../assets/light_theme_middle_section.png';
 import { useContent } from '../content/useContent';
 import { resolveCmsImage } from '../utils/cmsImages';
 
+function normalizeButtonLabel(value: string) {
+  return value.replace(/[\s→]+$/g, '').trim();
+}
+
 export default function ArabianSeaSection() {
   const contentData = useContent();
+  const buttonLabel = normalizeButtonLabel(contentData.arabianSeaSection.buttonText);
 
   return (
     <section className="py-20 bg-brand-cream">
@@ -32,9 +37,8 @@ export default function ArabianSeaSection() {
               </p>
               <button
                 className="mt-10 inline-flex items-center gap-3 rounded-full border border-brand-copper bg-brand-gold/20 px-6 py-3 text-sm font-semibold text-brand-charcoal transition hover:bg-brand-gold/30"
-                data-cms-path='["arabianSeaSection","buttonText"]'
               >
-                {contentData.arabianSeaSection.buttonText}
+                <span data-cms-path='["arabianSeaSection","buttonText"]'>{buttonLabel}</span>
                 <span aria-hidden="true">→</span>
               </button>
             </div>
