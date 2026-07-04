@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { Eye, EyeOff, Palette, Settings2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Palette, Settings2 } from 'lucide-react';
 import { useContent, useContentActions } from '../content/useContent';
 import { cmsSections, type CmsSectionKey } from '../content/cmsSections';
 
@@ -26,6 +26,12 @@ type ContentPathIndex = Map<string, ContentPath[]>;
 type CmsImage = { name: string; path: string; url: string };
 type AuthState = 'checking' | 'authenticated' | 'login';
 type CmsThemeKey = 'text' | 'muted' | 'accent';
+
+const defaultCmsTheme: Record<CmsThemeKey, string> = {
+  text: '#2A2420',
+  muted: '#6D5B50',
+  accent: '#C6972F',
+};
 
 const themeSwatches: Record<CmsThemeKey, string[]> = {
   text: ['#2A2420', '#3A2F2A', '#4D3F35', '#1C1714'],
@@ -253,6 +259,7 @@ export default function EditModeCMS() {
   const [imagePickerLoading, setImagePickerLoading] = useState(false);
   const [imagePickerMessage, setImagePickerMessage] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [isBusy, setIsBusy] = useState(false);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const isTextEditingRef = useRef(false);
   const selectedImagePathRef = useRef<ContentPath | null>(null);
@@ -262,6 +269,7 @@ export default function EditModeCMS() {
 
   const loadImageLibrary = async () => {
     try {
+      setIsBusy(true);
       setImagePickerLoading(true);
       const response = await fetch('/api/cms/images');
       const result = (await response.json()) as { ok?: boolean; images?: CmsImage[]; message?: string };
@@ -279,6 +287,7 @@ export default function EditModeCMS() {
       setImageLibrary([]);
     } finally {
       setImagePickerLoading(false);
+      setIsBusy(false);
     }
   };
 
@@ -301,6 +310,7 @@ export default function EditModeCMS() {
     if (!selectedImagePathRef.current || !selectedImageTargetRef.current) return;
 
     try {
+      setIsBusy(true);
       setStatus('Saving selected CMS image');
       await saveContentEdit(selectedImagePathRef.current, imageUrl);
       applyImageSource(selectedImageTargetRef.current, imageUrl);
@@ -309,6 +319,8 @@ export default function EditModeCMS() {
       await reloadContent();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'Could not save image');
+    } finally {
+      setIsBusy(false);
     }
   };
 
@@ -316,6 +328,7 @@ export default function EditModeCMS() {
     if (!selectedImagePathRef.current || !selectedImageTargetRef.current) return;
 
     try {
+      setIsBusy(true);
       setStatus('Removing image');
       await saveContentEdit(selectedImagePathRef.current, '');
       clearImageSource(selectedImageTargetRef.current);
@@ -324,6 +337,8 @@ export default function EditModeCMS() {
       await reloadContent();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'Could not remove image');
+    } finally {
+      setIsBusy(false);
     }
   };
 
@@ -333,21 +348,41 @@ export default function EditModeCMS() {
 
   const updateCmsSetting = async (path: ContentPath, value: unknown, successMessage: string) => {
     try {
+      setIsBusy(true);
       setStatus(successMessage);
       await saveContentEdit(path, value);
       await reloadContent();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'Could not save CMS setting');
+    } finally {
+      setIsBusy(false);
     }
   };
 
   const toggleSection = async (key: CmsSectionKey) => {
-    const nextValue = cmsVisibility[key] === false;
+    const nextValue = !(cmsVisibility[key] ?? true);
     await updateCmsSetting(['cms', 'sections', key], nextValue, `${nextValue ? 'Showing' : 'Hiding'} ${key}`);
   };
 
   const applyTheme = async (key: CmsThemeKey, value: string) => {
     await updateCmsSetting(['cms', 'theme', key], value, `Updated ${key} theme`);
+  };
+
+  const resetTheme = async () => {
+    try {
+      setIsBusy(true);
+      setStatus('Resetting theme');
+      await Promise.all(
+        (Object.keys(defaultCmsTheme) as CmsThemeKey[]).map((key) =>
+          saveContentEdit(['cms', 'theme', key], defaultCmsTheme[key])
+        )
+      );
+      await reloadContent();
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : 'Could not reset theme');
+    } finally {
+      setIsBusy(false);
+    }
   };
 
   useEffect(() => {
@@ -538,6 +573,7 @@ export default function EditModeCMS() {
     setAuthMessage('Checking password');
 
     try {
+      setIsBusy(true);
       const response = await fetch('/api/cms/login', {
         method: 'POST',
         headers: {
@@ -557,6 +593,8 @@ export default function EditModeCMS() {
       setAuthState('authenticated');
     } catch {
       setAuthMessage('Could not reach CMS auth server');
+    } finally {
+      setIsBusy(false);
     }
   };
 
@@ -602,6 +640,7 @@ export default function EditModeCMS() {
         <strong>Edit mode</strong>
         <span>{activeText ? 'Typing changes here' : status}</span>
       </div>
+      {isBusy && <Loader2 className="cms-toolbar__spinner" size={16} />}
       <button type="button" onClick={() => setSettingsOpen((value) => !value)} aria-label="Open section settings">
         <Settings2 size={16} />
       </button>
@@ -650,23 +689,33 @@ export default function EditModeCMS() {
                 <Palette size={16} />
                 <span>Theme</span>
               </div>
-              {(Object.keys(themeSwatches) as CmsThemeKey[]).map((key) => (
-                <div className="cms-settings__theme-row" key={key}>
-                  <span className="cms-settings__theme-title">{key}</span>
-                  <div className="cms-settings__swatches">
-                    {themeSwatches[key].map((swatch) => (
-                      <button
-                        key={swatch}
-                        type="button"
-                        className={`cms-settings__swatch ${cmsTheme[key] === swatch ? 'is-active' : ''}`}
-                        style={{ backgroundColor: swatch }}
-                        aria-label={`Set ${key} color to ${swatch}`}
-                        onClick={() => void applyTheme(key, swatch)}
-                      />
-                    ))}
+              <div className="cms-settings__theme-grid">
+                {(Object.keys(themeSwatches) as CmsThemeKey[]).map((key) => (
+                  <div className="cms-settings__theme-card" key={key}>
+                    <div className="cms-settings__theme-card-head">
+                      <span className="cms-settings__theme-title">{key}</span>
+                      <span className="cms-settings__theme-value">{cmsTheme[key] || defaultCmsTheme[key]}</span>
+                    </div>
+                    <div className="cms-settings__swatches">
+                      {themeSwatches[key].map((swatch) => (
+                        <button
+                          key={swatch}
+                          type="button"
+                          className={`cms-settings__swatch ${cmsTheme[key] === swatch ? 'is-active' : ''}`}
+                          style={{ backgroundColor: swatch }}
+                          aria-label={`Set ${key} color to ${swatch}`}
+                          onClick={() => void applyTheme(key, swatch)}
+                        >
+                          {cmsTheme[key] === swatch ? <span className="cms-settings__swatch-check">✓</span> : null}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <button type="button" className="cms-settings__ghost-button" onClick={() => void resetTheme()}>
+                Reset theme
+              </button>
             </div>
           </div>
         </div>

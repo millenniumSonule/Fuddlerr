@@ -159,9 +159,10 @@ export function setValueAtPath(content, editPath, value) {
   }
 
   const currentValue = getValueAtPath(content, editPath);
+  const normalizedValue = typeof value === 'string' ? value : String(value);
 
   if (typeof currentValue === 'number') {
-    const nextValue = Number(value.trim());
+    const nextValue = Number(normalizedValue.trim());
     if (!Number.isFinite(nextValue)) {
       throw new Error('Numeric content must be a valid number');
     }
@@ -171,12 +172,12 @@ export function setValueAtPath(content, editPath, value) {
   }
 
   if (typeof currentValue === 'boolean') {
-    if (value.trim() === 'true') {
+    if (normalizedValue.trim() === 'true') {
       parent[lastSegment] = true;
       return;
     }
 
-    if (value.trim() === 'false') {
+    if (normalizedValue.trim() === 'false') {
       parent[lastSegment] = false;
       return;
     }
@@ -185,12 +186,12 @@ export function setValueAtPath(content, editPath, value) {
   }
 
   if (typeof currentValue === 'string') {
-    parent[lastSegment] = value;
+    parent[lastSegment] = normalizedValue;
     return;
   }
 
   if (currentValue === undefined) {
-    parent[lastSegment] = value;
+    parent[lastSegment] = normalizedValue;
     return;
   }
 
