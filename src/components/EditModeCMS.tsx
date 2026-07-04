@@ -266,6 +266,7 @@ export default function EditModeCMS() {
   const selectedImageTargetRef = useRef<HTMLElement | null>(null);
   const cmsVisibility = (contentData.cms?.sections || {}) as Partial<Record<CmsSectionKey, boolean>>;
   const cmsTheme = (contentData.cms?.theme || {}) as Partial<Record<CmsThemeKey, string>>;
+  const overlayOpen = settingsOpen || imagePickerOpen;
 
   const loadImageLibrary = async () => {
     try {
@@ -409,6 +410,20 @@ export default function EditModeCMS() {
 
     void checkSession();
   }, []);
+
+  useEffect(() => {
+    if (!overlayOpen) {
+      document.body.style.overflow = '';
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [overlayOpen]);
 
   useEffect(() => {
     if (authState !== 'authenticated') return;
@@ -660,62 +675,69 @@ export default function EditModeCMS() {
                 Close
               </button>
             </div>
+            <div className="cms-settings__body">
+              <div className="cms-settings__group">
+                <div className="cms-settings__group-label">
+                  <Eye size={16} />
+                  <span>Visibility</span>
+                </div>
+                <div className="cms-settings__section-list">
+                  {cmsSections.map((section) => {
+                    const visible = cmsVisibility[section.key] !== false;
+                    return (
+                      <button
+                        key={section.key}
+                        type="button"
+                        className={`cms-settings__section-item ${visible ? 'is-visible' : 'is-hidden'}`}
+                        onClick={() => void toggleSection(section.key)}
+                      >
+                        <span>{section.label}</span>
+                        {visible ? <Eye size={15} /> : <EyeOff size={15} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
-            <div className="cms-settings__group">
-              <div className="cms-settings__group-label">
-                <Eye size={16} />
-                <span>Visibility</span>
+              <div className="cms-settings__group">
+                <div className="cms-settings__group-label">
+                  <Palette size={16} />
+                  <span>Theme</span>
+                </div>
+                <div className="cms-settings__theme-grid">
+                  {(Object.keys(themeSwatches) as CmsThemeKey[]).map((key) => {
+                    const currentValue = cmsTheme[key] || defaultCmsTheme[key];
+                    return (
+                      <div className="cms-settings__theme-card" key={key}>
+                        <div className="cms-settings__theme-card-head">
+                          <div>
+                            <span className="cms-settings__theme-title">{key}</span>
+                            <span className="cms-settings__theme-value">{currentValue}</span>
+                          </div>
+                          <div className="cms-settings__theme-preview" style={{ backgroundColor: currentValue }} />
+                        </div>
+                        <div className="cms-settings__swatches">
+                          {themeSwatches[key].map((swatch) => (
+                            <button
+                              key={swatch}
+                              type="button"
+                              className={`cms-settings__swatch ${cmsTheme[key] === swatch ? 'is-active' : ''}`}
+                              style={{ backgroundColor: swatch }}
+                              aria-label={`Set ${key} color to ${swatch}`}
+                              onClick={() => void applyTheme(key, swatch)}
+                            >
+                              {cmsTheme[key] === swatch ? <span className="cms-settings__swatch-check">✓</span> : null}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <button type="button" className="cms-settings__ghost-button" onClick={() => void resetTheme()}>
+                  Reset theme
+                </button>
               </div>
-              <div className="cms-settings__section-list">
-                {cmsSections.map((section) => {
-                  const visible = cmsVisibility[section.key] !== false;
-                  return (
-                    <button
-                      key={section.key}
-                      type="button"
-                      className={`cms-settings__section-item ${visible ? 'is-visible' : 'is-hidden'}`}
-                      onClick={() => void toggleSection(section.key)}
-                    >
-                      <span>{section.label}</span>
-                      {visible ? <Eye size={15} /> : <EyeOff size={15} />}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="cms-settings__group">
-              <div className="cms-settings__group-label">
-                <Palette size={16} />
-                <span>Theme</span>
-              </div>
-              <div className="cms-settings__theme-grid">
-                {(Object.keys(themeSwatches) as CmsThemeKey[]).map((key) => (
-                  <div className="cms-settings__theme-card" key={key}>
-                    <div className="cms-settings__theme-card-head">
-                      <span className="cms-settings__theme-title">{key}</span>
-                      <span className="cms-settings__theme-value">{cmsTheme[key] || defaultCmsTheme[key]}</span>
-                    </div>
-                    <div className="cms-settings__swatches">
-                      {themeSwatches[key].map((swatch) => (
-                        <button
-                          key={swatch}
-                          type="button"
-                          className={`cms-settings__swatch ${cmsTheme[key] === swatch ? 'is-active' : ''}`}
-                          style={{ backgroundColor: swatch }}
-                          aria-label={`Set ${key} color to ${swatch}`}
-                          onClick={() => void applyTheme(key, swatch)}
-                        >
-                          {cmsTheme[key] === swatch ? <span className="cms-settings__swatch-check">✓</span> : null}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <button type="button" className="cms-settings__ghost-button" onClick={() => void resetTheme()}>
-                Reset theme
-              </button>
             </div>
           </div>
         </div>
@@ -743,22 +765,31 @@ export default function EditModeCMS() {
               </button>
             </div>
 
-            <div className="cms-image-picker__grid">
+            <div className="cms-image-picker__body">
               {imagePickerLoading ? (
-                <p>Loading images…</p>
+                <div className="cms-image-picker__grid" aria-busy="true">
+                  {Array.from({ length: 8 }).map((_, index) => (
+                    <div key={index} className="cms-image-picker__skeleton">
+                      <span />
+                      <small />
+                    </div>
+                  ))}
+                </div>
               ) : (
-                imageLibrary.map((image) => (
-                  <button
-                    key={image.path}
-                    type="button"
-                    className="cms-image-picker__item"
-                    onClick={() => void saveSelectedCmsImage(image.url)}
-                    title={image.name}
-                  >
-                    <img src={image.url} alt={image.name} />
-                    <span>{image.name}</span>
-                  </button>
-                ))
+                <div className="cms-image-picker__grid">
+                  {imageLibrary.map((image) => (
+                    <button
+                      key={image.path}
+                      type="button"
+                      className="cms-image-picker__item"
+                      onClick={() => void saveSelectedCmsImage(image.url)}
+                      title={image.name}
+                    >
+                      <img src={image.url} alt={image.name} />
+                      <span>{image.name}</span>
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
           </div>
