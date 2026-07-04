@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Eye, EyeOff, Loader2, Palette, Settings2 } from 'lucide-react';
 import { useContent, useContentActions } from '../content/useContent';
 import { cmsSections, type CmsSectionKey } from '../content/cmsSections';
@@ -248,7 +249,7 @@ function markEditableText(pathIndex: ContentPathIndex, contentData: JsonValue) {
 
 export default function EditModeCMS() {
   const contentData = useContent();
-  const { reloadContent } = useContentActions();
+  const { reloadContent, patchContent } = useContentActions();
   const [activeText, setActiveText] = useState('');
   const [authState, setAuthState] = useState<AuthState>('checking');
   const [password, setPassword] = useState('');
@@ -315,6 +316,7 @@ export default function EditModeCMS() {
       setIsBusy(true);
       setStatus('Saving selected CMS image');
       await saveContentEdit(selectedImagePathRef.current, imageUrl);
+      patchContent(selectedImagePathRef.current, imageUrl);
       applyImageSource(selectedImageTargetRef.current, imageUrl);
       setStatus(`Saved image ${formatPath(selectedImagePathRef.current)}`);
       setImagePickerOpen(false);
@@ -333,6 +335,7 @@ export default function EditModeCMS() {
       setIsBusy(true);
       setStatus('Removing image');
       await saveContentEdit(selectedImagePathRef.current, '');
+      patchContent(selectedImagePathRef.current, '');
       clearImageSource(selectedImageTargetRef.current);
       setStatus(`Removed image ${formatPath(selectedImagePathRef.current)}`);
       setImagePickerOpen(false);
@@ -353,6 +356,7 @@ export default function EditModeCMS() {
       setIsBusy(true);
       setStatus(successMessage);
       await saveContentEdit(path, value);
+      patchContent(path, value);
       await reloadContent();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'Could not save CMS setting');
@@ -470,6 +474,7 @@ export default function EditModeCMS() {
       try {
         setStatus('Saving to content.json');
         await saveContentEdit(JSON.parse(pathValue) as ContentPath, element.innerText);
+        patchContent(JSON.parse(pathValue) as ContentPath, element.innerText);
         element.dataset.cmsOriginal = element.innerText;
         setStatus(`Saved ${formatPath(JSON.parse(pathValue) as ContentPath)}`);
         await reloadContent();
@@ -622,50 +627,9 @@ export default function EditModeCMS() {
     window.location.reload();
   };
 
-  if (authState !== 'authenticated') {
-    return (
-      <div className="cms-auth-screen">
-        <form className="cms-auth-card" onSubmit={login}>
-          <div>
-            <strong>CMS Login</strong>
-            <span>{authState === 'checking' ? 'Checking session' : 'Enter the edit password'}</span>
-          </div>
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder="Password"
-            disabled={authState === 'checking'}
-            autoFocus
-          />
-          <button type="submit" disabled={authState === 'checking' || !password}>
-            Unlock Editor
-          </button>
-          {authMessage && <p>{authMessage}</p>}
-        </form>
-      </div>
-    );
-  }
-
-  return (
-    <div className="cms-toolbar" role="status" aria-live="polite">
-      <input
-        ref={imageInputRef}
-        type="file"
-        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
-        hidden
-      />
-      <div>
-        <strong>Edit mode</strong>
-        <span>{activeText ? 'Typing changes here' : status}</span>
-      </div>
-      {isBusy && <Loader2 className="cms-toolbar__spinner" size={16} />}
-      <button type="button" onClick={() => setSettingsOpen((value) => !value)} aria-label="Open section settings">
-        <Settings2 size={16} />
-      </button>
-      <button type="button" onClick={logout}>
-        Logout
-      </button>
+  const modalRoot = typeof document !== 'undefined' ? document.body : null;
+  const modalContent = (
+    <>
       {settingsOpen && (
         <div className="cms-settings" role="dialog" aria-modal="true" aria-label="CMS section settings">
           <div className="cms-settings__backdrop" onClick={() => setSettingsOpen(false)} />
@@ -821,13 +785,13 @@ export default function EditModeCMS() {
                 <div className="cms-image-picker__grid">
                   {imageLibrary.map((image) => (
                     <button
-                    key={image.path}
-                    type="button"
-                    className="cms-image-picker__item"
-                    disabled={isBusy}
-                    onClick={() => void saveSelectedCmsImage(image.url)}
-                    title={image.name}
-                  >
+                      key={image.path}
+                      type="button"
+                      className="cms-image-picker__item"
+                      disabled={isBusy}
+                      onClick={() => void saveSelectedCmsImage(image.url)}
+                      title={image.name}
+                    >
                       <img src={image.url} alt={image.name} />
                       <span>{image.name}</span>
                     </button>
@@ -838,6 +802,54 @@ export default function EditModeCMS() {
           </div>
         </div>
       )}
+    </>
+  );
+
+  if (authState !== 'authenticated') {
+    return (
+      <div className="cms-auth-screen">
+        <form className="cms-auth-card" onSubmit={login}>
+          <div>
+            <strong>CMS Login</strong>
+            <span>{authState === 'checking' ? 'Checking session' : 'Enter the edit password'}</span>
+          </div>
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder="Password"
+            disabled={authState === 'checking'}
+            autoFocus
+          />
+          <button type="submit" disabled={authState === 'checking' || !password}>
+            Unlock Editor
+          </button>
+          {authMessage && <p>{authMessage}</p>}
+        </form>
+      </div>
+    );
+  }
+
+  return (
+    <div className="cms-toolbar" role="status" aria-live="polite">
+      <input
+        ref={imageInputRef}
+        type="file"
+        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+        hidden
+      />
+      <div>
+        <strong>Edit mode</strong>
+        <span>{activeText ? 'Typing changes here' : status}</span>
+      </div>
+      {isBusy && <Loader2 className="cms-toolbar__spinner" size={16} />}
+      <button type="button" onClick={() => setSettingsOpen((value) => !value)} aria-label="Open section settings">
+        <Settings2 size={16} />
+      </button>
+      <button type="button" onClick={logout}>
+        Logout
+      </button>
+      {modalRoot ? createPortal(modalContent, modalRoot) : modalContent}
     </div>
   );
 }

@@ -6,6 +6,6 @@ export function useContent() {
 }
 
 export function useContentActions() {
-  const { reloadContent } = useContext(ContentContext);
-  return { reloadContent };
+  const { reloadContent, patchContent } = useContext(ContentContext);
+  return { reloadContent, patchContent };
 }
