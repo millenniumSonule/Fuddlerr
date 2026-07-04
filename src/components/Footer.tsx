@@ -28,7 +28,10 @@ export default function Footer() {
             >
               {contentData.footer.brand.substring(0, 4)}<span className="text-brand-gold">{contentData.footer.brand.substring(4)}</span>
             </h3>
-            <p className="text-brand-cream/72 text-sm tracking-[0.35em] uppercase">
+            <p
+              className="text-brand-cream/72 text-sm tracking-[0.35em] uppercase"
+              data-cms-path='["footer","tagline"]'
+            >
               {contentData.footer.tagline}
             </p>
           </div>
@@ -38,7 +41,9 @@ export default function Footer() {
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-16 text-brand-cream/70 text-sm tracking-wider">
             {contentData.footer.features.map((feature, idx) => (
               <span key={idx}>
-                {feature}
+                <span data-cms-path={JSON.stringify(['footer', 'features', idx])}>
+                  {feature}
+                </span>
                 {idx < contentData.footer.features.length - 1 && <span> · </span>}
               </span>
             ))}
@@ -47,7 +52,10 @@ export default function Footer() {
 
         <FadeIn delay={0.4}>
           <div className="border-t border-white/10 pt-8 text-center">
-            <p className="text-brand-cream/55 text-xs tracking-wider">
+            <p
+              className="text-brand-cream/55 text-xs tracking-wider"
+              data-cms-path='["footer","copyright"]'
+            >
               {contentData.footer.copyright}
             </p>
           </div>

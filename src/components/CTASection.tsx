@@ -23,15 +23,18 @@ export default function CTASection() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 border border-white/30 mb-8 backdrop-blur-sm"
             >
               <Sparkles size={16} className="text-white" />
-              <span className="text-white text-sm font-medium">{contentData.cta.badge}</span>
+              <span className="text-white text-sm font-medium" data-cms-path='["cta","badge"]'>
+                {contentData.cta.badge}
+              </span>
             </motion.div>
 
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
-              {contentData.cta.title}
+              <span data-cms-path='["cta","title"]'>{contentData.cta.title}</span>
               <motion.span
                 animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
                 transition={{ duration: 3, repeat: Infinity }}
                 className="block mt-2"
+                data-cms-path='["cta","highlight"]'
                 style={{
                   backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.8), rgba(245,241,235,0.9))',
                   backgroundSize: '200% 200%',
@@ -44,7 +47,10 @@ export default function CTASection() {
               </motion.span>
             </h2>
 
-            <p className="text-white/90 text-lg md:text-xl max-w-2xl mx-auto mb-12">
+            <p
+              className="text-white/90 text-lg md:text-xl max-w-2xl mx-auto mb-12"
+              data-cms-path='["cta","description"]'
+            >
               {contentData.cta.description}
             </p>
 
@@ -55,7 +61,7 @@ export default function CTASection() {
                 className="px-8 py-4 rounded-full bg-white text-brand-gold font-semibold flex items-center gap-3 group hover:gap-4 transition-all"
                 data-magnetic
               >
-                <span>{contentData.cta.primaryCta}</span>
+                <span data-cms-path='["cta","primaryCta"]'>{contentData.cta.primaryCta}</span>
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </motion.button>
 
@@ -65,7 +71,7 @@ export default function CTASection() {
                 className="px-8 py-4 rounded-full border-2 border-white text-white font-semibold hover:bg-white/10 transition-all"
                 data-magnetic
               >
-                {contentData.cta.secondaryCta}
+                <span data-cms-path='["cta","secondaryCta"]'>{contentData.cta.secondaryCta}</span>
               </motion.button>
             </div>
           </div>
@@ -78,7 +84,7 @@ export default function CTASection() {
           transition={{ delay: 0.8 }}
           viewport={{ once: true }}
         >
-          <p>{contentData.cta.newsletter}</p>
+          <p data-cms-path='["cta","newsletter"]'>{contentData.cta.newsletter}</p>
         </motion.div>
       </div>
     </section>

@@ -244,6 +244,7 @@ export default function EditModeCMS() {
   const [imagePickerLoading, setImagePickerLoading] = useState(false);
   const [imagePickerMessage, setImagePickerMessage] = useState('');
   const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const isTextEditingRef = useRef(false);
   const selectedImagePathRef = useRef<ContentPath | null>(null);
   const selectedImageTargetRef = useRef<HTMLElement | null>(null);
 
@@ -353,6 +354,7 @@ export default function EditModeCMS() {
 
     const refreshTimer = window.setTimeout(() => markEditableText(pathIndex, contentData as JsonValue), 1200);
     const observer = new MutationObserver(() => {
+      if (isTextEditingRef.current) return;
       window.requestAnimationFrame(() => markEditableText(pathIndex, contentData as JsonValue));
     });
 
@@ -362,6 +364,7 @@ export default function EditModeCMS() {
     });
 
     const finishEditing = async (element: HTMLElement) => {
+      isTextEditingRef.current = false;
       element.contentEditable = 'false';
       element.classList.remove('cms-editing');
 
@@ -436,6 +439,7 @@ export default function EditModeCMS() {
         target.contentEditable = 'plaintext-only';
         target.classList.add('cms-editing');
         target.focus();
+        isTextEditingRef.current = true;
         setActiveText(target.innerText);
         setStatus(`Editing ${formatPath(JSON.parse(target.dataset.cmsPath || '[]') as ContentPath)}`);
 
@@ -467,6 +471,10 @@ export default function EditModeCMS() {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (!target?.matches(EDITABLE_SELECTOR)) return;
+
+      if (event.key === ' ') {
+        event.stopPropagation();
+      }
 
       if (event.key === 'Escape') {
         event.preventDefault();

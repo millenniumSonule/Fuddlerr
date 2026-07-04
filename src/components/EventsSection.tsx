@@ -91,9 +91,10 @@ export default function EventsSection() {
                     whileTap={{ scale: 0.95 }}
                     className="w-full py-3 rounded-full bg-gradient-to-r from-brand-copper to-brand-forest text-white font-medium text-sm uppercase tracking-wide hover:shadow-lg transition-all"
                     data-magnetic
-                    data-cms-path={JSON.stringify(['events', 'events', idx, 'cta'])}
                   >
-                    {event.cta}
+                    <span data-cms-path={JSON.stringify(['events', 'events', idx, 'cta'])}>
+                      {event.cta}
+                    </span>
                   </motion.button>
                 </div>
               </motion.div>
