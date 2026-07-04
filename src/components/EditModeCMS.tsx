@@ -72,6 +72,22 @@ function formatPath(path: ContentPath) {
   return path.map(String).join('.');
 }
 
+function getValueAtPath(value: JsonValue, path: ContentPath): JsonValue | undefined {
+  return path.reduce<JsonValue | undefined>((current, segment) => {
+    if (current === undefined || current === null || typeof current !== 'object') return undefined;
+    return (current as JsonValue[] | { [key: string]: JsonValue })[segment as never];
+  }, value);
+}
+
+function getEditableOriginal(content: JsonValue, path: ContentPath, fallback: string) {
+  const value = getValueAtPath(content, path);
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+    return String(value);
+  }
+
+  return fallback;
+}
+
 async function saveContentEdit(path: ContentPath, value: string) {
   const response = await fetch('/api/cms/content', {
     method: 'POST',
@@ -176,7 +192,7 @@ function getExplicitPath(element: HTMLElement) {
   }
 }
 
-function markEditableText(pathIndex: ContentPathIndex) {
+function markEditableText(pathIndex: ContentPathIndex, contentData: JsonValue) {
   const usedPaths = new Map<string, number>();
   const elements = Array.from(document.body.querySelectorAll<HTMLElement>('*'));
 
@@ -186,7 +202,7 @@ function markEditableText(pathIndex: ContentPathIndex) {
       applyEditableDataset(
         element,
         explicitPath,
-        element.dataset.cmsOriginalValue || element.innerText
+        element.dataset.cmsOriginalValue || getEditableOriginal(contentData, explicitPath, element.innerText)
       );
       return;
     }
@@ -208,7 +224,7 @@ function markEditableText(pathIndex: ContentPathIndex) {
       const wrapper = document.createElement('span');
       wrapper.dataset[CMS_TEXT_WRAPPER] = 'true';
       wrapper.textContent = node.textContent;
-      applyEditableDataset(wrapper, path, node.textContent);
+      applyEditableDataset(wrapper, path, getEditableOriginal(contentData, path, node.textContent));
       element.replaceChild(wrapper, node);
       element.dataset.cmsEditReady = 'true';
     });
@@ -333,11 +349,11 @@ export default function EditModeCMS() {
     const pathIndex = buildContentPathIndex(contentData as JsonValue);
 
     document.documentElement.classList.add('cms-edit-mode');
-    markEditableText(pathIndex);
+    markEditableText(pathIndex, contentData as JsonValue);
 
-    const refreshTimer = window.setTimeout(() => markEditableText(pathIndex), 1200);
+    const refreshTimer = window.setTimeout(() => markEditableText(pathIndex, contentData as JsonValue), 1200);
     const observer = new MutationObserver(() => {
-      window.requestAnimationFrame(() => markEditableText(pathIndex));
+      window.requestAnimationFrame(() => markEditableText(pathIndex, contentData as JsonValue));
     });
 
     observer.observe(document.body, {

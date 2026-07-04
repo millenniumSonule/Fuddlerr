@@ -22,10 +22,16 @@ export default function BrandValues() {
       <div className="relative max-w-6xl mx-auto px-6 md:px-8">
         <FadeIn>
           <div className="text-center mb-20">
-            <p className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium">
+            <p
+              className="text-brand-gold text-sm tracking-[0.3em] uppercase mb-4 font-medium"
+              data-cms-path='["brandValues","label"]'
+            >
               {contentData.brandValues.label}
             </p>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight">
+            <h2
+              className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight"
+              data-cms-path='["brandValues","title"]'
+            >
               {contentData.brandValues.title}
             </h2>
           </div>
@@ -34,7 +40,10 @@ export default function BrandValues() {
         <div className="flex flex-wrap justify-center gap-4 md:gap-5">
           {values.map((v, idx) => (
             <FadeIn key={v.name} delay={0.1 + idx * 0.08}>
-              <div className={`px-6 py-3 md:px-8 md:py-4 border rounded-full text-sm md:text-base font-medium tracking-wide transition-all duration-300 cursor-default ${colorMap[v.color]}`}>
+              <div
+                className={`px-6 py-3 md:px-8 md:py-4 border rounded-full text-sm md:text-base font-medium tracking-wide transition-all duration-300 cursor-default ${colorMap[v.color]}`}
+                data-cms-path={JSON.stringify(['brandValues', 'values', idx, 'name'])}
+              >
                 {v.name}
               </div>
             </FadeIn>

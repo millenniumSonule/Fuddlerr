@@ -44,6 +44,7 @@ export default function Hero() {
 
       <div className="relative z-10 translate-y-28 px-6 text-center sm:translate-y-32 lg:translate-y-36 max-w-5xl mx-auto">
         <motion.p
+          data-cms-path='["hero","subtitle"]'
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -76,6 +77,7 @@ export default function Hero() {
         />
 
         <motion.p
+          data-cms-path='["hero","tagline"]'
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.0 }}
@@ -91,7 +93,7 @@ export default function Hero() {
           className="mt-16 flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center text-xs text-white tracking-wider uppercase"
         >
           {contentData.hero.features.map((feature, idx) => (
-            <span key={idx}>
+            <span key={idx} data-cms-path={JSON.stringify(['hero', 'features', idx])}>
               {feature}
               {idx < contentData.hero.features.length - 1 && (
                 <span className="hidden sm:inline ml-4">

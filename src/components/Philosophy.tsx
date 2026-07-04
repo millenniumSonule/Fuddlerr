@@ -11,16 +11,25 @@ export default function Philosophy() {
 
       <div className="relative max-w-5xl mx-auto px-6 md:px-8 text-center">
         <FadeIn>
-          <p className="text-brand-copper text-sm tracking-[0.3em] uppercase mb-4 font-medium">
+          <p
+            className="text-brand-copper text-sm tracking-[0.3em] uppercase mb-4 font-medium"
+            data-cms-path='["philosophy","label"]'
+          >
             {contentData.philosophy.label}
           </p>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-7xl text-brand-charcoal mb-16 leading-tight">
+          <h2
+            className="font-serif text-4xl md:text-5xl lg:text-7xl text-brand-charcoal mb-16 leading-tight"
+            data-cms-path='["philosophy","mainTitle"]'
+          >
             {contentData.philosophy.mainTitle}
           </h2>
         </FadeIn>
 
         <FadeIn delay={0.2}>
-          <p className="font-serif text-3xl md:text-4xl text-brand-copper italic mb-20 leading-relaxed">
+          <p
+            className="font-serif text-3xl md:text-4xl text-brand-copper italic mb-20 leading-relaxed"
+            data-cms-path='["philosophy","subtitle"]'
+          >
             {contentData.philosophy.subtitle}
           </p>
         </FadeIn>
@@ -32,7 +41,10 @@ export default function Philosophy() {
                 <div className="w-10 h-10 rounded-full border border-brand-warmGray flex items-center justify-center mb-4">
                   <div className={`w-2 h-2 rounded-full ${idx === 0 ? 'bg-brand-gold' : idx === 1 ? 'bg-brand-copper' : idx === 2 ? 'bg-brand-forest' : 'bg-brand-charcoal'}`} />
                 </div>
-                <p className="text-brand-earth text-sm md:text-base leading-relaxed">
+                <p
+                  className="text-brand-earth text-sm md:text-base leading-relaxed"
+                  data-cms-path={JSON.stringify(['philosophy', 'beliefs', idx, 'text'])}
+                >
                   {item.text}
                 </p>
               </div>

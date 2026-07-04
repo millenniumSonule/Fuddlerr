@@ -11,10 +11,16 @@ export default function BrandStory() {
 
       <div className="relative max-w-6xl mx-auto px-6 md:px-8">
         <FadeIn>
-          <p className="text-brand-copper text-sm tracking-[0.3em] uppercase mb-4 font-medium">
+          <p
+            className="text-brand-copper text-sm tracking-[0.3em] uppercase mb-4 font-medium"
+            data-cms-path='["brandStory","label"]'
+          >
             {contentData.brandStory.label}
           </p>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal mb-16 max-w-3xl leading-tight">
+          <h2
+            className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal mb-16 max-w-3xl leading-tight"
+            data-cms-path='["brandStory","title"]'
+          >
             {contentData.brandStory.title}
           </h2>
         </FadeIn>
@@ -23,7 +29,10 @@ export default function BrandStory() {
           <FadeIn delay={0.2}>
             <div className="space-y-6">
               <div className="w-12 h-px bg-brand-gold" />
-              <p className="text-brand-earth text-lg leading-relaxed">
+              <p
+                className="text-brand-earth text-lg leading-relaxed"
+                data-cms-path='["brandStory","mumbaiFounder"]'
+              >
                 {contentData.brandStory.mumbaiFounder}
               </p>
             </div>
@@ -32,7 +41,10 @@ export default function BrandStory() {
           <FadeIn delay={0.4}>
             <div className="space-y-6">
               <div className="w-12 h-px bg-brand-copper" />
-              <p className="text-brand-earth text-lg leading-relaxed">
+              <p
+                className="text-brand-earth text-lg leading-relaxed"
+                data-cms-path='["brandStory","nordicFounder"]'
+              >
                 {contentData.brandStory.nordicFounder}
               </p>
             </div>
@@ -41,7 +53,10 @@ export default function BrandStory() {
 
         <FadeIn delay={0.6}>
           <div className="mt-20 pt-12 border-t border-brand-sand">
-            <p className="font-serif text-2xl md:text-3xl text-brand-charcoal leading-relaxed max-w-4xl">
+            <p
+              className="font-serif text-2xl md:text-3xl text-brand-charcoal leading-relaxed max-w-4xl"
+              data-cms-path='["brandStory","conclusion"]'
+            >
               {contentData.brandStory.conclusion}
             </p>
           </div>
@@ -49,7 +64,10 @@ export default function BrandStory() {
 
         <FadeIn delay={0.8}>
           <div className="mt-16 text-center">
-            <p className="font-serif text-xl md:text-2xl text-brand-stone italic">
+            <p
+              className="font-serif text-xl md:text-2xl text-brand-stone italic"
+              data-cms-path='["brandStory","bridgeText"]'
+            >
               {contentData.brandStory.bridgeText}
             </p>
           </div>
