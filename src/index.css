@@ -384,9 +384,10 @@
     position: relative;
     z-index: 1;
     width: min(920px, 100%);
-    max-height: min(84vh, 900px);
+    height: min(84vh, 900px);
     display: flex;
     flex-direction: column;
+    min-height: 0;
     overflow: hidden;
     border: 1px solid rgba(42, 36, 32, 0.08);
     border-radius: 1rem;
@@ -445,9 +446,10 @@
   .cms-image-picker__body {
     flex: 1;
     min-height: 0;
-    overflow: auto;
+    overflow-y: auto;
     padding-right: 0.2rem;
     overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .cms-image-picker__item {
@@ -497,9 +499,10 @@
     position: relative;
     z-index: 1;
     width: min(980px, 100%);
-    max-height: min(84vh, 900px);
+    height: min(84vh, 900px);
     display: flex;
     flex-direction: column;
+    min-height: 0;
     overflow: hidden;
     border: 1px solid rgba(42, 36, 32, 0.08);
     border-radius: 1rem;
@@ -550,9 +553,10 @@
   .cms-settings__body {
     flex: 1;
     min-height: 0;
-    overflow: auto;
+    overflow-y: auto;
     padding-right: 0.2rem;
     overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .cms-settings__group-label {
@@ -713,6 +717,45 @@
   .cms-image-picker__skeleton small {
     height: 0.9rem;
     width: 70%;
+  }
+
+  @media (max-width: 640px) {
+    .cms-settings,
+    .cms-image-picker {
+      padding: 0.5rem;
+      align-items: stretch;
+    }
+
+    .cms-settings__panel,
+    .cms-image-picker__panel {
+      width: 100%;
+      height: calc(100dvh - 1rem);
+      border-radius: 0.9rem;
+      padding: 0.85rem;
+    }
+
+    .cms-settings__header,
+    .cms-image-picker__header {
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+
+    .cms-settings__theme-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cms-settings__section-list {
+      gap: 0.45rem;
+    }
+
+    .cms-settings__section-item {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .cms-image-picker__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .cms-edit-mode [data-cms-editable='true'] {
