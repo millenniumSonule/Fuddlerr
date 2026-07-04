@@ -47,30 +47,21 @@ export default function BrandPersonality() {
         </FadeIn>
 
         <FadeIn delay={0.6}>
-          <div className="bg-[#241F1B] rounded-2xl p-8 md:p-12 max-w-4xl mx-auto border border-[#3A302A]">
+          <div className="bg-[#FFFDF8] rounded-2xl p-8 md:p-12 max-w-4xl mx-auto border border-[#D8CFC0] shadow-[0_22px_70px_rgba(32,26,23,0.08)]">
             <p
-              className="font-serif text-xl md:text-2xl text-[#FFF6EB] leading-relaxed italic"
+              className="font-serif text-xl md:text-2xl text-[#251E1A] leading-relaxed italic"
               data-cms-path='["brandPersonality","personalityDesc"]'
             >
               {contentData.brandPersonality.personalityDesc}
             </p>
-            <div className="flex flex-wrap justify-center gap-4 mt-6">
+            <div className="flex flex-wrap justify-center gap-3 mt-7">
               {contentData.brandPersonality.personalityTraits.map((trait, idx) => (
                 <span
                   key={idx}
-                  className={`font-medium text-sm md:text-base tracking-wider ${
-                    trait.color === 'gold'
-                      ? 'text-brand-gold'
-                      : trait.color === 'copper'
-                      ? 'text-brand-copper'
-                      : 'text-brand-sage'
-                  }`}
+                  className="rounded-full border border-[#D6B778]/45 bg-[#F5E9D4] px-4 py-2 text-sm font-semibold tracking-[0.14em] text-[#5A3B20] md:text-base"
                   data-cms-path={JSON.stringify(['brandPersonality', 'personalityTraits', idx, 'text'])}
                 >
                   {trait.text}
-                  {idx < contentData.brandPersonality.personalityTraits.length - 1 && (
-                    <span className="text-[#95897C] ml-4 mr-4">·</span>
-                  )}
                 </span>
               ))}
             </div>
