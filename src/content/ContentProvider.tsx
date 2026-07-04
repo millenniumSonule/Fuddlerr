@@ -44,7 +44,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
 
   const loadContent = async () => {
     try {
-      const response = await fetch('/api/cms/content');
+      const response = await fetch('/api/cms/content', { cache: 'no-store' });
       if (!response.ok) return;
 
       const data = (await response.json()) as SiteContent;

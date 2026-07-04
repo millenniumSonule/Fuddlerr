@@ -249,7 +249,7 @@ function markEditableText(pathIndex: ContentPathIndex, contentData: JsonValue) {
 
 export default function EditModeCMS() {
   const contentData = useContent();
-  const { reloadContent, patchContent } = useContentActions();
+  const { patchContent } = useContentActions();
   const [activeText, setActiveText] = useState('');
   const [authState, setAuthState] = useState<AuthState>('checking');
   const [password, setPassword] = useState('');
@@ -320,7 +320,6 @@ export default function EditModeCMS() {
       applyImageSource(selectedImageTargetRef.current, imageUrl);
       setStatus(`Saved image ${formatPath(selectedImagePathRef.current)}`);
       setImagePickerOpen(false);
-      await reloadContent();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'Could not save image');
     } finally {
@@ -339,7 +338,6 @@ export default function EditModeCMS() {
       clearImageSource(selectedImageTargetRef.current);
       setStatus(`Removed image ${formatPath(selectedImagePathRef.current)}`);
       setImagePickerOpen(false);
-      await reloadContent();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'Could not remove image');
     } finally {
@@ -355,9 +353,8 @@ export default function EditModeCMS() {
     try {
       setIsBusy(true);
       setStatus(successMessage);
-      await saveContentEdit(path, value);
       patchContent(path, value);
-      await reloadContent();
+      await saveContentEdit(path, value);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'Could not save CMS setting');
     } finally {
@@ -378,12 +375,14 @@ export default function EditModeCMS() {
     try {
       setIsBusy(true);
       setStatus('Resetting theme');
+      (Object.keys(defaultCmsTheme) as CmsThemeKey[]).forEach((key) => {
+        patchContent(['cms', 'theme', key], defaultCmsTheme[key]);
+      });
       await Promise.all(
         (Object.keys(defaultCmsTheme) as CmsThemeKey[]).map((key) =>
           saveContentEdit(['cms', 'theme', key], defaultCmsTheme[key])
         )
       );
-      await reloadContent();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'Could not reset theme');
     } finally {
@@ -477,7 +476,6 @@ export default function EditModeCMS() {
         patchContent(JSON.parse(pathValue) as ContentPath, element.innerText);
         element.dataset.cmsOriginal = element.innerText;
         setStatus(`Saved ${formatPath(JSON.parse(pathValue) as ContentPath)}`);
-        await reloadContent();
       } catch (error) {
         element.innerText = element.dataset.cmsOriginal || '';
         setStatus(error instanceof Error ? error.message : 'Could not save edit');
@@ -501,10 +499,10 @@ export default function EditModeCMS() {
           setIsBusy(true);
           setStatus(`Uploading ${file.name}`);
           const result = await saveImageEdit(selectedImagePathRef.current, file);
+          patchContent(selectedImagePathRef.current, result.src);
           applyImageSource(selectedImageTargetRef.current, result.src);
           setStatus(`Saved image ${formatPath(selectedImagePathRef.current)}`);
           setImagePickerOpen(false);
-          await reloadContent();
           await loadImageLibrary();
         } catch (error) {
           setStatus(error instanceof Error ? error.message : 'Could not save image');
