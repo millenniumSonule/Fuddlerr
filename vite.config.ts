@@ -181,7 +181,7 @@ function safeFileName(fileName: string) {
   return `${baseName || 'image'}-${Date.now()}${extension}`;
 }
 
-async function updateContentString(editPath: Array<string | number>, value: string) {
+async function updateContentValue(editPath: Array<string | number>, value: unknown) {
   const source = await fs.readFile(contentFilePath, 'utf8');
   const content = JSON.parse(source) as ContentValue;
   const currentValue = getValueAtPath(content, editPath);
@@ -193,19 +193,17 @@ async function updateContentString(editPath: Array<string | number>, value: stri
       const nextSegment = editPath[index + 1];
 
       if (Array.isArray(target)) {
-        const item = target[segment as number];
-        if (item === undefined || item === null || typeof item !== 'object') {
-          throw new Error('Editable content path was not found');
+        if (target[segment as number] === undefined || target[segment as number] === null || typeof target[segment as number] !== 'object') {
+          target[segment as number] = typeof nextSegment === 'number' ? [] : {};
         }
-        target = item as Record<string, ContentValue> | ContentValue[];
+        target = target[segment as number] as Record<string, ContentValue> | ContentValue[];
         continue;
       }
 
-      const item = target[segment as string];
-      if (item === undefined || item === null || typeof item !== 'object') {
-        throw new Error('Editable content path was not found');
+      if (target[segment as string] === undefined || target[segment as string] === null || typeof target[segment as string] !== 'object') {
+        target[segment as string] = typeof nextSegment === 'number' ? [] : {};
       }
-      target = item as Record<string, ContentValue> | ContentValue[];
+      target = target[segment as string] as Record<string, ContentValue> | ContentValue[];
 
       if (Array.isArray(target) && typeof nextSegment === 'number') {
         continue;
@@ -214,19 +212,47 @@ async function updateContentString(editPath: Array<string | number>, value: stri
 
     const lastSegment = editPath[editPath.length - 1];
     if (Array.isArray(target)) {
-      target[lastSegment as number] = value as unknown as ContentValue;
+      target[lastSegment as number] = value as ContentValue;
     } else {
-      target[lastSegment as string] = value as unknown as ContentValue;
+      target[lastSegment as string] = value as ContentValue;
     }
     await fs.writeFile(contentFilePath, `${JSON.stringify(content, null, 2)}\n`);
     return;
   }
 
-  if (typeof currentValue !== 'string') {
-    throw new Error('Editable content path was not found');
+  if (typeof currentValue === 'string' && typeof value === 'string') {
+    await fs.writeFile(contentFilePath, replaceStringAtPath(source, editPath, value));
+    return;
   }
 
-  await fs.writeFile(contentFilePath, replaceStringAtPath(source, editPath, value));
+  const nextContent = JSON.parse(source) as ContentValue;
+  let target = nextContent as Record<string, ContentValue> | ContentValue[];
+  for (let index = 0; index < editPath.length - 1; index += 1) {
+    const segment = editPath[index];
+    if (Array.isArray(target)) {
+      const item = target[segment as number];
+      if (item === undefined || item === null || typeof item !== 'object') {
+        throw new Error('Editable content path was not found');
+      }
+      target = item as Record<string, ContentValue> | ContentValue[];
+      continue;
+    }
+
+    const item = target[segment as string];
+    if (item === undefined || item === null || typeof item !== 'object') {
+      throw new Error('Editable content path was not found');
+    }
+    target = item as Record<string, ContentValue> | ContentValue[];
+  }
+
+  const lastSegment = editPath[editPath.length - 1];
+  if (Array.isArray(target)) {
+    target[lastSegment as number] = value as ContentValue;
+  } else {
+    target[lastSegment as string] = value as ContentValue;
+  }
+
+  await fs.writeFile(contentFilePath, `${JSON.stringify(nextContent, null, 2)}\n`);
 }
 
 function cmsContentPlugin() {
@@ -338,16 +364,16 @@ function cmsContentPlugin() {
         try {
           const body = JSON.parse(await readRequestBody(request)) as {
             path?: Array<string | number>;
-            value?: string;
+            value?: unknown;
           };
 
-          if (!Array.isArray(body.path) || typeof body.value !== 'string') {
+          if (!Array.isArray(body.path) || typeof body.value === 'undefined') {
             response.statusCode = 400;
             response.end('Invalid edit payload');
             return;
           }
 
-          await updateContentString(body.path, body.value);
+          await updateContentValue(body.path, body.value);
 
           server.ws.send({
             type: 'full-reload',

@@ -123,8 +123,7 @@ export function getValueAtPath(content, editPath) {
 
 export function setValueAtPath(content, editPath, value) {
   const lastSegment = editPath.at(-1);
-  const parent = getValueAtPath(content, editPath.slice(0, -1));
-  const currentValue = getValueAtPath(content, editPath);
+  let parent = content;
 
   if (
     lastSegment === undefined ||
@@ -134,6 +133,32 @@ export function setValueAtPath(content, editPath, value) {
   ) {
     throw new Error('Editable content path was not found');
   }
+
+  for (let index = 0; index < editPath.length - 1; index += 1) {
+    const segment = editPath[index];
+    const nextSegment = editPath[index + 1];
+
+    if (Array.isArray(parent)) {
+      if (parent[segment] === undefined || parent[segment] === null || typeof parent[segment] !== 'object') {
+        parent[segment] = typeof nextSegment === 'number' ? [] : {};
+      }
+
+      parent = parent[segment];
+      continue;
+    }
+
+    if (typeof parent !== 'object') {
+      throw new Error('Editable content path was not found');
+    }
+
+    if (parent[segment] === undefined || parent[segment] === null || typeof parent[segment] !== 'object') {
+      parent[segment] = typeof nextSegment === 'number' ? [] : {};
+    }
+
+    parent = parent[segment];
+  }
+
+  const currentValue = getValueAtPath(content, editPath);
 
   if (typeof currentValue === 'number') {
     const nextValue = Number(value.trim());

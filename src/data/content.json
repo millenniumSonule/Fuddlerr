@@ -247,6 +247,31 @@
     "features": ["Mumbai Soul", "Nordic Craft", "Premium Brewing", "Community First"],
     "copyright": "FUDDLER. All rights reserved. Brewing the future of craft beer in India."
   },
+  "cms": {
+    "sections": {
+      "header": true,
+      "hero": true,
+      "redCan": true,
+      "about": true,
+      "brandStory": true,
+      "products": true,
+      "founders": true,
+      "philosophy": true,
+      "stats": true,
+      "brandValues": true,
+      "gallery": true,
+      "testimonials": true,
+      "community": true,
+      "brandPersonality": true,
+      "cta": true,
+      "footer": true
+    },
+    "theme": {
+      "text": "#2A2420",
+      "muted": "#6D5B50",
+      "accent": "#C6972F"
+    }
+  },
   "gallery": {
     "label": "Gallery",
     "title": "Moments & Memories",

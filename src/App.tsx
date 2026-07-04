@@ -17,42 +17,67 @@ import ArabianSeaSection from './components/ArabianSeaSection';
 import MagneticCursor from './components/MagneticCursor';
 import SmoothScroll from './components/SmoothScroll';
 import EditModeCMS from './components/EditModeCMS';
+import { useContent } from './content/useContent';
+import type { CSSProperties } from 'react';
 
 function App() {
+  const contentData = useContent();
   const isEditMode = window.location.pathname === '/edit';
+  const cmsSections = (contentData.cms?.sections || {}) as Partial<Record<string, boolean>>;
+  const cmsTheme = contentData.cms?.theme;
+  const appStyle = {
+    '--cms-text-color': cmsTheme?.text || '#2A2420',
+    '--cms-muted-color': cmsTheme?.muted || '#6D5B50',
+    '--cms-accent-color': cmsTheme?.accent || '#C6972F',
+  } as CSSProperties;
+
+  const isVisible = (key: keyof typeof cmsSections | string, fallback = true) => {
+    const value = cmsSections[key];
+    return typeof value === 'boolean' ? value : fallback;
+  };
 
   return (
     <SmoothScroll>
-      <div className="min-h-screen bg-brand-espresso">
+      <div className="min-h-screen bg-brand-espresso" style={appStyle}>
         {!isEditMode && <MagneticCursor />}
         {isEditMode && <EditModeCMS />}
-        <Header />
-        <main className="pt-20">
-          <section id="hero">
-            <Hero />
-          </section>
-          <RedCanSection />
-          <section id="about">
-            <ArabianSeaSection />
-          </section>
-          <BrandStory />
-          <section id="products">
-            <ProductShowcase />
-          </section>
-          <Founders />
-          <Philosophy />
-          <StatsSection />
-          <BrandValues />
-          <GallerySection />
-          <Testimonials />
-          <section id="community">
-            <EventsSection />
-          </section>
-          <BrandPersonality />
-          <CTASection />
-          <section id="contact">
-            <Footer />
-          </section>
+        {isVisible('header') && <Header />}
+        <main className={isVisible('header') ? 'pt-20' : 'pt-0'}>
+          {isVisible('hero') && (
+            <section id="hero">
+              <Hero />
+            </section>
+          )}
+          {isVisible('redCan') && <RedCanSection />}
+          {isVisible('about') && (
+            <section id="about">
+              <ArabianSeaSection />
+            </section>
+          )}
+          {isVisible('brandStory') && <BrandStory />}
+          {isVisible('products') && (
+            <section id="products">
+              <ProductShowcase />
+            </section>
+          )}
+          {isVisible('founders') && <Founders />}
+          {isVisible('philosophy') && <Philosophy />}
+          {isVisible('stats') && <StatsSection />}
+          {isVisible('brandValues') && <BrandValues />}
+          {isVisible('gallery') && <GallerySection />}
+          {isVisible('testimonials') && <Testimonials />}
+          {isVisible('community') && (
+            <section id="community">
+              <EventsSection />
+            </section>
+          )}
+          {isVisible('brandPersonality') && <BrandPersonality />}
+          {isVisible('cta') && <CTASection />}
+          {isVisible('footer') && (
+            <section id="contact">
+              <Footer />
+            </section>
+          )}
         </main>
       </div>
     </SmoothScroll>

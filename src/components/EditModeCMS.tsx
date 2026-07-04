@@ -1,5 +1,7 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
+import { Eye, EyeOff, Palette, Settings2 } from 'lucide-react';
 import { useContent, useContentActions } from '../content/useContent';
+import { cmsSections, type CmsSectionKey } from '../content/cmsSections';
 
 const EDITABLE_SELECTOR = '[data-cms-editable="true"]';
 const EDITABLE_IMAGE_SELECTOR = '[data-cms-image-path]';
@@ -23,6 +25,13 @@ type ContentPath = Array<string | number>;
 type ContentPathIndex = Map<string, ContentPath[]>;
 type CmsImage = { name: string; path: string; url: string };
 type AuthState = 'checking' | 'authenticated' | 'login';
+type CmsThemeKey = 'text' | 'muted' | 'accent';
+
+const themeSwatches: Record<CmsThemeKey, string[]> = {
+  text: ['#2A2420', '#3A2F2A', '#4D3F35', '#1C1714'],
+  muted: ['#6D5B50', '#8A776A', '#4F4138', '#A08C7C'],
+  accent: ['#C6972F', '#B56A4A', '#567A63', '#B89A45'],
+};
 
 function normalizeText(value: string) {
   return value.replace(/\s+/g, ' ').trim();
@@ -88,7 +97,7 @@ function getEditableOriginal(content: JsonValue, path: ContentPath, fallback: st
   return fallback;
 }
 
-async function saveContentEdit(path: ContentPath, value: string) {
+async function saveContentEdit(path: ContentPath, value: unknown) {
   const response = await fetch('/api/cms/content', {
     method: 'POST',
     headers: {
@@ -243,10 +252,13 @@ export default function EditModeCMS() {
   const [imagePickerOpen, setImagePickerOpen] = useState(false);
   const [imagePickerLoading, setImagePickerLoading] = useState(false);
   const [imagePickerMessage, setImagePickerMessage] = useState('');
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const isTextEditingRef = useRef(false);
   const selectedImagePathRef = useRef<ContentPath | null>(null);
   const selectedImageTargetRef = useRef<HTMLElement | null>(null);
+  const cmsVisibility = (contentData.cms?.sections || {}) as Partial<Record<CmsSectionKey, boolean>>;
+  const cmsTheme = (contentData.cms?.theme || {}) as Partial<Record<CmsThemeKey, string>>;
 
   const loadImageLibrary = async () => {
     try {
@@ -317,6 +329,25 @@ export default function EditModeCMS() {
 
   const triggerLocalUpload = () => {
     imageInputRef.current?.click();
+  };
+
+  const updateCmsSetting = async (path: ContentPath, value: unknown, successMessage: string) => {
+    try {
+      setStatus(successMessage);
+      await saveContentEdit(path, value);
+      await reloadContent();
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : 'Could not save CMS setting');
+    }
+  };
+
+  const toggleSection = async (key: CmsSectionKey) => {
+    const nextValue = cmsVisibility[key] === false;
+    await updateCmsSetting(['cms', 'sections', key], nextValue, `${nextValue ? 'Showing' : 'Hiding'} ${key}`);
+  };
+
+  const applyTheme = async (key: CmsThemeKey, value: string) => {
+    await updateCmsSetting(['cms', 'theme', key], value, `Updated ${key} theme`);
   };
 
   useEffect(() => {
@@ -571,9 +602,75 @@ export default function EditModeCMS() {
         <strong>Edit mode</strong>
         <span>{activeText ? 'Typing changes here' : status}</span>
       </div>
+      <button type="button" onClick={() => setSettingsOpen((value) => !value)} aria-label="Open section settings">
+        <Settings2 size={16} />
+      </button>
       <button type="button" onClick={logout}>
         Logout
       </button>
+      {settingsOpen && (
+        <div className="cms-settings" role="dialog" aria-modal="true" aria-label="CMS section settings">
+          <div className="cms-settings__backdrop" onClick={() => setSettingsOpen(false)} />
+          <div className="cms-settings__panel">
+            <div className="cms-settings__header">
+              <div>
+                <strong>Section controls</strong>
+                <span>Hide or show sections, and adjust theme colors.</span>
+              </div>
+              <button type="button" onClick={() => setSettingsOpen(false)}>
+                Close
+              </button>
+            </div>
+
+            <div className="cms-settings__group">
+              <div className="cms-settings__group-label">
+                <Eye size={16} />
+                <span>Visibility</span>
+              </div>
+              <div className="cms-settings__section-list">
+                {cmsSections.map((section) => {
+                  const visible = cmsVisibility[section.key] !== false;
+                  return (
+                    <button
+                      key={section.key}
+                      type="button"
+                      className={`cms-settings__section-item ${visible ? 'is-visible' : 'is-hidden'}`}
+                      onClick={() => void toggleSection(section.key)}
+                    >
+                      <span>{section.label}</span>
+                      {visible ? <Eye size={15} /> : <EyeOff size={15} />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="cms-settings__group">
+              <div className="cms-settings__group-label">
+                <Palette size={16} />
+                <span>Theme</span>
+              </div>
+              {(Object.keys(themeSwatches) as CmsThemeKey[]).map((key) => (
+                <div className="cms-settings__theme-row" key={key}>
+                  <span className="cms-settings__theme-title">{key}</span>
+                  <div className="cms-settings__swatches">
+                    {themeSwatches[key].map((swatch) => (
+                      <button
+                        key={swatch}
+                        type="button"
+                        className={`cms-settings__swatch ${cmsTheme[key] === swatch ? 'is-active' : ''}`}
+                        style={{ backgroundColor: swatch }}
+                        aria-label={`Set ${key} color to ${swatch}`}
+                        onClick={() => void applyTheme(key, swatch)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
       {imagePickerOpen && (
         <div className="cms-image-picker" role="dialog" aria-modal="true" aria-label="CMS image library">
           <div className="cms-image-picker__backdrop" onClick={() => setImagePickerOpen(false)} />

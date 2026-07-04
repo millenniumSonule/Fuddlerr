@@ -19,7 +19,7 @@ export default async function handler(request, response) {
 
   try {
     const { path, value } = request.body || {};
-    if (!Array.isArray(path) || typeof value !== 'string') {
+    if (!Array.isArray(path) || typeof value === 'undefined') {
       sendJson(response, 400, { ok: false, message: 'Invalid edit payload' });
       return;
     }
