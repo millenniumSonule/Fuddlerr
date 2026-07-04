@@ -62,7 +62,12 @@ export default function GallerySection() {
         <div className="gallery-marquee mb-10" aria-hidden="true">
           <div className="gallery-marquee__track">
             {[...gallery, ...gallery].map((item, index) => (
-              <span key={`${item.id}-${index}`}>{item.title}</span>
+              <span
+                key={`${item.id}-${index}`}
+                data-cms-path={JSON.stringify(['gallery', 'items', index % gallery.length, 'title'])}
+              >
+                {item.title}
+              </span>
             ))}
           </div>
         </div>
@@ -114,6 +119,7 @@ export default function GallerySection() {
                     className="font-serif text-2xl md:text-3xl text-white text-center px-6 py-4 bg-black/30 backdrop-blur-sm rounded-lg"
                     animate={hoveredId === item.id ? { y: 0, opacity: 1 } : { y: 10, opacity: 0.8 }}
                     transition={{ duration: 0.3 }}
+                    data-cms-path={JSON.stringify(['gallery', 'items', idx, 'title'])}
                   >
                     {item.title}
                   </motion.h3>

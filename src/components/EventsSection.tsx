@@ -16,10 +16,16 @@ export default function EventsSection() {
       <div className="relative max-w-6xl mx-auto px-6 md:px-8">
         <FadeIn>
           <div className="text-center mb-20">
-            <p className="text-brand-copper text-sm tracking-[0.3em] uppercase mb-4 font-medium">
+            <p
+              className="text-brand-copper text-sm tracking-[0.3em] uppercase mb-4 font-medium"
+              data-cms-path='["events","label"]'
+            >
               {contentData.events.label}
             </p>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight">
+            <h2
+              className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-charcoal leading-tight"
+              data-cms-path='["events","title"]'
+            >
               {contentData.events.title}
             </h2>
           </div>
@@ -45,26 +51,47 @@ export default function EventsSection() {
                 </div>
 
                 <div className="p-8">
-                  <h3 className="font-serif text-2xl text-brand-charcoal mb-4">{event.title}</h3>
+                  <h3
+                    className="font-serif text-2xl text-brand-charcoal mb-4"
+                    data-cms-path={JSON.stringify(['events', 'events', idx, 'title'])}
+                  >
+                    {event.title}
+                  </h3>
 
                   <div className="space-y-3 mb-6">
                     <div className="flex items-center gap-3 text-brand-stone">
                       <Calendar size={18} />
-                      <span className="text-sm">{event.date}</span>
+                      <span
+                        className="text-sm"
+                        data-cms-path={JSON.stringify(['events', 'events', idx, 'date'])}
+                      >
+                        {event.date}
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 text-brand-stone">
                       <MapPin size={18} />
-                      <span className="text-sm">{event.location}</span>
+                      <span
+                        className="text-sm"
+                        data-cms-path={JSON.stringify(['events', 'events', idx, 'location'])}
+                      >
+                        {event.location}
+                      </span>
                     </div>
                   </div>
 
-                  <p className="text-brand-earth mb-6 leading-relaxed">{event.description}</p>
+                  <p
+                    className="text-brand-earth mb-6 leading-relaxed"
+                    data-cms-path={JSON.stringify(['events', 'events', idx, 'description'])}
+                  >
+                    {event.description}
+                  </p>
 
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="w-full py-3 rounded-full bg-gradient-to-r from-brand-copper to-brand-forest text-white font-medium text-sm uppercase tracking-wide hover:shadow-lg transition-all"
                     data-magnetic
+                    data-cms-path={JSON.stringify(['events', 'events', idx, 'cta'])}
                   >
                     {event.cta}
                   </motion.button>
