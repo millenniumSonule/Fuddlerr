@@ -21,6 +21,12 @@ SUPABASE_CMS_BUCKET=cms-images
 
 `SUPABASE_SERVICE_ROLE_KEY` must stay server-side only. Do not expose it with a `VITE_` prefix.
 
+### Local development
+
+Copy `.env.example` to `.env` and add the same Supabase values you use in Vercel if you want local `/edit` to sync with the cloud CMS backend.
+
+In local Vite dev, `FUDDLERR_CMS_PASSWORD` is optional. If you leave it unset, `/edit` works without login. Production Vercel API routes still require the password.
+
 ### Supabase setup
 
 Create the content table:

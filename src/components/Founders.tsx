@@ -30,7 +30,7 @@ export default function Founders() {
           </div>
         </FadeIn>
 
-        <div className="grid md:grid-cols-2 gap-10 md:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-16">
           {founders.map((founder, idx) => (
             <FadeIn key={founder.role} delay={0.2 + idx * 0.2}>
               <div className="group relative bg-brand-cream border border-brand-warmGray rounded-lg p-8 md:p-10 hover:border-brand-warmGray/80 transition-all duration-500">

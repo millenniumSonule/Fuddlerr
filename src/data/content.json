@@ -1,11 +1,12 @@
 {
   "hero": {
-    "subtitle": "India's Most Distinctive Craft Beer",
-    "mainTitle": "FUDDLER",
-    "tagline": "Crafted Between Two Worldsasdasdasda",
+    "subtitle": "Crafted in Mumbai. Inspired by the North.",
+    "mainTitle": "HONEST BEER.\nGOOD COMPANY.",
+    "tagline": "OUR KIND OF CITY.",
+    "description": "Brewed with passion on the shores of Mumbai. For dreamers, doers, and good time seekers.",
     "accentImage": "beer_glass.png",
     "features": [
-      "Mumbai Soul",
+      "MUMBAI SOUL",
       "Nordic Craft",
       "Premium Brewing"
     ]
@@ -45,7 +46,7 @@
   },
   "arabianSeaSection": {
     "label": "Our Story",
-    "title": "Born on the Arabian Seaasdasdasdasdasd",
+    "title": "Born on the Arabian Sea",
     "description": "Mumbai is our home. The sea is our constant inspiration. Fuddlerr is our tribute to this city, its people and its unbreakable spirit.asdasdasd",
     "buttonText": "Our Story",
     "image": "light_theme_middle_section.png",
@@ -233,12 +234,27 @@
           "Operations",
           "Brewery Experience"
         ]
+      },
+      {
+        "role": "The Alchemist",
+        "title": "Experience, Design & Brand Story",
+        "description": "The connector of culture and craft. Intuitive, thoughtful, design-led, and endlessly curious about how people experience the brand.",
+        "quote": "A memorable brand is not just seen. It is felt in every detail, every moment, every story.",
+        "accent": "gold",
+        "responsibilities": [
+          "Experience Design",
+          "Brand Storytelling",
+          "Creative Direction",
+          "Customer Journey",
+          "Visual Identity",
+          "Event Curation"
+        ]
       }
     ]
   },
   "header": {
     "brand": "FUDDLER",
-    "navItems": ["Home", "About", "Products", "Community", "Contact"],
+    "navItems": ["HOME", "About", "Products", "Community", "Contact"],
     "cta": "Order Now"
   },
   "footer": {
