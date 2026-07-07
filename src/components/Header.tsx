@@ -1,11 +1,11 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useContent } from '../content/useContent';
 
 export default function Header() {
   const contentData = useContent();
   const [isOpen, setIsOpen] = useState(false);
+  const [hasScrolledPastHero, setHasScrolledPastHero] = useState(false);
   const navItems = contentData.header.navItems;
 
   const sectionMap: Record<string, string> = {
@@ -37,16 +37,29 @@ export default function Header() {
     }
   };
 
+  useEffect(() => {
+    const hero = document.getElementById('hero');
+    if (!hero) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setHasScrolledPastHero(!entry.isIntersecting);
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="fixed top-0 z-50 w-full text-brand-cream"
+    <header
+      className={`fixed left-0 right-0 top-0 z-50 w-full text-brand-cream transition-colors duration-300 ${
+        hasScrolledPastHero ? 'bg-brand-charcoal' : 'bg-transparent'
+      }`}
     >
-      <div className="mx-auto flex max-w-[92rem] items-start justify-between px-6 py-6 md:px-10 lg:px-12">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
+      <div className={`mx-auto flex max-w-[92rem] items-start justify-between px-6 py-6 md:px-10 lg:px-12 ${hasScrolledPastHero ? 'border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.18)]' : ''}`}>
+        <div
           onClick={() => scrollToSection('Home')}
           className="cursor-pointer select-none leading-none"
           data-magnetic
@@ -60,38 +73,28 @@ export default function Header() {
           <span className="mt-1 block text-center text-[0.62rem] font-semibold uppercase tracking-[0.42em] text-brand-gold sm:text-xs">
             Mumbai · India
           </span>
-        </motion.div>
+        </div>
 
         <nav className="hidden items-center gap-7 pt-5 lg:flex xl:gap-10">
-          {navItems.map((item, idx) => (
-            <motion.button
+          {navItems.map((item) => (
+            <button
               key={item}
               onClick={() => scrollToSection(item)}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
               className="group relative cursor-pointer border-none bg-transparent p-0 text-xs font-semibold uppercase tracking-[0.28em] text-brand-cream/88 transition-colors hover:text-brand-gold"
               data-magnetic
             >
               {item}
-              <motion.span
-                className="absolute -bottom-1 left-0 h-px bg-brand-gold"
-                initial={{ width: 0 }}
-                whileHover={{ width: '100%' }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.button>
+              <span className="absolute -bottom-1 left-0 h-px w-0 bg-brand-gold transition-all duration-300 group-hover:w-full" />
+            </button>
           ))}
         </nav>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <button
           className="hidden border border-brand-gold/70 px-7 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-brand-gold transition-colors hover:bg-brand-gold hover:text-white xl:block"
           data-magnetic
         >
           {contentData.header.cta}
-        </motion.button>
+        </button>
 
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -103,12 +106,7 @@ export default function Header() {
       </div>
 
       {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          className="mx-6 border border-white/15 bg-black/55 px-6 py-6 backdrop-blur-md lg:hidden"
-        >
+        <div className="mx-6 border border-white/15 bg-black/55 px-6 py-6 backdrop-blur-md lg:hidden">
           <nav className="flex flex-col gap-4">
             {navItems.map((item) => (
               <button
@@ -123,8 +121,8 @@ export default function Header() {
               {contentData.header.cta}
             </button>
           </nav>
-        </motion.div>
+        </div>
       )}
-    </motion.header>
+    </header>
   );
 }

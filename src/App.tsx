@@ -37,11 +37,11 @@ function App() {
   };
 
   return (
-    <SmoothScroll>
-      <div className="min-h-screen bg-brand-espresso" style={appStyle}>
-        {!isEditMode && <MagneticCursor />}
-        {isEditMode && <EditModeCMS />}
-        {isVisible('header') && <Header />}
+    <div className="min-h-screen bg-brand-espresso" style={appStyle}>
+      {!isEditMode && <MagneticCursor />}
+      {isEditMode && <EditModeCMS />}
+      {isVisible('header') && <Header />}
+      <SmoothScroll>
         <main className="pt-0">
           {isVisible('hero') && (
             <section id="hero">
@@ -79,8 +79,8 @@ function App() {
             </section>
           )}
         </main>
-      </div>
-    </SmoothScroll>
+      </SmoothScroll>
+    </div>
   );
 }
 
