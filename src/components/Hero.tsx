@@ -28,7 +28,7 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 h-full">
-        <div className="w-full px-6 pt-[11.25rem] md:px-10 md:pt-[12rem] lg:px-12 lg:pt-[10.75rem]">
+        <div className="w-full px-6 pt-[9.5rem] md:px-10 md:pt-[9.75rem] lg:px-12 lg:pt-[8.75rem]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -47,39 +47,39 @@ export default function Hero() {
 
             <h1
               data-cms-path='["hero","mainTitle"]'
-              className="whitespace-pre-line font-serif text-[3.25rem] font-black uppercase leading-[0.88] text-brand-cream drop-shadow-[0_8px_26px_rgba(0,0,0,0.35)] sm:text-[4.8rem] md:text-[5.75rem] lg:text-[5.9rem] xl:text-[6.45rem]"
+              className="whitespace-pre-line font-serif text-[2.5rem] font-black uppercase leading-[0.9] text-brand-cream drop-shadow-[0_8px_26px_rgba(0,0,0,0.35)] sm:text-[3.75rem] md:text-[4.45rem] lg:text-[4.6rem] xl:text-[5rem]"
             >
               {contentData.hero.mainTitle}
             </h1>
 
             <p
               data-cms-path='["hero","tagline"]'
-              className="mt-3 max-w-[48rem] font-serif text-[2.5rem] font-black uppercase leading-[0.9] text-brand-gold drop-shadow-[0_8px_24px_rgba(0,0,0,0.26)] sm:text-[3.5rem] md:text-[4.3rem] lg:text-[4.8rem] xl:text-[5.2rem]"
+              className="mt-2.5 max-w-[48rem] font-serif text-[1.85rem] font-black uppercase leading-[0.92] text-brand-gold drop-shadow-[0_8px_24px_rgba(0,0,0,0.26)] sm:text-[2.55rem] md:text-[3rem] lg:text-[3.35rem] xl:text-[3.75rem]"
             >
               {contentData.hero.tagline}
             </p>
 
             <p
               data-cms-path='["hero","description"]'
-              className="mt-6 max-w-[27rem] text-base font-medium leading-7 text-brand-cream/92 md:text-lg md:leading-8"
+              className="mt-5 max-w-[27rem] text-sm font-medium leading-7 text-white md:text-base md:leading-8"
             >
               {contentData.hero.description}
             </p>
 
-            <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <div className="mt-5 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
               <a
                 href="#products"
-                className="inline-flex min-w-48 items-center justify-between gap-8 bg-brand-gold px-7 py-4 text-xs font-bold uppercase tracking-[0.22em] text-white shadow-[0_20px_52px_rgba(0,0,0,0.26)] transition-all hover:-translate-y-0.5 hover:bg-brand-goldLight"
+                className="inline-flex min-w-44 items-center justify-between gap-6 bg-brand-gold px-6 py-3 text-[0.7rem] font-bold uppercase tracking-[0.22em] text-white shadow-[0_20px_52px_rgba(0,0,0,0.26)] transition-all hover:-translate-y-0.5 hover:bg-brand-goldLight"
               >
                 <span>Explore Beers</span>
-                <span className="text-xl leading-none">→</span>
+                <span className="text-lg leading-none">→</span>
               </a>
               <a
                 href="#about"
-                className="inline-flex min-w-48 items-center justify-between gap-8 border border-brand-cream/70 bg-black/5 px-7 py-4 text-xs font-bold uppercase tracking-[0.22em] text-brand-cream backdrop-blur-[2px] transition-all hover:-translate-y-0.5 hover:bg-white/10"
+                className="inline-flex min-w-44 items-center justify-between gap-6 border border-brand-cream/70 bg-black/5 px-6 py-3 text-[0.7rem] font-bold uppercase tracking-[0.22em] text-brand-cream backdrop-blur-[2px] transition-all hover:-translate-y-0.5 hover:bg-white/10"
               >
                 <span>Our Taproom</span>
-                <span className="text-xl leading-none">→</span>
+                <span className="text-lg leading-none">→</span>
               </a>
             </div>
           </motion.div>
