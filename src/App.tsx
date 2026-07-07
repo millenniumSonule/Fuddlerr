@@ -42,7 +42,7 @@ function App() {
         {!isEditMode && <MagneticCursor />}
         {isEditMode && <EditModeCMS />}
         {isVisible('header') && <Header />}
-        <main className={isVisible('header') ? 'pt-20' : 'pt-0'}>
+        <main className="pt-0">
           {isVisible('hero') && (
             <section id="hero">
               <Hero />

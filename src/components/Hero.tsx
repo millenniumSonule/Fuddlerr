@@ -1,12 +1,19 @@
 import { motion } from 'framer-motion';
+import { Anchor, Beer, Menu as Lines, Waves } from 'lucide-react';
 import heroVideo from '../assets/hero_banner_video.mp4';
 import { useContent } from '../content/useContent';
 
 export default function Hero() {
   const contentData = useContent();
+  const featureItems = [
+    { label: 'Locally Brewed', icon: Beer },
+    { label: 'Quality Ingredients', icon: Waves },
+    { label: 'Nordic Influence', icon: Lines },
+    { label: 'Mumbai Soul', icon: Anchor },
+  ];
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-brand-espresso">
+    <section className="relative h-[760px] min-h-[680px] overflow-hidden bg-brand-charcoal md:h-[78svh] md:min-h-[720px] md:max-h-[840px]">
       <div className="absolute inset-0">
         <video
           src={heroVideo}
@@ -16,62 +23,80 @@ export default function Hero() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(12,19,20,0.72)_0%,rgba(12,19,20,0.42)_35%,rgba(12,19,20,0.08)_65%,rgba(12,19,20,0.34)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,14,16,0.36)_0%,rgba(8,14,16,0.04)_48%,rgba(8,14,16,0.58)_100%)]" />
       </div>
 
-      <div className="relative z-10 min-h-screen flex items-center">
-        <div className="max-w-5xl mx-auto px-6 py-24 lg:py-28">
+      <div className="relative z-10 h-full">
+        <div className="w-full px-6 pt-[11.25rem] md:px-10 md:pt-[12rem] lg:px-12 lg:pt-[10.75rem]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.4 }}
-            className="max-w-3xl"
+            className="max-w-[54rem]"
           >
-            <p
-              data-cms-path='["hero","subtitle"]'
-              className="text-brand-cream text-xs md:text-sm tracking-[0.35em] uppercase mb-4 font-semibold"
-            >
-              {contentData.hero.subtitle}
-            </p>
+            <div className="mb-5 flex items-start gap-4 md:mb-6">
+              <Lines className="mt-1 h-5 w-5 shrink-0 text-brand-cream/80" strokeWidth={1.5} />
+              <p
+                data-cms-path='["hero","subtitle"]'
+                className="max-w-xs text-xs font-semibold uppercase leading-6 tracking-[0.18em] text-brand-gold md:text-sm"
+              >
+                {contentData.hero.subtitle}
+              </p>
+            </div>
 
             <h1
               data-cms-path='["hero","mainTitle"]'
-              className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-semibold tracking-tight leading-[0.92] text-brand-cream mb-6 whitespace-pre-line"
+              className="whitespace-pre-line font-serif text-[3.25rem] font-black uppercase leading-[0.88] text-brand-cream drop-shadow-[0_8px_26px_rgba(0,0,0,0.35)] sm:text-[4.8rem] md:text-[5.75rem] lg:text-[5.9rem] xl:text-[6.45rem]"
             >
               {contentData.hero.mainTitle}
             </h1>
 
             <p
               data-cms-path='["hero","tagline"]'
-              className="font-serif text-4xl sm:text-5xl md:text-6xl text-brand-gold uppercase tracking-[0.22em] mb-8"
+              className="mt-3 max-w-[48rem] font-serif text-[2.5rem] font-black uppercase leading-[0.9] text-brand-gold drop-shadow-[0_8px_24px_rgba(0,0,0,0.26)] sm:text-[3.5rem] md:text-[4.3rem] lg:text-[4.8rem] xl:text-[5.2rem]"
             >
               {contentData.hero.tagline}
             </p>
 
             <p
               data-cms-path='["hero","description"]'
-              className="text-brand-cream/90 text-base md:text-lg leading-relaxed max-w-2xl mb-10"
+              className="mt-6 max-w-[27rem] text-base font-medium leading-7 text-brand-cream/92 md:text-lg md:leading-8"
             >
               {contentData.hero.description}
             </p>
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
               <a
                 href="#products"
-                className="inline-flex items-center justify-center rounded-full bg-brand-gold px-8 py-3 text-sm font-semibold text-white shadow-[0_20px_60px_rgba(198,151,47,0.22)] transition-all hover:-translate-y-0.5"
+                className="inline-flex min-w-48 items-center justify-between gap-8 bg-brand-gold px-7 py-4 text-xs font-bold uppercase tracking-[0.22em] text-white shadow-[0_20px_52px_rgba(0,0,0,0.26)] transition-all hover:-translate-y-0.5 hover:bg-brand-goldLight"
               >
-                Explore Beers
+                <span>Explore Beers</span>
+                <span className="text-xl leading-none">→</span>
               </a>
               <a
                 href="#about"
-                className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/15"
+                className="inline-flex min-w-48 items-center justify-between gap-8 border border-brand-cream/70 bg-black/5 px-7 py-4 text-xs font-bold uppercase tracking-[0.22em] text-brand-cream backdrop-blur-[2px] transition-all hover:-translate-y-0.5 hover:bg-white/10"
               >
-                Our Taproom
+                <span>Our Taproom</span>
+                <span className="text-xl leading-none">→</span>
               </a>
             </div>
           </motion.div>
         </div>
       </div>
+
+      <aside className="absolute right-6 top-1/2 z-10 hidden -translate-y-1/2 border-l border-brand-cream/30 pr-2 lg:block xl:right-12">
+        {featureItems.map(({ label, icon: Icon }, index) => (
+          <div key={label} className="relative flex w-32 flex-col items-center py-6 text-center">
+            {index > 0 && <span className="absolute top-0 h-px w-24 bg-brand-cream/18" />}
+            <Icon className="mb-3 h-7 w-7 text-brand-gold" strokeWidth={1.5} />
+            <span className="max-w-24 text-[0.65rem] font-bold uppercase leading-5 tracking-[0.18em] text-brand-cream">
+              {label}
+            </span>
+          </div>
+        ))}
+      </aside>
     </section>
   );
 }

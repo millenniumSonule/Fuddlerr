@@ -12,7 +12,6 @@ type StatItem = {
   suffix: string;
   label: string;
   image: string;
-  delay: number;
 };
 
 const Counter = ({
@@ -114,12 +113,13 @@ export default function StatsSection() {
 
 function StatCard({ stat, idx }: { stat: StatItem; idx: number }) {
   const statImage = resolveCmsImage(stat.image, transparentPixel);
+  const delay = idx * 0.12;
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ delay: stat.delay, duration: 0.5 }}
+      transition={{ delay, duration: 0.5 }}
       viewport={{ once: true }}
       className="text-center group"
     >
@@ -145,7 +145,7 @@ function StatCard({ stat, idx }: { stat: StatItem; idx: number }) {
         from={0}
         to={stat.number}
         suffix={stat.suffix}
-        delay={stat.delay}
+        delay={delay}
         cmsPath={['stats', 'data', idx, 'number']}
       />
 

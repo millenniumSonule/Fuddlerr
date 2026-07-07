@@ -8,7 +8,7 @@ type CursorPoint = {
 };
 
 export default function MagneticCursor() {
-  const cursorRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLImageElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const trailRefs = useRef<HTMLSpanElement[]>([]);
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -25,8 +25,6 @@ export default function MagneticCursor() {
     const current: CursorPoint = { ...target };
     const glowPosition: CursorPoint = { ...target };
     const trailPositions = trails.map(() => ({ ...target }));
-    let lastX = target.x;
-    let lastY = target.y;
     let raf = 0;
 
     const setInteractive = (element: Element | null, active: boolean) => {
@@ -76,8 +74,6 @@ export default function MagneticCursor() {
         trail.style.opacity = `${0.18 - index * 0.025}`;
       });
 
-      lastX = current.x;
-      lastY = current.y;
       raf = requestAnimationFrame(render);
     };
 
