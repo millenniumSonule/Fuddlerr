@@ -78,6 +78,10 @@ export function getDefaultContent() {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
+function getContentVersion(content) {
+  return typeof content?.cms?.version === 'number' ? content.cms.version : 0;
+}
+
 export function getSupabase() {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -90,13 +94,21 @@ export function getSupabase() {
 }
 
 export async function readContent() {
+  const defaultContent = getDefaultContent();
   const supabase = getSupabase();
-  if (!supabase) return getDefaultContent();
+  if (!supabase) return defaultContent;
 
   const table = process.env.SUPABASE_CMS_TABLE || 'cms_content';
   const { data, error } = await supabase.from(table).select('content').eq('id', 'site').maybeSingle();
   if (error) throw error;
-  return data?.content || getDefaultContent();
+
+  const storedContent = data?.content;
+  if (!storedContent || getContentVersion(storedContent) !== getContentVersion(defaultContent)) {
+    await writeContent(defaultContent);
+    return defaultContent;
+  }
+
+  return storedContent;
 }
 
 export async function writeContent(content) {

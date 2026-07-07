@@ -45,6 +45,16 @@ function getValueAtPath(content: ContentValue, editPath: Array<string | number>)
   }, content);
 }
 
+function getContentVersion(content: ContentValue) {
+  if (!content || typeof content !== 'object' || Array.isArray(content)) return 0;
+
+  const cms = content.cms;
+  if (!cms || typeof cms !== 'object' || Array.isArray(cms)) return 0;
+
+  const version = cms.version;
+  return typeof version === 'number' ? version : 0;
+}
+
 function skipWhitespace(source: string, index: number) {
   while (/\s/.test(source[index] || '')) index += 1;
   return index;
@@ -200,14 +210,24 @@ async function readLocalContent() {
 }
 
 async function readContent(env: ServerEnv) {
+  const defaultContent = await readLocalContent();
   const supabase = getSupabase(env);
-  if (!supabase) return readLocalContent();
+  if (!supabase) return defaultContent;
 
   const table = env.SUPABASE_CMS_TABLE || 'cms_content';
   const { data, error } = await supabase.from(table).select('content').eq('id', 'site').maybeSingle();
   if (error) throw error;
 
-  return (data?.content as ContentValue | undefined) || readLocalContent();
+  const storedContent = data?.content as ContentValue | undefined;
+  const defaultVersion = getContentVersion(defaultContent);
+  const storedVersion = storedContent ? getContentVersion(storedContent) : 0;
+
+  if (!storedContent || storedVersion !== defaultVersion) {
+    await writeContent(env, defaultContent);
+    return defaultContent;
+  }
+
+  return storedContent;
 }
 
 async function writeContent(env: ServerEnv, content: ContentValue) {

@@ -264,6 +264,7 @@
     "copyright": "FUDDLER. All rights reserved. Brewing the future of craft beer in India."
   },
   "cms": {
+    "version": 1,
     "sections": {
       "header": true,
       "hero": true,
